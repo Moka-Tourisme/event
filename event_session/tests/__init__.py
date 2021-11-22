@@ -1,1 +1,1 @@
-from . import test_session
+from . import test_event_session
