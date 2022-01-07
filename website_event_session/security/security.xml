@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!--
+    Copyright 2022 Moka Tourisme (https://www.mokatourisme.fr).
+    @author Iván Todorovich <ivan.todorovich@camptocamp.com>
+    License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl).
+-->
+<odoo noupdate="1">
+    <record id="event_session_public" model="ir.rule">
+        <field name="name">Event Session: public/portal</field>
+        <field name="model_id" ref="event_session.model_event_session" />
+        <field name="domain_force">[("website_published", "=", True)]</field>
+        <field
+            name="groups"
+            eval="[(4, ref('base.group_public')), (4, ref('base.group_portal'))]"
+        />
+        <field name="perm_read" eval="True" />
+        <field name="perm_write" eval="False" />
+        <field name="perm_create" eval="False" />
+        <field name="perm_unlink" eval="False" />
+    </record>
+</odoo>

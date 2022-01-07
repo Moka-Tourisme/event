@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!--
+    Copyright 2022 Moka Tourisme (https://www.mokatourisme.fr).
+    @author Iván Todorovich <ivan.todorovich@camptocamp.com>
+    License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl).
+-->
+<odoo>
+
+    <template id="events_list" inherit_id="website_event.events_list">
+        <!-- Hide the date circle for event with sessions -->
+        <xpath
+            expr="//article//header//div[hasclass('o_wevent_event_date')]"
+            position="attributes"
+        >
+            <attribute name="t-if" separator=" and " add="not event.use_sessions" />
+        </xpath>
+        <!-- Replace the event date with multiple sessions legend -->
+        <xpath
+            expr="//article//main//time[@itemprop='startDate']"
+            position="attributes"
+        >
+            <attribute name="t-if" separator=" and " add="not event.use_sessions" />
+        </xpath>
+    </template>
+
+</odoo>

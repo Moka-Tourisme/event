@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!--
+    Copyright 2022 Moka Tourisme (https://www.mokatourisme.fr).
+    @author Iván Todorovich <ivan.todorovich@camptocamp.com>
+    License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl).
+-->
+<odoo>
+
+    <template
+        id="event_description_full"
+        inherit_id="website_event.event_description_full"
+    >
+        <!-- Hide the date and time block -->
+        <xpath
+            expr="//div[hasclass('o_wevent_sidebar_block')]//small[@t-esc='event.date_tz']/ancestor::div[hasclass('o_wevent_sidebar_block')]"
+            position="attributes"
+        >
+            <attribute name="t-if" separator=" and " add="not event.use_sessions" />
+        </xpath>
+        <!-- Add the new event session calendar selector widget -->
+        <xpath
+            expr="//div[hasclass('o_wevent_sidebar_block')]//small[@t-esc='event.date_tz']/ancestor::div[hasclass('o_wevent_sidebar_block')]"
+            position="after"
+        >
+            <div
+                t-if="event.use_sessions"
+                class="o_wevent_sidebar_block o_wevent_session_booking_block"
+            >
+                <h6 class="o_wevent_sidebar_title">Date &amp; Time</h6>
+                <t t-call="website_event_session.event_session_booking" />
+            </div>
+        </xpath>
+    </template>
+
+    <template id="event_session_booking" name="Event Session Booking Widget">
+        <div id="event-session-booking" class="o_wevent_session_booking">
+            <ul class="nav nav-pills flex-column">
+                <li
+                    name="calendar"
+                    class="event-session-booking-section event-session-booking-calendar disable"
+                >
+                    <div class="collapse">
+                        <div class="event-session-booking-datepicker" />
+                        <div
+                            class="d-flex flex-row justify-content-center event-session-booking-calendar-legend"
+                        >
+                            <div class="p-2">
+                                <i class="fa fa-square text-primary" />
+                                <span>Your selection</span>
+                            </div>
+                            <div class="p-2">
+                                <i class="fa fa-square text-success" />
+                                <span>Seats available</span>
+                            </div>
+                            <div class="p-2">
+                                <i class="fa fa-square text-danger" />
+                                <span>Full</span>
+                            </div>
+                        </div>
+                        <small t-esc="event.date_tz" class="d-block my-3 text-muted" />
+                    </div>
+                </li>
+                <li
+                    name="session"
+                    class="event-session-booking-section event-session-booking-session disable"
+                >
+                    <div class="collapse">
+                        <div
+                            class="event-session-booking-session-selector d-flex flex-wrap"
+                        />
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </template>
+
+    <template
+        id="registration_template"
+        inherit_id="website_event.registration_template"
+    >
+        <!-- TODO: Check how to deal with session seat availability here -->
+        <!-- To be populated by the session booking widget -->
+        <div id="o_wevent_tickets" position="inside">
+            <input t-if="event.use_sessions" name="event_session_id" type="hidden" />
+        </div>
+    </template>
+
+    <template
+        id="registration_attendee_details"
+        inherit_id="website_event.registration_attendee_details"
+    >
+        <input name="csrf_token" position="after">
+            <input
+                t-if="event.use_sessions"
+                name="event_session_id"
+                type="hidden"
+                t-att-value="session.id"
+            />
+        </input>
+    </template>
+
+    <template
+        id="registration_complete"
+        inherit_id="website_event.registration_complete"
+    >
+        <!-- Replace startDate by event's startDate -->
+        <span itemprop="startDate" position="attributes">
+            <attribute name="t-if" separator=" and " add="not event.use_sessions" />
+        </span>
+        <span itemprop="startDate" position="after">
+            <span
+                itemprop="startDate"
+                t-if="session"
+                t-esc="session.date_begin_located"
+            />
+        </span>
+        <!-- Replace endDate by sessions' endDate -->
+        <span itemprop="endDate" position="attributes">
+            <attribute name="t-if" separator=" and " add="not event.use_sessions" />
+        </span>
+        <span itemprop="endDate" position="after">
+            <span itemprop="endDate" t-if="session" t-esc="session.date_end_located" />
+        </span>
+        <!-- TODO in controller: icalc and google link url -->
+    </template>
+
+</odoo>
