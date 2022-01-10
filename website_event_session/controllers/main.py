@@ -53,6 +53,7 @@ class WebsiteEventSessionController(WebsiteEventController):
             day_sessions = functools.reduce(lambda s1, s2: s1 | s2, group)
             day_key = fields.Date.to_string(day)
             res[day_key] = {
+                "sessions_count": len(day_sessions),
                 "seats_limited": not any(not s.seats_limited for s in day_sessions),
                 "seats_available": sum(
                     s.seats_available for s in day_sessions if s.seats_limited

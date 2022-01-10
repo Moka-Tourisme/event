@@ -1,3 +1,8 @@
+/*
+    Copyright 2022 Moka Tourisme (https://www.mokatourisme.fr).
+    @author Iván Todorovich <ivan.todorovich@camptocamp.com>
+    License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl).
+*/
 odoo.define("website_event_session.ticket_details", function (require) {
     "use strict";
 

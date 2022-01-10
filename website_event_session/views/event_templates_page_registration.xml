@@ -27,51 +27,31 @@
                 class="o_wevent_sidebar_block o_wevent_session_booking_block"
             >
                 <h6 class="o_wevent_sidebar_title">Date &amp; Time</h6>
-                <t t-call="website_event_session.event_session_booking" />
-            </div>
-        </xpath>
-    </template>
-
-    <template id="event_session_booking" name="Event Session Booking Widget">
-        <div id="event-session-booking" class="o_wevent_session_booking">
-            <ul class="nav nav-pills flex-column">
-                <li
-                    name="calendar"
-                    class="event-session-booking-section event-session-booking-calendar disable"
-                >
-                    <div class="collapse">
-                        <div class="event-session-booking-datepicker" />
+                <div class="js_wevent_session_booking" t-att-data-event-id="event.id">
+                    <small t-esc="event.date_tz" class="d-block my-3 text-muted" />
+                    <div class="js_wevent_session_booking_datepicker" />
+                    <div class="o_wevent_session_booking_legend">
                         <div
-                            class="d-flex flex-row justify-content-center event-session-booking-calendar-legend"
+                            class="d-flex flex-row justify-content-between text-muted my-3"
                         >
-                            <div class="p-2">
+                            <div>
                                 <i class="fa fa-square text-primary" />
-                                <span>Your selection</span>
+                                <small>Your selection</small>
                             </div>
-                            <div class="p-2">
+                            <div>
                                 <i class="fa fa-square text-success" />
-                                <span>Seats available</span>
+                                <small>Seats available</small>
                             </div>
-                            <div class="p-2">
+                            <div>
                                 <i class="fa fa-square text-danger" />
-                                <span>Full</span>
+                                <small>Full</small>
                             </div>
                         </div>
-                        <small t-esc="event.date_tz" class="d-block my-3 text-muted" />
                     </div>
-                </li>
-                <li
-                    name="session"
-                    class="event-session-booking-section event-session-booking-session disable"
-                >
-                    <div class="collapse">
-                        <div
-                            class="event-session-booking-session-selector d-flex flex-wrap"
-                        />
-                    </div>
-                </li>
-            </ul>
-        </div>
+                    <div class="js_wevent_session_booking_sessionpicker" />
+                </div>
+            </div>
+        </xpath>
     </template>
 
     <template

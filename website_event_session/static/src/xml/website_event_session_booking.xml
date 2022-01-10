@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<templates xml:space="preserve">
+
+    <t t-name="event_session_selector">
+        <t t-foreach="widget.sessions" t-as="session">
+            <div class="custom-control custom-radio pt-1">
+                <input
+                    type="radio"
+                    name="event_session_id"
+                    class="custom-control-input"
+                    t-attf-id="event_session_id_#{session.id}"
+                    t-att-value="session.id"
+                    t-att-disabled="(session.seats_limited and session.seats_available &lt;= 0) ? 'disabled' : null"
+                    t-att-checked="session.id == widget.sessionId ? 'checked' : null"
+                />
+                <label
+                    class="custom-control-label"
+                    t-attf-for="event_session_id_#{session.id}"
+                >
+                    <span t-esc="session.display_name" />
+                    <span
+                        t-if="session.seats_limited and session.seats_available &lt;= 0"
+                    >(Full)</span>
+                </label>
+            </div>
+        </t>
+    </t>
+
+</templates>
