@@ -69,11 +69,12 @@
         id="registration_attendee_details"
         inherit_id="website_event.registration_attendee_details"
     >
-        <input name="csrf_token" position="after">
+        <input t-attf-name="#{counter}-event_ticket_id" position="after">
             <input
                 t-if="event.use_sessions"
-                name="event_session_id"
-                type="hidden"
+                class="d-none"
+                type="text"
+                t-attf-name="#{counter}-session_id"
                 t-att-value="session.id"
             />
         </input>

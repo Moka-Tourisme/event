@@ -149,41 +149,17 @@ class WebsiteEventSessionController(WebsiteEventController):
             },
         )
 
-    def _process_attendees_form(self, event, form_details):
-        # OVERRIDE to add the session_id to generated sessions
-        session_id = event.use_sessions and int(form_details.pop("event_session_id"))
-        res = super()._process_attendees_form(event, form_details)
-        if event.use_sessions:
-            for reg in res:
-                reg["session_id"] = session_id
-        return res
-
     @http.route()
-    def registration_confirm(self, event, **post):
-        # OVERRIDE to redirect to session success page instead, keeping the
-        # original query string
-        session_id = event.use_sessions and int(post.get("event_session_id"))
-        res = super().registration_confirm(event, **post)
+    def event_registration_success(self, event, registration_ids):
+        # OVERRIDE to include the session in the rendering context
+        #
+        # It's difficult to get the session id without changing the method signature,
+        # as it doesn't accept kwargs, and we get here from a redirect from
+        # :meth:`registration_confirm`.
+        #
+        # However, the registration ids are passed as a query string parameter and we
+        # can get the session from there.
+        res = super().event_registration_success(event, registration_ids)
         if event.use_sessions:
-            return request.redirect(
-                f"/event/session/{session_id}/registration/success?"
-                + res.location.split("?")[1]
-            )
-        return res
-
-    @http.route(
-        "/event/session/<model('event.session'):session>/registration/success",
-        type="http",
-        auth="public",
-        methods=["GET"],
-        website=True,
-        sitemap=False,
-    )
-    def session_registration_success(self, session, registration_ids, **params):
-        """Similar to :meth:`event_registration_success` but for sessions"""
-        event = session.event_id
-        res = self.event_registration_success(event, registration_ids)
-        urls = session._get_event_resource_urls()
-        res.qcontext.update(urls)
-        res.qcontext["session"] = session
+            res.qcontext["session"] = fields.first(res.qcontext["attendees"].session_id)
         return res

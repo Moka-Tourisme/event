@@ -18,12 +18,18 @@
         "views/event_templates_list.xml",
         "views/event_templates_page_registration.xml",
     ],
+    "demo": [
+        "demo/event_event.xml",
+    ],
     "assets": {
         "web.assets_frontend": [
             "website_event_session/static/src/scss/website_event_session_booking.scss",
             "website_event_session/static/src/js/website_event_session_booking.js",
             "website_event_session/static/src/js/website_event_ticket_details.js",
-        ]
+        ],
+        "web.assets_tests": [
+            "website_event_session/static/tests/**/*",
+        ],
     },
     "auto_install": True,
 }
