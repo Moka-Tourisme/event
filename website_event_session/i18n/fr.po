@@ -1,0 +1,127 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* website_event_session
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 15.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2022-01-12 10:22+0000\n"
+"PO-Revision-Date: 2022-01-12 11:28+0100\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Language: fr\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: \n"
+"X-Generator: Poedit 3.0.1\n"
+
+#. module: website_event_session
+#. openerp-web
+#: code:addons/website_event_session/static/src/js/website_event_session_booking.js:0
+#, python-format
+msgid "%s sessions"
+msgstr "%s séances"
+
+#. module: website_event_session
+#. openerp-web
+#: code:addons/website_event_session/static/src/xml/website_event_session_booking.xml:0
+#, python-format
+msgid "(Full)"
+msgstr "(Complet)"
+
+#. module: website_event_session
+#: model_terms:ir.ui.view,arch_db:website_event_session.event_description_full
+msgid ""
+"<i class=\"fa fa-square text-danger\"/>\n"
+"                                <small>Full</small>"
+msgstr ""
+"<i class=\"fa fa-square text-danger\"/>\n"
+"                                <small>Complet</small>"
+
+#. module: website_event_session
+#: model_terms:ir.ui.view,arch_db:website_event_session.event_description_full
+msgid ""
+"<i class=\"fa fa-square text-primary\"/>\n"
+"                                <small>Your selection</small>"
+msgstr ""
+"<i class=\"fa fa-square text-primary\"/>\n"
+"                                <small>Votre sélection</small>"
+
+#. module: website_event_session
+#: model_terms:ir.ui.view,arch_db:website_event_session.event_description_full
+msgid ""
+"<i class=\"fa fa-square text-success\"/>\n"
+"                                <small>Seats available</small>"
+msgstr ""
+"<i class=\"fa fa-square text-success\"/>\n"
+"                                <small>Disponible</small>"
+
+#. module: website_event_session
+#: model_terms:ir.ui.view,arch_db:website_event_session.event_description_full
+msgid "Date &amp; Time"
+msgstr "Date &amp; Heure"
+
+#. module: website_event_session
+#: model:ir.model,name:website_event_session.model_event_registration
+msgid "Event Registration"
+msgstr "Inscription à l'événement"
+
+#. module: website_event_session
+#: model:ir.model,name:website_event_session.model_event_session
+msgid "Event session"
+msgstr "Séance"
+
+#. module: website_event_session
+#. openerp-web
+#: code:addons/website_event_session/static/src/js/website_event_session_booking.js:0
+#, python-format
+msgid "Full"
+msgstr "Complet"
+
+#. module: website_event_session
+#: model:ir.model.fields,field_description:website_event_session.field_event_session__is_done
+msgid "Is Done"
+msgstr "Est terminé"
+
+#. module: website_event_session
+#: model:ir.model.fields,field_description:website_event_session.field_event_session__is_ongoing
+msgid "Is Ongoing"
+msgstr "Est en cours"
+
+#. module: website_event_session
+#: model:ir.model.fields,field_description:website_event_session.field_event_session__start_remaining
+msgid "Remaining before start"
+msgstr "Restant avant de commencer"
+
+#. module: website_event_session
+#: model:ir.model.fields,help:website_event_session.field_event_session__start_remaining
+msgid "Remaining time before event starts (minutes)"
+msgstr "Temps restant avant le début de l'événement (minutes)"
+
+#. module: website_event_session
+#: model:ir.model.fields,field_description:website_event_session.field_event_session__start_today
+msgid "Start Today"
+msgstr "Commence aujourd'hui"
+
+#. module: website_event_session
+#: code:addons/website_event_session/controllers/main.py:0
+#, python-format
+msgid "The session does not exist."
+msgstr "La séance n'existe pas."
+
+#. module: website_event_session
+#: model:ir.model.fields,help:website_event_session.field_event_session__is_ongoing
+msgid "Whether the session has begun"
+msgstr "Si la séance a commencé"
+
+#. module: website_event_session
+#: model:ir.model.fields,help:website_event_session.field_event_session__is_done
+msgid "Whether the session is finished"
+msgstr "Si la séance est terimnée"
+
+#. module: website_event_session
+#: model:ir.model.fields,help:website_event_session.field_event_session__start_today
+msgid "Whether the session is going to start today if still not ongoing"
+msgstr "Si la séance commence aujourd'hui si elle n'est toujours pas en cours"
