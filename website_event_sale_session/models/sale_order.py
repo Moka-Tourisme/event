@@ -24,8 +24,4 @@ class SaleOrder(models.Model):
         )
         if self.env.context.get("event_session_id"):
             res["event_session_id"] = self.env.context.get("event_session_id")
-        import logging
-
-        _logger = logging.getLogger(__name__)
-        _logger.warning(res)
         return res

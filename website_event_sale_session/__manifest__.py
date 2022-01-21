@@ -12,5 +12,10 @@
     "license": "AGPL-3",
     "category": "Marketing",
     "depends": ["website_event_sale", "website_event_session"],
+    "assets": {
+        "web.assets_frontend": [
+            "website_event_sale_session/static/src/js/website_event_session_booking.js",
+        ],
+    },
     "auto_install": True,
 }

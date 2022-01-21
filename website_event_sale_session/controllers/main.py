@@ -2,6 +2,7 @@
 # @author Iván Todorovich <ivan.todorovich@gmail.com>
 # License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl).
 
+from odoo import http
 from odoo.http import request
 
 from odoo.addons.website_event.controllers.main import WebsiteEventController
@@ -19,3 +20,35 @@ class WebsiteEventSessionController(WebsiteEventController):
         return super()._create_attendees_from_registration_post(
             event, registration_data
         )
+
+    @http.route(type="json")
+    def session_tickets(self, session):
+        # OVERRIDE to add ticket price info
+        res = super().session_tickets(session)
+        pricelist = request.website.get_current_pricelist()
+        currency = pricelist.currency_id
+        ticket_ids = [t["id"] for t in res]
+        tickets = request.env["event.event.ticket"].browse(ticket_ids)
+        tickets = tickets.with_context(
+            pricelist=pricelist.id,
+            partner=request.env.user.partner_id,
+        )
+        MonetaryConverter = request.env["ir.qweb.field.monetary"]
+        currency_opts = {"display_currency": currency}
+        for ticket, data in zip(tickets, res):
+            data.update(
+                {
+                    "price": ticket.price,
+                    "price_reduce": ticket.price_reduce,
+                    "currency": {
+                        "name": currency.name,
+                    },
+                    "price_html": MonetaryConverter.value_to_html(
+                        ticket.price, currency_opts
+                    ),
+                    "price_reduce_html": MonetaryConverter.value_to_html(
+                        ticket.price_reduce, currency_opts
+                    ),
+                }
+            )
+        return res

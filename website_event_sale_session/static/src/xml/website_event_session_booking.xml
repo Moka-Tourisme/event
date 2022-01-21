@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<templates xml:space="preserve">
+
+    <t t-extend="event_session_tickets">
+        <t t-jquery="div.o_wevent_registration_multi_select" t-operation="append">
+            <t t-if="ticket.price">
+                <del
+                    t-if="ticket.price != ticket.price_reduce"
+                    class="text-danger mr-1"
+                    t-raw="ticket.price_html"
+                />
+                <span t-raw="ticket.price_reduce_html" />
+                <span itemprop="price" class="d-none" t-esc="ticket.price" />
+                <span
+                    itemprop="priceCurrency"
+                    class="d-none"
+                    t-esc="ticket.currency?.name"
+                />
+            </t>
+            <span t-else="" class="font-weight-bold text-uppercase">Free</span>
+        </t>
+    </t>
+
+</templates>
