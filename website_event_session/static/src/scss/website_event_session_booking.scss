@@ -1,114 +1,110 @@
-.js_wevent_session_booking {
+.o_wevent_session_js_booking {
     .loading {
         opacity: 20%;
         position: relative;
         transition: opacity 0.5s;
     }
+}
 
-    .ui-datepicker {
-        width: 100%;
-        padding: 0;
+.ui-event-session-datepicker {
+    &.ui-widget {
+        font-family: inherit;
+    }
+
+    &.ui-datepicker-inline {
+        background: transparent;
+    }
+
+    .ui-datepicker-header {
+        padding-top: 10px;
+        padding-bottom: 10px;
         border: 0;
+        background-color: transparent;
+    }
 
-        &.ui-widget {
-            font-family: inherit;
+    .ui-datepicker-prev,
+    .ui-datepicker-next {
+        top: 50%;
+        transform: translate3d(0px, -50%, 0px);
+        cursor: pointer;
+        span {
+            display: inline-block;
+            font: normal normal normal 14px/1 FontAwesome;
+            font-size: inherit;
+            text-rendering: auto;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            background-image: none;
+            &:before {
+                text-indent: 0;
+                top: 0;
+                left: 0;
+                position: absolute;
+                width: 10px;
+                height: 10px;
+            }
         }
-
-        &.ui-datepicker-inline {
-            background: transparent;
-        }
-
-        .ui-datepicker-header {
-            padding-top: 10px;
-            padding-bottom: 10px;
+        &-hover {
             border: 0;
             background-color: transparent;
         }
+    }
+    .ui-datepicker-prev span {
+        &:before {
+            content: "\f053";
+        }
+    }
+    .ui-datepicker-next span {
+        &:before {
+            content: "\f054";
+        }
+    }
 
-        .ui-datepicker-prev,
-        .ui-datepicker-next {
-            top: 50%;
-            transform: translate3d(0px, -50%, 0px);
-            cursor: pointer;
-            span {
-                display: inline-block;
-                font: normal normal normal 14px/1 FontAwesome;
-                font-size: inherit;
-                text-rendering: auto;
-                -webkit-font-smoothing: antialiased;
-                -moz-osx-font-smoothing: grayscale;
-                background-image: none;
-                &:before {
-                    text-indent: 0;
-                    top: 0;
-                    left: 0;
-                    position: absolute;
-                    width: 10px;
-                    height: 10px;
-                }
-            }
-            &-hover {
-                border: 0;
-                background-color: transparent;
-            }
+    .ui-datepicker-calendar {
+        th {
+            font-weight: normal;
         }
-        .ui-datepicker-prev span {
-            &:before {
-                content: "\f053";
-            }
+        td {
+            user-select: none;
+            text-align: center;
         }
-        .ui-datepicker-next span {
-            &:before {
-                content: "\f054";
-            }
-        }
-
-        .ui-datepicker-calendar {
-            th {
-                font-weight: normal;
-            }
-            td {
-                user-select: none;
-                text-align: center;
-            }
-            .ui-state-disabled {
-                .ui-state-default {
-                    background-color: transparent;
-                    color: inherit;
-                }
-            }
+        .ui-state-disabled {
             .ui-state-default {
-                border: 0;
-                padding: 0;
-                line-height: 2rem;
-                width: 2rem;
-                height: 2rem;
-                position: relative;
-                text-align: center;
                 background-color: transparent;
-                border-radius: $border-radius;
-            }
-            .ui-state-highlight {
                 color: inherit;
             }
-            .ui-state-active {
-                color: white;
-                background-color: theme-color("primary") !important;
-            }
+        }
+        .ui-state-default {
+            border: 0;
+            padding: 0;
+            line-height: 2rem;
+            width: 2rem;
+            height: 2rem;
+            position: relative;
+            text-align: center;
+            background-color: transparent;
+            border-radius: $border-radius;
+        }
+        .ui-state-highlight {
+            color: inherit;
+        }
+        .ui-state-active {
+            color: white;
+            background-color: theme-color("primary") !important;
+        }
 
-            .ui-state-available {
-                a,
-                span {
-                    color: white;
-                    background-color: theme-color("success");
-                }
+        .ui-state-available {
+            a,
+            span {
+                color: white;
+                background-color: theme-color("success");
             }
-            .ui-state-not-available {
-                a,
-                span {
-                    color: white;
-                    background-color: theme-color("danger");
-                }
+        }
+        .ui-state-not-available {
+            a,
+            span {
+                color: white;
+                background-color: theme-color("danger");
             }
         }
     }

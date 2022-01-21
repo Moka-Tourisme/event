@@ -25,7 +25,6 @@
         "web.assets_frontend": [
             "website_event_session/static/src/scss/website_event_session_booking.scss",
             "website_event_session/static/src/js/website_event_session_booking.js",
-            "website_event_session/static/src/js/website_event_ticket_details.js",
         ],
         "web.assets_tests": [
             "website_event_session/static/tests/**/*",

@@ -16,18 +16,21 @@ odoo.define("website_event_session.tour_booking", function (require) {
                 trigger: "article h5.card-title span:contains('007: No Time to Die')",
             },
             {
+                content: "Open the datepicker",
+                trigger: "#registration_form *[name='event_session_date']",
+            },
+            {
                 content: "Select the first available date",
-                trigger:
-                    ".js_wevent_session_booking_datepicker .ui-state-available:first",
+                trigger: ".ui-event-session-datepicker .ui-state-available:first",
             },
             {
                 content: "Select the first available time",
                 trigger:
-                    ".js_wevent_session_booking_sessionpicker input[name=event_session_id]:first",
+                    "#registration_form *[name=event_session_id] option[value]:first",
             },
             {
                 content: "Add one ticket",
-                trigger: "#o_wevent_tickets select:first",
+                trigger: ".event-session-tickets select:first",
                 run: "text 1",
             },
             {

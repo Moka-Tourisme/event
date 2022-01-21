@@ -6,6 +6,108 @@
 -->
 <odoo>
 
+    <template id="event_details" inherit_id="website_event.event_details">
+        <t t-call="website_event.registration_template" position="attributes">
+            <attribute name="t-if" separator=" and " add="not event.use_sessions" />
+        </t>
+        <t t-call="website_event.registration_template" position="after">
+            <t
+                t-if="event.use_sessions"
+                t-call="website_event_session.session_registration_template"
+            />
+        </t>
+    </template>
+
+    <template
+        id="session_registration_template"
+        name="Event Sessions Registration Template"
+    >
+        <div
+            t-if="toast_message"
+            class="o_wevent_register_toaster d-none"
+            t-att-data-message="toast_message"
+        />
+        <form
+            id="registration_form"
+            class="mb-5"
+            t-attf-action="/event/#{slug(event)}/registration/new"
+            method="post"
+            itemscope="itemscope"
+            itemprop="offers"
+            itemtype="http://schema.org/AggregateOffer"
+        >
+            <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()" />
+            <div
+                id="o_wevent_tickets"
+                class="bg-white shadow-sm o_wevent_session_js_booking"
+                t-att-data-event-id="event.id"
+            >
+                <div class="d-flex align-items-center py-2 pl-3 pr-2 border-bottom">
+                    <span
+                        class="py-2 o_wevent_registration_title text-left"
+                    >Tickets</span>
+                    <t
+                        t-if="request.env.user.has_group('event.group_event_manager')"
+                        t-call="website_event.registration_configure_tickets_button"
+                    />
+                    <span t-if="not event.event_registrations_open" class="text-danger">
+                        <i class="fa fa-ban mr-2" />Sold Out
+                    </span>
+                </div>
+                <div
+                    t-if="event.event_registrations_open"
+                    id="o_wevent_tickets_collapse"
+                    class="collapse show"
+                >
+                    <div class="row px-3 mx-0 bg-light border-bottom">
+                        <div class="col-xs-12 col-md-6 py-3">
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <div class="input-group-text"><i
+                                            class="fa fa-calendar"
+                                        /></div>
+                                </div>
+                                <input
+                                    type="text"
+                                    name="event_session_date"
+                                    class="custom-select"
+                                    readonly="readonly"
+                                />
+                            </div>
+                        </div>
+                        <div class="col-xs-12 col-md-6 py-3">
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <div class="input-group-text"><i
+                                            class="fa fa-clock-o"
+                                        /></div>
+                                </div>
+                                <select
+                                    name="event_session_id"
+                                    class="custom-select"
+                                    disabled="disabled"
+                                />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="event-session-tickets collapse" />
+                </div>
+                <div class="row no-gutters">
+                    <div class="col-md-4 offset-md-8 py-2 pl-md-0 pr-md-2">
+                        <button
+                            type="submit"
+                            class="btn btn-primary o_wait_lazy_js btn-block a-submit"
+                            disabled=""
+                            t-attf-id="#{event.id}"
+                        >
+                            Register
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </template>
+
     <template
         id="event_description_full"
         inherit_id="website_event.event_description_full"
@@ -18,6 +120,7 @@
             <attribute name="t-if" separator=" and " add="not event.use_sessions" />
         </xpath>
         <!-- Add the new event session calendar selector widget -->
+        <!--
         <xpath
             expr="//div[hasclass('o_wevent_sidebar_block')]//small[@t-esc='event.date_tz']/ancestor::div[hasclass('o_wevent_sidebar_block')]"
             position="after"
@@ -52,17 +155,49 @@
                 </div>
             </div>
         </xpath>
+        -->
     </template>
 
     <template
         id="registration_template"
         inherit_id="website_event.registration_template"
     >
-        <!-- TODO: Check how to deal with session seat availability here -->
         <!-- To be populated by the session booking widget -->
         <div id="o_wevent_tickets" position="inside">
             <input t-if="event.use_sessions" name="event_session_id" type="hidden" />
         </div>
+        <!-- Replace the tickets selectors by the session + ticket, only for sessions -->
+        <!-- <div id="o_wevent_tickets" position="attributes">
+            <attribute name="t-if" separator=" and " add="not event.use_sessions" />
+        </div>
+        <div id="o_wevent_tickets" position="after">
+            <div
+                t-if="event.use_sessions"
+                id="o_wevent_session_tickets"
+                class="bg_white shadow-sm o_wevent_js_ticket_details"
+            >
+                <div class="row">
+                    <div class="col-xs-12 col-sm-4">
+                        <input
+                            type="date"
+                            name="event_session_date"
+                            class="o_wevent_session_js_datepicker"
+                            t-att-data-event-id="event.id"
+                        />
+                    </div>
+                    <div class="col-xs-12 col-sm-4">
+                        <select
+                            name="event_session_id"
+                            class="o_wevent_session_js_select"
+                            t-att-data-event-id="event.id"
+                        />
+                    </div>
+                    <div class="col-xs-12 col-sm-4">
+                        <div class="o_wevent_session_js_tickets" />
+                    </div>
+                </div>
+            </div>
+        </div> -->
     </template>
 
     <template
@@ -102,7 +237,6 @@
         <span itemprop="endDate" position="after">
             <span itemprop="endDate" t-if="session" t-esc="session.date_end_located" />
         </span>
-        <!-- TODO in controller: icalc and google link url -->
     </template>
 
 </odoo>

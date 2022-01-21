@@ -4,7 +4,6 @@
 
 import functools
 import itertools
-import logging
 from datetime import datetime, timedelta
 
 from odoo import _, fields, http
@@ -12,8 +11,6 @@ from odoo.exceptions import MissingError
 from odoo.http import request
 
 from odoo.addons.website_event.controllers.main import WebsiteEventController
-
-_logger = logging.getLogger(__name__)
 
 
 class WebsiteEventSessionController(WebsiteEventController):
@@ -95,24 +92,39 @@ class WebsiteEventSessionController(WebsiteEventController):
             )
         return res
 
-    @http.route()
-    def registration_new(self, event, **post):
-        # OVERRIDE to prevent session events from reaching here
-        # They should go through :meth:`session_registration_new`.
-        if event.use_sessions:
-            raise MissingError(_("The session does not exist."))
-        return super().registration_new(event, **post)
-
     @http.route(
-        "/event/session/<model('event.session'):session>/registration/new",
+        "/event/session/<model('event.session'):session>/tickets",
         type="json",
         auth="public",
         methods=["POST"],
         website=True,
+        sitemap=False,
     )
-    def session_registration_new(self, session, **post):
-        """Simlar to :meth:`registration_new` but for sessions"""
-        event = session.event_id
+    def session_tickets(self, session):
+        """Returns the list of available tickets for the selected session"""
+        return [
+            {
+                "id": ticket.id,
+                "name": ticket.name,
+                "description": ticket.description,
+                "seats_limited": ticket.seats_limited,
+                "seats_available": ticket.seats_available,
+                "seats_max": ticket.seats_max,
+            }
+            for ticket in session.event_ticket_ids
+        ]
+
+    @http.route()
+    def registration_new(self, event, **post):
+        # COMPLETE OVERRIDE to handle events with sessions
+        if not event.use_sessions:
+            return super().registration_new(event, **post)
+
+        session_id = int(post.pop("event_session_id", None))
+        session = request.env["event.session"].browse(session_id)
+        if session.event_id != event:
+            raise MissingError(_("The session does not exist."))
+
         tickets = self._process_tickets_form(event, post)
         availability_check = True
         if session.seats_limited:

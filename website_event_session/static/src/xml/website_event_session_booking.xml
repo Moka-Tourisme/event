@@ -2,28 +2,62 @@
 <templates xml:space="preserve">
 
     <t t-name="event_session_selector">
-        <t t-foreach="widget.sessions" t-as="session">
-            <div class="custom-control custom-radio pt-1">
-                <input
-                    type="radio"
-                    name="event_session_id"
-                    class="custom-control-input"
-                    t-attf-id="event_session_id_#{session.id}"
-                    t-att-value="session.id"
-                    t-att-disabled="(session.seats_limited and session.seats_available &lt;= 0) ? 'disabled' : null"
-                    t-att-checked="session.id == widget.sessionId ? 'checked' : null"
-                />
-                <label
-                    class="custom-control-label"
-                    t-attf-for="event_session_id_#{session.id}"
-                >
-                    <span t-esc="session.display_name" />
-                    <span
-                        t-if="session.seats_limited and session.seats_available &lt;= 0"
-                    >(Full)</span>
-                </label>
+        <select name="event_session_id" class="custom-select">
+            <option
+                disabled="disabled"
+                selected="selected"
+                value=""
+            >Select a session..</option>
+            <option
+                t-foreach="widget.sessions"
+                t-as="session"
+                t-att-value="session.id"
+                t-att-disabled="(session.seats_limited and session.seats_available &lt;= 0) ? 'disabled' : null"
+            >
+                <span t-esc="session.display_name" />
+                <span
+                    t-if="session.seats_limited and session.seats_available &lt;= 0"
+                >(Full)</span>
+            </option>
+        </select>
+    </t>
+
+    <t t-name="event_session_tickets">
+        <div
+            t-foreach="widget.tickets"
+            t-as="ticket"
+            class="row px-3 py-3 mx-0 bg-light border-bottom"
+        >
+            <div class="col-8" itemscope="itemscope" itemtype="http://schema.org/Offer">
+                <h5 itemprop="name" t-esc="ticket.name" class="my-0" />
+                <t t-if="ticket.description">
+                    <small t-esc="ticket.description" class="text-muted py-2" />
+                    <br />
+                </t>
             </div>
-        </t>
+            <div class="col-4 p-0 d-flex align-items-center justify-content-between">
+                <div class="o_wevent_registration_multi_select" />
+                <div class="w-auto ml-auto">
+                    <select
+                        t-if="!ticket.is_expired"
+                        t-attf-name="nb_register-#{ticket.id}"
+                        class="ticket-select custom-select"
+                    >
+                        <t t-set="seats_max" t-value="10" />
+                        <t t-foreach="Array.from(Array(seats_max).keys())" t-as="nb">
+                            <option
+                                t-esc="nb"
+                                t-att-selected="nb == 0 ? 'selected' : null"
+                            />
+                        </t>
+                    </select>
+                    <div t-else="" class="text-danger">
+                        <span t-if="ticket.is_expired">Expired</span>
+                        <span t-else="">Sold Out</span>
+                    </div>
+                </div>
+            </div>
+        </div>
     </t>
 
 </templates>
