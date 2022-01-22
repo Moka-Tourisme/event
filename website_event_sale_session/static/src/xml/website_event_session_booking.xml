@@ -7,9 +7,9 @@
                 <del
                     t-if="ticket.price != ticket.price_reduce"
                     class="text-danger mr-1"
-                    t-raw="ticket.price_html"
+                    t-out="ticket.price_html"
                 />
-                <span t-raw="ticket.price_reduce_html" />
+                <span t-out="ticket.price_reduce_html" />
                 <span itemprop="price" class="d-none" t-esc="ticket.price" />
                 <span
                     itemprop="priceCurrency"
