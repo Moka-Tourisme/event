@@ -127,17 +127,36 @@ odoo.define("website_event_session.booking", function (require) {
         // --------------------------
 
         _renderCalendar() {
+            // Replace jQuery datepicker formatting methods with moment's
+            // For the sake of simplicity and ease of localization
+            $.datepicker.formatDate = (format, value) => moment(value).format(format);
+            $.datepicker.parseDate = (format, value) => {
+                const d = moment(value, format);
+                return d.isValid() ? d.toDate() : null;
+            };
+            // Initialize datepicker
             this.$datePicker.datepicker({
                 autoSize: true,
                 calendarWeeks: true,
                 minDate: 0,
-                locale: moment.locale(),
                 format: time.getLangDatetimeFormat(),
-                beforeShow: (input, dp) => {
-                    dp.dpDiv.addClass("ui-event-session-datepicker");
-                },
+                beforeShow: (input, dp) =>
+                    dp.dpDiv.addClass("ui-event-session-datepicker"),
                 beforeShowDay: this._onDatepickerBeforeShowDay.bind(this),
                 onChangeMonthYear: this._onDatepickerChangeMonthYear.bind(this),
+                closeText: _t("Close"),
+                prevText: _t("Previous"),
+                nextText: _t("Next"),
+                currentText: _t("Today"),
+                monthNames: moment.months(),
+                monthNamesShort: moment.monthsShort(),
+                dayNames: moment.weekdays(),
+                dayNamesShort: moment.weekdaysShort(),
+                dayNamesMin: moment.weekdaysMin(),
+                weekHeader: _t("Week"),
+                dateFormat: time.getLangDateFormat(),
+                firstDay: (_t.database.parameters.week_start || 0) % 7,
+                isRTL: _t.database.parameters.direction === "rtl",
             });
         },
         _renderSessionSelector() {
