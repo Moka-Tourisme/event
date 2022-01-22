@@ -4,7 +4,9 @@
 
 import functools
 import itertools
-from datetime import datetime, timedelta
+from datetime import datetime
+
+import pytz
 
 from odoo import _, fields, http
 from odoo.exceptions import MissingError
@@ -25,20 +27,29 @@ class WebsiteEventSessionController(WebsiteEventController):
     def session_dates(self, event, date_begin=None, date_end=None, **post):
         """Get session dates and availability
 
-        Note: we add a +/- 1 day margin on date_begin and date_end
-        to account for possible timezone differences. (FIXME)
+        .. note::
+
+            The ``date_begin`` and ``date_end`` parameters are assumed to be
+            localized in the event's timezone.
 
         :param date_begin: If set, filter sessions starting from.
         :param date_end:   If set, filter sessions ending before.
         """
         domain = [("event_id", "=", event.id)]
+        event_tz = pytz.timezone(event.date_tz or "UTC")
         if date_begin:
-            date_begin = fields.Date.from_string(date_begin)
-            date_begin = date_begin - timedelta(days=1)
+            date_begin = (
+                event_tz.localize(fields.Datetime.from_string(date_begin))
+                .astimezone(pytz.utc)
+                .replace(tzinfo=None)
+            )
             domain.append(("date_begin", ">=", date_begin))
         if date_end:
-            date_end = fields.Date.from_string(date_end)
-            date_end = date_end + timedelta(days=1)
+            date_end = (
+                event_tz.localize(fields.Datetime.from_string(date_end))
+                .astimezone(pytz.utc)
+                .replace(tzinfo=None)
+            )
             domain.append(("date_end", "<=", date_end))
         # Get sessions.
         # The order is important for efficiency in groupby
@@ -69,12 +80,21 @@ class WebsiteEventSessionController(WebsiteEventController):
     def sessions_for_date(self, event, date):
         """Get sessions for a given date"""
         date = fields.Date.from_string(date)
-        # TODO: date_begin and date_end used in domain should account for event tz
-        # it's possible we miss some records otherwise
+        event_tz = pytz.timezone(event.date_tz or "UTC")
+        date_begin = (
+            event_tz.localize(datetime.combine(date, datetime.min.time()))
+            .astimezone(pytz.utc)
+            .replace(tzinfo=None)
+        )
+        date_end = (
+            event_tz.localize(datetime.combine(date, datetime.max.time()))
+            .astimezone(pytz.utc)
+            .replace(tzinfo=None)
+        )
         domain = [
             ("event_id", "=", event.id),
-            ("date_begin", ">=", datetime.combine(date, datetime.min.time())),
-            ("date_begin", "<=", datetime.combine(date, datetime.max.time())),
+            ("date_begin", ">=", date_begin),
+            ("date_begin", "<=", date_end),
         ]
         sessions = request.env["event.session"].search(domain)
         res = []

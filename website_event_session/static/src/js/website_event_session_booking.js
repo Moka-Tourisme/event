@@ -80,11 +80,14 @@ odoo.define("website_event_session.booking", function (require) {
          * @returns session dates
          */
         async _getSessionDates(year, month) {
+            const dt = moment().utc().month(month).year(year);
+            const date_begin = dt.startOf("month").toDate();
+            const date_end = dt.endOf("month").toDate();
             const data = await this._rpc({
                 route: `/event/${this.eventId()}/session_dates`,
                 params: {
-                    date_begin: new Date(year, month - 1, 0),
-                    date_end: new Date(year, month, 0),
+                    date_begin: time.datetime_to_str(date_begin),
+                    date_end: time.datetime_to_str(date_end),
                 },
             });
             // Update our internal cache
@@ -101,7 +104,7 @@ odoo.define("website_event_session.booking", function (require) {
             return await this._rpc({
                 route: `/event/${this.eventId()}/sessions_for_date`,
                 params: {
-                    date: date,
+                    date: time.date_to_str(date),
                 },
             });
         },
