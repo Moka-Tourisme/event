@@ -28,7 +28,11 @@
             t-as="ticket"
             class="row px-3 py-3 mx-0 bg-light border-bottom"
         >
-            <div class="col-8" itemscope="itemscope" itemtype="http://schema.org/Offer">
+            <div
+                class="col-8 my-auto"
+                itemscope="itemscope"
+                itemtype="http://schema.org/Offer"
+            >
                 <h5 itemprop="name" t-esc="ticket.name" class="my-0" />
                 <t t-if="ticket.description">
                     <small t-esc="ticket.description" class="text-muted py-2" />
