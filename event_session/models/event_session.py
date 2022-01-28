@@ -89,18 +89,6 @@ class EventSession(models.Model):
         compute="_compute_seats_expected",
         compute_sudo=True,
     )
-    seats_limited = fields.Boolean(
-        "Maximum Attendees",
-        compute="_compute_seats_limited",
-        readonly=False,
-        store=True,
-    )
-    seats_max = fields.Integer(
-        string="Maximum Attendees Number",
-        compute="_compute_seats_max",
-        readonly=False,
-        store=True,
-    )
     event_registrations_open = fields.Boolean(
         string="Registration open",
         compute="_compute_event_registrations_open",
@@ -148,6 +136,9 @@ class EventSession(models.Model):
         help="Choose what to do with other event sessions",
         default="this",
         store=False,
+    )
+    session_update_message = fields.Text(
+        compute="_compute_session_update_message",
     )
 
     @api.depends("stage_id", "kanban_state")
@@ -224,18 +215,6 @@ class EventSession(models.Model):
             rec.seats_expected = (
                 rec.seats_unconfirmed + rec.seats_reserved + rec.seats_used
             )
-
-    @api.depends("event_id")
-    def _compute_seats_limited(self):
-        """Compute seats limited, only when event changes"""
-        for rec in self:
-            rec.seats_limited = rec.event_id.seats_limited
-
-    @api.depends("event_id")
-    def _compute_seats_max(self):
-        """Compute seats max, only when event changes"""
-        for rec in self:
-            rec.seats_max = rec.event_id.seats_max
 
     @api.depends("date_tz", "date_begin")
     def _compute_date_begin_located(self):
@@ -450,12 +429,14 @@ class EventSession(models.Model):
 
     @api.model
     def _session_update_fields(self):
-        """List of fields that are synced with session_update"""
-        return [
-            "active",
-            "seats_limited",
-            "seats_max",
-        ]
+        """List of fields that could be synced with session_update"""
+        return []
+
+    def _compute_session_update_message(self):
+        """Human readable list of fields that could be synced with session_update"""
+        fnames = self._session_update_fields()
+        fdescs = map(lambda fname: self._fields[fname].string, fnames)
+        self.session_update_message = "\n".join(map(lambda s: f"* {s}", fdescs))
 
     def _sync_session_update(self, vals):
         """Handles write on multiple sessions at once from the UX"""

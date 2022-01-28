@@ -115,7 +115,7 @@
                     />
                 </header>
                 <div
-                    attrs="{'invisible': [('id', '=', False)]}"
+                    attrs="{'invisible': ['|', ('id', '=', False), ('session_update_message', 'in', [False, ''])]}"
                     class="alert alert-info oe_edit_only"
                     role="status"
                 >
@@ -124,10 +124,7 @@
                     <field name="session_update" widget="radio" class="o_light_label" />
                     <p attrs="{'invisible': [('session_update', '=', 'this')]}">
                         Applies to the following fields:
-                        <ul name="session_update_fields">
-                            <li>Seats limited</li>
-                            <li>Seats max</li>
-                        </ul>
+                        <field name="session_update_message" />
                     </p>
                 </div>
                 <sheet>
@@ -167,7 +164,7 @@
                             /></h1>
                     </div>
                     <group>
-                        <group>
+                        <group name="left">
                             <field
                                 name="event_id"
                                 invisible="context.get('default_event_id')"
@@ -202,20 +199,7 @@
                                 readonly="1"
                             />
                         </group>
-                        <group>
-                            <div colspan="2" class="o_checkbox_optional_field">
-                                <label
-                                    for="seats_limited"
-                                    string="Limit Registrations"
-                                />
-                                <field name="seats_limited" />
-                                <span
-                                    attrs="{'invisible': [('seats_limited', '=', False)], 'required': [('seats_limited', '=', False)]}"
-                                >to <field
-                                        name="seats_max"
-                                        class="oe_inline"
-                                    /> Attendees</span>
-                            </div>
+                        <group name="right">
                         </group>
                     </group>
                     <notebook>

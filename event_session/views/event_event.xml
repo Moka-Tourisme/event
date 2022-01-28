@@ -48,18 +48,6 @@
                     }
                 </attribute>
             </xpath>
-            <!-- Warn about how seats limits work -->
-            <xpath expr="//field[@name='seats_limited']/parent::div" position="inside">
-                <span
-                    class="ml8 text-danger oe_edit_only"
-                    attrs="{'invisible': [('use_sessions', '=', False)]}"
-                >
-                    <i
-                        class="fa fa-exclamation-triangle"
-                        title="Changes apply to newly created sessions. Already existing sessions won't be updated"
-                    />
-                </span>
-            </xpath>
             <!-- Hide not relevant columns in event.mail -->
             <xpath
                 expr="//field[@name='event_mail_ids']/tree/field[@name='scheduled_date']"
