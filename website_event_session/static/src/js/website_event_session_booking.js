@@ -51,6 +51,7 @@ odoo.define("website_event_session.booking", function (require) {
             this.$submit = this.$el.find("button[type='submit']");
             // Load current month and show calendar
             this.$datePicker.val(_t("Select a date..."));
+            this.$datePicker.prop("disabled", null);
             this._renderCalendar();
             const today = new Date();
             this.selectMonth(today.getFullYear(), today.getMonth() + 1);
@@ -76,11 +77,14 @@ odoo.define("website_event_session.booking", function (require) {
          * Gets session dates for a given year, month
          *
          * @param {Number} year
-         * @param {Number} month
+         * @param {Number} month 1 to 12 values
          * @returns session dates
          */
         async _getSessionDates(year, month) {
-            const dt = moment().utc().month(month).year(year);
+            const dt = moment()
+                .utc()
+                .month(month - 1)
+                .year(year);
             const date_begin = dt.startOf("month").toDate();
             const date_end = dt.endOf("month").toDate();
             const data = await this._rpc({

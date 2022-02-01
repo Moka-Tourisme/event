@@ -63,15 +63,16 @@
                         <div class="col-xs-12 col-md-6 py-3">
                             <div class="input-group">
                                 <div class="input-group-prepend">
-                                    <div class="input-group-text"><i
-                                            class="fa fa-calendar"
-                                        /></div>
+                                    <div class="input-group-text">
+                                        <i class="fa fa-calendar" />
+                                    </div>
                                 </div>
                                 <input
                                     type="text"
                                     name="event_session_date"
                                     class="custom-select"
                                     readonly="readonly"
+                                    disabled="disabled"
                                 />
                             </div>
                         </div>
@@ -119,43 +120,6 @@
         >
             <attribute name="t-if" separator=" and " add="not event.use_sessions" />
         </xpath>
-        <!-- Add the new event session calendar selector widget -->
-        <!--
-        <xpath
-            expr="//div[hasclass('o_wevent_sidebar_block')]//small[@t-esc='event.date_tz']/ancestor::div[hasclass('o_wevent_sidebar_block')]"
-            position="after"
-        >
-            <div
-                t-if="event.use_sessions"
-                class="o_wevent_sidebar_block o_wevent_session_booking_block"
-            >
-                <h6 class="o_wevent_sidebar_title">Date &amp; Time</h6>
-                <div class="js_wevent_session_booking" t-att-data-event-id="event.id">
-                    <small t-esc="event.date_tz" class="d-block my-3 text-muted" />
-                    <div class="js_wevent_session_booking_datepicker" />
-                    <div class="o_wevent_session_booking_legend">
-                        <div
-                            class="d-flex flex-row justify-content-between text-muted my-3"
-                        >
-                            <div>
-                                <i class="fa fa-square text-primary" />
-                                <small>Your selection</small>
-                            </div>
-                            <div>
-                                <i class="fa fa-square text-success" />
-                                <small>Seats available</small>
-                            </div>
-                            <div>
-                                <i class="fa fa-square text-danger" />
-                                <small>Full</small>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="js_wevent_session_booking_sessionpicker" />
-                </div>
-            </div>
-        </xpath>
-        -->
     </template>
 
     <template
@@ -166,38 +130,6 @@
         <div id="o_wevent_tickets" position="inside">
             <input t-if="event.use_sessions" name="event_session_id" type="hidden" />
         </div>
-        <!-- Replace the tickets selectors by the session + ticket, only for sessions -->
-        <!-- <div id="o_wevent_tickets" position="attributes">
-            <attribute name="t-if" separator=" and " add="not event.use_sessions" />
-        </div>
-        <div id="o_wevent_tickets" position="after">
-            <div
-                t-if="event.use_sessions"
-                id="o_wevent_session_tickets"
-                class="bg_white shadow-sm o_wevent_js_ticket_details"
-            >
-                <div class="row">
-                    <div class="col-xs-12 col-sm-4">
-                        <input
-                            type="date"
-                            name="event_session_date"
-                            class="o_wevent_session_js_datepicker"
-                            t-att-data-event-id="event.id"
-                        />
-                    </div>
-                    <div class="col-xs-12 col-sm-4">
-                        <select
-                            name="event_session_id"
-                            class="o_wevent_session_js_select"
-                            t-att-data-event-id="event.id"
-                        />
-                    </div>
-                    <div class="col-xs-12 col-sm-4">
-                        <div class="o_wevent_session_js_tickets" />
-                    </div>
-                </div>
-            </div>
-        </div> -->
     </template>
 
     <template
