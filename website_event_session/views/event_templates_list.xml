@@ -21,6 +21,13 @@
         >
             <attribute name="t-if" separator=" and " add="not event.use_sessions" />
         </xpath>
+        <!-- Hide the footer that displays "Full" for session events -->
+        <!-- TODO: find a way to not completely override t-if -->
+        <footer position="attributes">
+            <attribute
+                name="t-if"
+            >not event.use_sessions and (not event.event_registrations_open or event.event_registrations_sold_out)</attribute>
+        </footer>
     </template>
 
 </odoo>
