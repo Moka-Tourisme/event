@@ -152,10 +152,17 @@ class EventSession(common.TransactionCase):
         # Fill the event session with attendees
         self.env["event.registration"].create([vals] * self.session.seats_available)
         # Try to create another one
-        with self.assertRaisesRegex(
-            ValidationError, "No more seats available for this session"
-        ):
-            self.env["event.registration"].create(vals)
+        msg = "No more available seats."
+        with self.assertRaisesRegex(ValidationError, msg):
+            registration = self.env["event.registration"].create(vals)
+        # Temporarily allow to create a draft registration and attempt to confirm it
+        self.event.seats_limited = False
+        registration = self.env["event.registration"].create(dict(vals, state="draft"))
+        self.event.seats_limited = True
+        msg = "No more available seats."
+        with self.assertRaisesRegex(ValidationError, msg):
+            registration.action_confirm()
+            registration.flush()
 
     def test_session_seats_count(self):
         session_1, session_2 = self.env["event.session"].create(

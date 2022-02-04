@@ -352,6 +352,14 @@ class EventSession(models.Model):
     def _read_group_stage_ids(self, stages, domain, order):
         return self.env["event.event"]._read_group_stage_ids(stages, domain, order)
 
+    @api.constrains("seats_max", "seats_available", "seats_limited")
+    def _check_seats_limit(self):
+        if any(
+            rec.seats_limited and rec.seats_max and rec.seats_available < 0
+            for rec in self
+        ):
+            raise ValidationError(_("No more available seats."))
+
     @api.constrains("date_begin", "date_end")
     def _check_closing_date(self):
         for rec in self:
