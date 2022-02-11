@@ -8,17 +8,26 @@
                 selected="selected"
                 value=""
             >Select a session..</option>
-            <option
-                t-foreach="widget.sessions"
-                t-as="session"
-                t-att-value="session.id"
-                t-att-disabled="(session.seats_limited and session.seats_available &lt;= 0) ? 'disabled' : null"
-            >
-                <span t-esc="session.display_name" />
-                <span
-                    t-if="session.seats_limited and session.seats_available &lt;= 0"
-                >(Full)</span>
-            </option>
+            <t t-foreach="widget.sessions" t-as="session">
+                <t
+                    t-set="disabled"
+                    t-value="!event_registrations_open || event_registrations_sold_out"
+                />
+                <option
+                    t-att-value="session.id"
+                    t-att-disabled="disabled ? 'disabled' : null"
+                >
+                    <span t-esc="session.display_name" />
+                    <span t-if="session.is_ongoing">(Ongoing)</span>
+                    <span t-if="disabled">
+                        <t
+                            t-if="!session.event_registrations_started"
+                        >(Registrations not yet open)</t>
+                        <t t-elif="session.event_registrations_sold_out">(Sold Out)</t>
+                        <t t-else="">(Registrations Closed)</t>
+                    </span>
+                </option>
+            </t>
         </select>
     </t>
 

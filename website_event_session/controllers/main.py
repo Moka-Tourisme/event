@@ -35,7 +35,10 @@ class WebsiteEventSessionController(WebsiteEventController):
         :param date_begin: If set, filter sessions starting from.
         :param date_end:   If set, filter sessions ending before.
         """
-        domain = [("event_id", "=", event.id)]
+        domain = [
+            ("event_id", "=", event.id),
+            ("is_finished", "=", False),
+        ]
         event_tz = pytz.timezone(event.date_tz or "UTC")
         if date_begin:
             date_begin = (
@@ -51,7 +54,6 @@ class WebsiteEventSessionController(WebsiteEventController):
                 .replace(tzinfo=None)
             )
             domain.append(("date_end", "<=", date_end))
-        # Get sessions.
         # The order is important for efficiency in groupby
         sessions = request.env["event.session"].search(domain, order="date_begin asc")
         # Group by day and compute seats availability
@@ -68,6 +70,24 @@ class WebsiteEventSessionController(WebsiteEventController):
                 ),
             }
         return res
+
+    def _prepare_sessions_for_date_vals(self, session):
+        """Prepare session values for the session picker"""
+        session.ensure_one()
+        date_begin_tz = fields.Datetime.context_timestamp(
+            session._set_tz_context(), session.date_begin
+        )
+        return {
+            "id": session.id,
+            "display_name": date_begin_tz.strftime("%H:%M"),
+            "seats_limited": session.seats_limited,
+            "seats_available": session.seats_available,
+            "is_ongoing": session.is_ongoing,
+            "is_finished": session.is_finished,
+            "event_registrations_started": session.event_registrations_started,
+            "event_registrations_open": session.event_registrations_open,
+            "event_registrations_sold_out": session.event_registrations_sold_out,
+        }
 
     @http.route(
         "/event/<model('event.event'):event>/sessions_for_date",
@@ -95,21 +115,10 @@ class WebsiteEventSessionController(WebsiteEventController):
             ("event_id", "=", event.id),
             ("date_begin", ">=", date_begin),
             ("date_begin", "<=", date_end),
+            ("is_finished", "=", False),
         ]
         sessions = request.env["event.session"].search(domain)
-        res = []
-        for session in sessions:
-            date_begin_tz = fields.Datetime.context_timestamp(
-                session._set_tz_context(), session.date_begin
-            )
-            res.append(
-                {
-                    "id": session.id,
-                    "display_name": date_begin_tz.strftime("%H:%M"),
-                    "seats_limited": session.seats_limited,
-                    "seats_available": session.seats_available,
-                }
-            )
+        res = [self._prepare_sessions_for_date_vals(session) for session in sessions]
         return res
 
     @http.route(
