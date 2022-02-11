@@ -84,6 +84,7 @@ class WebsiteEventSessionController(WebsiteEventController):
             "seats_available": session.seats_available,
             "is_ongoing": session.is_ongoing,
             "is_finished": session.is_finished,
+            "is_published": session.is_published,
             "event_registrations_started": session.event_registrations_started,
             "event_registrations_open": session.event_registrations_open,
             "event_registrations_sold_out": session.event_registrations_sold_out,

@@ -11,21 +11,22 @@
             <t t-foreach="widget.sessions" t-as="session">
                 <t
                     t-set="disabled"
-                    t-value="!event_registrations_open || event_registrations_sold_out"
+                    t-value="!session.is_published || !session.event_registrations_open || session.event_registrations_sold_out"
                 />
                 <option
                     t-att-value="session.id"
                     t-att-disabled="disabled ? 'disabled' : null"
                 >
                     <span t-esc="session.display_name" />
-                    <span t-if="session.is_ongoing">(Ongoing)</span>
                     <span t-if="disabled">
+                        <t t-if="!session.is_published">(Not published)</t>
                         <t
-                            t-if="!session.event_registrations_started"
+                            t-elif="!session.event_registrations_started"
                         >(Registrations not yet open)</t>
                         <t t-elif="session.event_registrations_sold_out">(Sold Out)</t>
                         <t t-else="">(Registrations Closed)</t>
                     </span>
+                    <span t-else="session.is_ongoing">(Ongoing)</span>
                 </option>
             </t>
         </select>
