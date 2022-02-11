@@ -9,21 +9,22 @@ from odoo.http import Controller, content_disposition, request, route
 
 class EventSessionController(Controller):
     @route(
-        ["""/event/session/<model("event.session"):session>/ics"""],
+        """/event/session/<model("event.session"):event_session>/ics""",
         type="http",
         auth="public",
     )
-    def event_session_ics_file(self, session, **kwargs):
+    def event_session_ics_file(self, event_session, **kwargs):
         """Similar to core :meth:`~event_ics_file` for event.event"""
-        files = session._get_ics_file()
-        if session.id not in files:
+        files = event_session._get_ics_file()
+        if event_session.id not in files:  # pragma: no cover
             return NotFound()
-        content = files[session.id]
+        content = files[event_session.id]
+        disposition = content_disposition(f"{event_session.name}.ics")
         return request.make_response(
             content,
             [
                 ("Content-Type", "application/octet-stream"),
                 ("Content-Length", len(content)),
-                ("Content-Disposition", content_disposition("%s.ics" % session.name)),
+                ("Content-Disposition", disposition),
             ],
         )

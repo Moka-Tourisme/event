@@ -202,12 +202,11 @@ class EventSession(models.Model):
     @api.depends("seats_unconfirmed", "seats_reserved", "seats_used", "seats_max")
     def _compute_seats_available(self):
         for rec in self:
-            if rec.seats_max > 0:
-                rec.seats_available = rec.seats_max - (
-                    rec.seats_reserved + rec.seats_used
-                )
-            else:
-                rec.seats_available = 0
+            rec.seats_available = (
+                rec.seats_max - (rec.seats_reserved + rec.seats_used)
+                if rec.seats_max > 0
+                else 0
+            )
 
     @api.depends("seats_unconfirmed", "seats_reserved", "seats_used")
     def _compute_seats_expected(self):
@@ -226,7 +225,7 @@ class EventSession(models.Model):
                     tz=rec.date_tz,
                     dt_format="medium",
                 )
-            else:
+            else:  # pragma: no cover
                 rec.date_begin_located = False
 
     @api.depends("date_tz", "date_end")
@@ -239,7 +238,7 @@ class EventSession(models.Model):
                     tz=rec.date_tz,
                     dt_format="medium",
                 )
-            else:
+            else:  # pragma: no cover
                 rec.date_end_located = False
 
     def _set_tz_context(self):
@@ -255,9 +254,9 @@ class EventSession(models.Model):
 
     def _search_is_ongoing(self, operator, value):
         """Similar to core's :meth:`event_event._search_is_ongoing`"""
-        if operator not in ["=", "!="]:
+        if operator not in ["=", "!="]:  # pragma: no cover
             raise ValueError(_("This operator is not supported"))
-        if not isinstance(value, bool):
+        if not isinstance(value, bool):  # pragma: no cover
             raise ValueError(_("Value should be True or False (not %s)", value))
         now = fields.Datetime.now()
         if (operator == "=" and value) or (operator == "!=" and not value):
@@ -284,9 +283,9 @@ class EventSession(models.Model):
 
     def _search_is_finished(self, operator, value):
         """Similar to core's :meth:`event_event._search_is_finished`"""
-        if operator not in ["=", "!="]:
+        if operator not in ["=", "!="]:  # pragma: no cover
             raise ValueError(_("This operator is not supported"))
-        if not isinstance(value, bool):
+        if not isinstance(value, bool):  # pragma: no cover
             raise ValueError(_("Value should be True or False (not %s)", value))
         now = fields.Datetime.now()
         if (operator == "=" and value) or (operator == "!=" and not value):

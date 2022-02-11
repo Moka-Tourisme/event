@@ -20,23 +20,6 @@ SELECT_FREQ_TO_RRULE = {
     "yearly": rrule.YEARLY,
 }
 
-RRULE_FREQ_TO_SELECT = {
-    rrule.DAILY: "daily",
-    rrule.WEEKLY: "weekly",
-    rrule.MONTHLY: "monthly",
-    rrule.YEARLY: "yearly",
-}
-
-RRULE_WEEKDAY_TO_FIELD = {
-    rrule.MO.weekday: "mon",
-    rrule.TU.weekday: "tue",
-    rrule.WE.weekday: "wed",
-    rrule.TH.weekday: "thu",
-    rrule.FR.weekday: "fri",
-    rrule.SA.weekday: "sat",
-    rrule.SU.weekday: "sun",
-}
-
 RRULE_WEEKDAYS = {
     "SUN": "SU",
     "MON": "MO",
@@ -48,16 +31,8 @@ RRULE_WEEKDAYS = {
 }
 
 
-def freq_to_select(rrule_freq):
-    return RRULE_FREQ_TO_SELECT[rrule_freq]
-
-
 def freq_to_rrule(freq):
     return SELECT_FREQ_TO_RRULE[freq]
-
-
-def weekday_to_field(weekday_index):
-    return RRULE_WEEKDAY_TO_FIELD.get(weekday_index)
 
 
 def float_time_to_hours_and_minutes(float_time):
@@ -230,7 +205,7 @@ class WizardEventSession(models.TransientModel):
             )
         elif freq == "weekly":
             weekdays = self._get_week_days()
-            if not weekdays:
+            if not weekdays:  # pragma: no cover
                 raise ValidationError(
                     _("You have to choose at least one day in the week")
                 )
@@ -244,9 +219,6 @@ class WizardEventSession(models.TransientModel):
         if self.rrule_type == "monthly":
             return dtstart - relativedelta(day=1)
         return dtstart
-
-    def _get_timezone(self):
-        return pytz.timezone(self.date_tz)
 
     def _get_occurrences(self):
         self.ensure_one()

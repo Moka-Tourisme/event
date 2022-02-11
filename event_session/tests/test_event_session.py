@@ -7,10 +7,13 @@ from datetime import timedelta
 
 from odoo import fields
 from odoo.exceptions import ValidationError
-from odoo.tests import common
+from odoo.tests.common import Form
+from odoo.tools import mute_logger
+
+from .common import CommonEventSessionCase
 
 
-class EventSession(common.TransactionCase):
+class TestEventSession(CommonEventSessionCase):
     @classmethod
     def setUpClass(cls):
         super().setUpClass()
@@ -74,6 +77,66 @@ class EventSession(common.TransactionCase):
         attendees = self.env["event.registration"].search(domain)
         self.assertEqual(attendees, self.session.registration_ids)
 
+    def test_event_event_sync_from_event_type(self):
+        """Test that the event.type fields are synced to the event.event"""
+        event_type = self.env["event.type"].create(
+            {
+                "name": "Test event type",
+                "use_sessions": True,
+            }
+        )
+        event = self.env["event.event"].create(
+            {
+                "name": "Test event",
+                "event_type_id": event_type.id,
+                "date_begin": self.event.date_begin,
+                "date_end": self.event.date_end,
+            }
+        )
+        self.assertEqual(event.use_sessions, True)
+
+    def test_event_event_form(self):
+        """Test UX on the event.event form"""
+        event_form = Form(self.env["event.event"])
+        event_form.name = "Test event sessions"
+        # Case 1: Changing to a session event will fill dates automatically
+        self.assertFalse(event_form.use_sessions)
+        self.assertFalse(event_form.date_begin)
+        event_form.use_sessions = True
+        self.assertTrue(event_form.date_begin)
+        self.assertTrue(event_form.date_end)
+
+    def test_event_event_use_sessions_switch(self):
+        # Case 1: We can't change an event to use_sessions after registrations
+        event = self.env["event.event"].create(
+            {
+                "name": "Test event",
+                "date_begin": self.event.date_begin,
+                "date_end": self.event.date_end,
+            }
+        )
+        self.env["event.registration"].create(
+            {
+                "event_id": event.id,
+                "name": "Test attendee",
+            }
+        )
+        msg = "You can't enable/disable sessions on events with registrations."
+        with self.assertRaisesRegex(ValidationError, msg):
+            event.use_sessions = True
+        # Case 2: We can change it back, if we have no registrations
+        # In fact event.sessions are removed when doing so
+        self.event.use_sessions = False
+        self.assertFalse(self.session.exists())
+
+    @mute_logger("odoo.models.unlink")
+    def test_event_event_sessions_count(self):
+        """Test that the sessions count is computed correctly"""
+        self.assertEqual(self.event.session_count, 1)
+        self.session.unlink()
+        self.assertEqual(self.event.session_count, 0)
+
+    @mute_logger("odoo.models.unlink")
     def test_event_mail_sync_from_event(self):
         self.assertEqual(len(self.session.event_mail_ids), 2)
         # Case 1: Remove from event, removes from sessions
@@ -141,6 +204,7 @@ class EventSession(common.TransactionCase):
         self.assertEqual(mail_registration.scheduled_date, expected)
 
     def test_session_seats(self):
+        """Test event session seats constraints"""
         self.assertEqual(self.event.seats_unconfirmed, self.session.seats_unconfirmed)
         self.assertEqual(self.event.seats_used, self.session.seats_used)
         vals = {
@@ -163,6 +227,26 @@ class EventSession(common.TransactionCase):
         with self.assertRaisesRegex(ValidationError, msg):
             registration.action_confirm()
             registration.flush()
+
+    def test_event_seats(self):
+        """Test that event.event seats constraints do not apply to sessions"""
+        # Case: Event has a limit of 5 seats, but it should apply per-session
+        self.event.seats_max = 5
+        self.event.seats_limited = True
+        # Fill session with attendees
+        vals = {
+            "name": "Test Attendee",
+            "event_id": self.event.id,
+            "session_id": self.session.id,
+            "state": "open",
+        }
+        self.env["event.registration"].create([vals] * self.session.seats_available)
+        # Create a second session and fill it too
+        session2 = self.session.copy({})
+        vals["session_id"] = session2.id
+        self.env["event.registration"].create([vals] * session2.seats_available)
+        # Call explicitly just in case, this shouldn't raise anything
+        self.event._check_seats_limit()
 
     def test_session_seats_count(self):
         session_1, session_2 = self.env["event.session"].create(
@@ -199,157 +283,86 @@ class EventSession(common.TransactionCase):
             ]
         )
         self.assertEqual(session_1.seats_unconfirmed, 2)
-        self.assertEqual(session_2.seats_unconfirmed, 1)
-        self.assertEqual(self.event.seats_unconfirmed, 3)
         self.assertEqual(session_1.seats_reserved, 0)
+        self.assertEqual(session_1.seats_expected, 2)
+        self.assertEqual(session_2.seats_unconfirmed, 1)
         self.assertEqual(session_2.seats_reserved, 0)
+        self.assertEqual(session_2.seats_expected, 1)
+        self.assertEqual(self.event.seats_unconfirmed, 3)
         self.assertEqual(self.event.seats_reserved, 0)
+        self.assertEqual(self.event.seats_expected, 3)
         attendee_1.action_confirm()
         self.assertEqual(session_1.seats_unconfirmed, 1)
-        self.assertEqual(session_2.seats_unconfirmed, 1)
-        self.assertEqual(self.event.seats_unconfirmed, 2)
         self.assertEqual(session_1.seats_reserved, 1)
+        self.assertEqual(session_2.seats_unconfirmed, 1)
         self.assertEqual(session_2.seats_reserved, 0)
+        self.assertEqual(self.event.seats_unconfirmed, 2)
         self.assertEqual(self.event.seats_reserved, 1)
         attendee_2.action_confirm()
         self.assertEqual(session_1.seats_unconfirmed, 0)
-        self.assertEqual(session_2.seats_unconfirmed, 1)
-        self.assertEqual(self.event.seats_unconfirmed, 1)
         self.assertEqual(session_1.seats_reserved, 2)
+        self.assertEqual(session_2.seats_unconfirmed, 1)
         self.assertEqual(session_2.seats_reserved, 0)
+        self.assertEqual(self.event.seats_unconfirmed, 1)
         self.assertEqual(self.event.seats_reserved, 2)
         attendee_3.action_confirm()
         self.assertEqual(session_1.seats_unconfirmed, 0)
-        self.assertEqual(session_2.seats_unconfirmed, 0)
-        self.assertEqual(self.event.seats_unconfirmed, 0)
         self.assertEqual(session_1.seats_reserved, 2)
+        self.assertEqual(session_2.seats_unconfirmed, 0)
         self.assertEqual(session_2.seats_reserved, 1)
+        self.assertEqual(self.event.seats_unconfirmed, 0)
         self.assertEqual(self.event.seats_reserved, 3)
 
-    def assertSessionDates(self, sessions, expected):
-        for session, date in zip(sessions, expected):
-            local_date = fields.Datetime.context_timestamp(
-                session._set_tz_context(), session.date_begin
-            )
-            local_date_str = fields.Datetime.to_string(local_date)
-            self.assertEqual(local_date_str, date)
-
-    def _wizard_generate_sessions(self, vals):
-        wizard = self.env["wizard.event.session"].create(vals)
-        sessions_domain = wizard.action_create_sessions()["domain"]
-        return self.env["event.session"].search(sessions_domain)
-
-    def test_session_create_wizard_weekly_01(self):
-        # Mondays at 16:00 and 20:00, for whole Jan 2022
-        # ╔════════════════════╗
-        # ║ January ░░░░░ 2022 ║
-        # ╟──┬──┬──┬──┬──┬──┬──╢
-        # ║░░│░░│░░│░░│░░│░░│  ║
-        # ╟──╔══╗──┼──┼──┼──┼──╢
-        # ║  ║03║  │  │  │  │  ║
-        # ╟──╠══╣──┼──┼──┼──┼──╢
-        # ║  ║10║  │  │  │  │  ║
-        # ╟──╠══╣──┼──┼──┼──┼──╢
-        # ║  ║17║  │  │  │  │  ║
-        # ╟──╠══╣──┼──┼──┼──┼──╢
-        # ║  ║24║  │  │  │  │  ║
-        # ╟──╠══╣──┼──┼──┼──┼──╢
-        # ║  ║31║░░│░░│░░│░░│░░║
-        # ╚══╚══╝══╧══╧══╧══╧══╝
-        expected = [
-            "2022-01-03 16:00:00",
-            "2022-01-03 20:00:00",
-            "2022-01-10 16:00:00",
-            "2022-01-10 20:00:00",
-            "2022-01-17 16:00:00",
-            "2022-01-17 20:00:00",
-            "2022-01-24 16:00:00",
-            "2022-01-24 20:00:00",
-            "2022-01-31 16:00:00",
-            "2022-01-31 20:00:00",
-        ]
-        sessions = self._wizard_generate_sessions(
+    def test_event_session_is_ongoing(self):
+        # Case 1: Session is ongoing
+        session = self.env["event.session"].create(
             {
                 "event_id": self.event.id,
-                "rrule_type": "weekly",
-                "mon": True,
-                "tue": False,
-                "wed": False,
-                "thu": False,
-                "fri": False,
-                "sun": False,
-                "sat": False,
-                "timeslot_ids": [
-                    (6, 0, (self.timeslot_16_00 | self.timeslot_20_00).ids)
-                ],
-                "duration": 1.0,
-                "start": "2022-01-01",
-                "until": "2022-01-31",
+                "date_begin": fields.Datetime.now() - timedelta(hours=1),
+                "date_end": fields.Datetime.now() + timedelta(hours=1),
             }
         )
-        self.assertSessionDates(sessions, expected)
+        ongoing = self.env["event.session"].search([("is_ongoing", "=", True)])
+        not_ongoing = self.env["event.session"].search([("is_ongoing", "=", False)])
+        self.assertTrue(session.is_ongoing)
+        self.assertIn(session, ongoing)
+        self.assertNotIn(session, not_ongoing)
+        # Case 2: It isn't
+        session.write(
+            {
+                "date_begin": fields.Datetime.now() + timedelta(days=1),
+                "date_end": fields.Datetime.now() + timedelta(days=1, hours=1),
+            }
+        )
+        ongoing = self.env["event.session"].search([("is_ongoing", "=", True)])
+        not_ongoing = self.env["event.session"].search([("is_ongoing", "=", False)])
+        self.assertFalse(session.is_ongoing)
+        self.assertIn(session, not_ongoing)
+        self.assertNotIn(session, ongoing)
 
-    def test_session_create_wizard_weekly_02(self):
-        # Mondays, Wednesdays and Fridays at 20:00, every 2 weeks for a Feb 2022
-        # ╔════════════════════╗
-        # ║ February ░░░░ 2022 ║
-        # ╟──┬──┬──╔══╗──╔══╗──╢
-        # ║░░│░░│  ║02║  ║04║  ║
-        # ╟──┼──┼──╚══╝──╚══╝──╢
-        # ║  │  │  │  │  │  │  ║
-        # ╟──╔══╗──╔══╗──╔══╗──╢
-        # ║  ║14║  ║16║  ║18║  ║
-        # ╟──╚══╝──╚══╝──╚══╝──╢
-        # ║  │  │  │  │  │  │  ║
-        # ╟──╔══╗──┼──┼──┼──┼──╢
-        # ║  ║28║░░│░░│░░│░░│░░║
-        # ╚══╚══╝══╧══╧══╧══╧══╝
-        expected = [
-            "2022-02-02 20:00:00",
-            "2022-02-04 20:00:00",
-            "2022-02-14 20:00:00",
-            "2022-02-16 20:00:00",
-            "2022-02-18 20:00:00",
-            "2022-02-28 20:00:00",
-        ]
-        sessions = self._wizard_generate_sessions(
+    def test_event_session_is_finished(self):
+        # Case 1: Session is finished
+        session = self.env["event.session"].create(
             {
                 "event_id": self.event.id,
-                "rrule_type": "weekly",
-                "interval": 2,
-                "mon": True,
-                "tue": False,
-                "wed": True,
-                "thu": False,
-                "fri": True,
-                "sun": False,
-                "sat": False,
-                "timeslot_ids": [(6, 0, self.timeslot_20_00.ids)],
-                "duration": 2.0,
-                "start": "2022-02-01",
-                "until": "2022-02-28",
+                "date_begin": fields.Datetime.now() - timedelta(hours=2),
+                "date_end": fields.Datetime.now() - timedelta(hours=1),
             }
         )
-        self.assertSessionDates(sessions, expected)
-
-    def test_session_create_wizard_monthly(self):
-        # Last sunday of each month at 16:00, from March 2022 to May 2022
-        expected = [
-            "2022-03-27 16:00:00",
-            "2022-04-24 16:00:00",
-            "2022-05-29 16:00:00",
-        ]
-        sessions = self._wizard_generate_sessions(
+        finished = self.env["event.session"].search([("is_finished", "=", True)])
+        not_finished = self.env["event.session"].search([("is_finished", "=", False)])
+        self.assertTrue(session.is_finished)
+        self.assertIn(session, finished)
+        self.assertNotIn(session, not_finished)
+        # Case 2: It isn't
+        session.write(
             {
-                "event_id": self.event.id,
-                "rrule_type": "monthly",
-                "month_by": "day",
-                "byday": "-1",
-                "weekday": "SUN",
-                "timeslot_ids": [(6, 0, self.timeslot_16_00.ids)],
-                "duration": 1.0,
-                "start": "2022-03-01",
-                "until": "2022-05-31",
+                "date_begin": fields.Datetime.now() + timedelta(days=1),
+                "date_end": fields.Datetime.now() + timedelta(days=1, hours=1),
             }
         )
-        self.assertSessionDates(sessions, expected)
+        finished = self.env["event.session"].search([("is_finished", "=", True)])
+        not_finished = self.env["event.session"].search([("is_finished", "=", False)])
+        self.assertFalse(session.is_finished)
+        self.assertIn(session, not_finished)
+        self.assertNotIn(session, finished)

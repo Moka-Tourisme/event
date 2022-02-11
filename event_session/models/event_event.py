@@ -68,9 +68,9 @@ class EventEvent(models.Model):
         regular_records = self - session_records
         # This is a core field. Play nice with other modules.
         # It is also why we compute date_begin and date_end separately.
-        if hasattr(super(), "_compute_date_begin"):
+        if hasattr(super(), "_compute_date_begin"):  # pragma: no cover
             super(EventEvent, regular_records)._compute_date_begin()
-        if not session_records:
+        if not session_records:  # pragma: no cover
             return
         groups = self.env["event.session"].read_group(
             domain=[("event_id", "in", session_records.ids)],
@@ -88,9 +88,9 @@ class EventEvent(models.Model):
         regular_records = self - session_records
         # This is a core field. Play nice with other modules.
         # It is also why we compute date_begin and date_end separately.
-        if hasattr(super(), "_compute_date_end"):
+        if hasattr(super(), "_compute_date_end"):  # pragma: no cover
             super(EventEvent, regular_records)._compute_date_end()
-        if not session_records:
+        if not session_records:  # pragma: no cover
             return
         groups = self.env["event.session"].read_group(
             domain=[("event_id", "in", session_records.ids)],
