@@ -26,7 +26,6 @@
                         <t t-elif="session.event_registrations_sold_out">(Sold Out)</t>
                         <t t-else="">(Registrations Closed)</t>
                     </span>
-                    <span t-else="session.is_ongoing">(Ongoing)</span>
                 </option>
             </t>
         </select>
