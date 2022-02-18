@@ -20,6 +20,7 @@ class EventSession(models.Model):
     _inherits = {"event.event": "event_id"}
     _inherit = ["mail.thread", "mail.activity.mixin"]
     _description = "Event session"
+    _order = "date_begin"
 
     active = fields.Boolean(
         default=True,
