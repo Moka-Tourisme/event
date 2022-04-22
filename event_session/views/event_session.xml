@@ -490,7 +490,19 @@
     <record id="action_event_session" model="ir.actions.act_window">
         <field name="res_model">event.session</field>
         <field name="name">Sessions</field>
-        <field name="view_mode">kanban,tree,form,calendar,pivot</field>
+        <field name="view_mode">kanban,tree,form,calendar,pivot,graph</field>
+    </record>
+    <record id="action_event_session_pivot" model="ir.actions.act_window">
+        <field name="res_model">event.session</field>
+        <field name="name">Sessions Analysis</field>
+        <field name="view_mode">pivot,graph</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                No Sessions data yet!
+            </p><p>
+                Use this report to compare or aggregate sessions performances.
+            </p>
+        </field>
     </record>
     <menuitem
         id="event_session_menu"
@@ -499,5 +511,13 @@
         parent="event.event_main_menu"
         action="action_event_session"
         groups="event.group_event_registration_desk"
+    />
+    <menuitem
+        id="event_session_menu_report"
+        name="Sessions"
+        sequence="3"
+        parent="event.menu_reporting_events"
+        action="action_event_session_pivot"
+        groups="event.group_event_user"
     />
 </odoo>
