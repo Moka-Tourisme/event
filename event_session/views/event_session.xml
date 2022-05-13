@@ -204,7 +204,7 @@
                     </group>
                     <notebook>
                         <page string="Communication" name="event_communication">
-                            <field name="event_mail_ids">
+                            <field name="event_mail_ids" options="{'no_open': True}">
                                 <tree editable="bottom">
                                     <field name="sequence" widget="handle" />
                                     <field name="notification_type" />

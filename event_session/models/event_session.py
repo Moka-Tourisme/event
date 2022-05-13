@@ -105,7 +105,6 @@ class EventSession(models.Model):
         inverse_name="session_id",
         string="Mail Schedule",
         compute="_compute_event_mail_ids",
-        readonly=False,
         store=True,
     )
     stage_id = fields.Many2one(
