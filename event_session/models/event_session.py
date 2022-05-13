@@ -28,6 +28,7 @@ class EventSession(models.Model):
     event_id = fields.Many2one(
         comodel_name="event.event",
         string="Parent Event",
+        domain=[("use_sessions", "=", True)],
         ondelete="cascade",
         auto_join=True,
         index=True,
