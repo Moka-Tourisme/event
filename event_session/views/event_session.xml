@@ -204,8 +204,8 @@
                     </group>
                     <notebook>
                         <page string="Communication" name="event_communication">
-                            <field name="event_mail_ids" editable="bottom">
-                                <tree>
+                            <field name="event_mail_ids">
+                                <tree editable="bottom">
                                     <field name="sequence" widget="handle" />
                                     <field name="notification_type" />
                                     <field name="template_model_id" invisible="1" />
