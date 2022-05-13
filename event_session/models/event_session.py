@@ -335,16 +335,30 @@ class EventSession(models.Model):
     def _compute_event_mail_ids(self):
         """Compute event mail ids from its parent event
 
-        This takes care of synchronizing new mail schedulers created on the event
-        to all its sessions.
+        The email schedulers for sessions are used to track their independent states,
+        but the management is done directly from the parent event.event.
+
+        This method takes care of synchronizing the session's schedulers with those
+        of their parent events.
         """
         for rec in self:
             existing_schedulers = rec.event_mail_ids.scheduler_id
             event_schedulers = rec.event_id.event_mail_ids
+            # Unlink the ones no-longer in sync
+            to_unlink = rec.event_mail_ids.filtered(
+                lambda r: r.scheduler_id not in event_schedulers
+            )
+            if to_unlink:
+                rec.event_mail_ids = [
+                    fields.Command.unlink(scheduler.id) for scheduler in to_unlink
+                ]
+            # Create missing ones
             to_create = event_schedulers - existing_schedulers
             if to_create:
                 rec.event_mail_ids = [
-                    (0, 0, scheduler._prepare_session_mail_scheduler_vals(rec))
+                    fields.Command.create(
+                        scheduler._prepare_session_mail_scheduler_vals(rec)
+                    )
                     for scheduler in to_create
                 ]
 
