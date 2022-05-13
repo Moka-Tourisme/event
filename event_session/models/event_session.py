@@ -142,6 +142,20 @@ class EventSession(models.Model):
         compute="_compute_session_update_message",
     )
 
+    def onchange(self, values, field_name, field_onchange):
+        # OVERRIDE to workaround this issue: https://github.com/odoo/odoo/pull/91373
+        # This can/should be removed if a FIX is merged on odoo core
+        first_call = not field_name
+        res = super().onchange(values, field_name, field_onchange)
+        if (
+            first_call
+            and "default_event_id" in self.env.context
+            and "event_id" in res["value"]
+            and not res["value"]["event_id"]
+        ):
+            res["value"]["event_id"] = self.env.context["default_event_id"]
+        return res
+
     @api.depends("stage_id", "kanban_state")
     def _compute_kanban_state_label(self):
         for event in self:
