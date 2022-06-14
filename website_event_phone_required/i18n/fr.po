@@ -1,0 +1,36 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* website_event_phone_required
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 15.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2022-06-09 14:14+0000\n"
+"PO-Revision-Date: 2022-06-09 14:14+0000\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: website_event_phone_required
+#: model:ir.model,name:website_event_phone_required.model_event_event
+msgid "Event"
+msgstr "Évènement"
+
+#. module: website_event_phone_required
+#: model_terms:ir.ui.view,arch_db:website_event_phone_required.registration_attendee_details
+msgid "Phone"
+msgstr "Téléphone"
+
+#. module: website_event_phone_required
+#: model_terms:ir.ui.view,arch_db:website_event_phone_required.registration_attendee_details
+msgid "Phone <small>(Optional)</small>"
+msgstr "Téléphone <small>(Optionnel)</small>"
+
+#. module: website_event_phone_required
+#: model:ir.model.fields,field_description:website_event_phone_required.field_event_event__phone_required
+msgid "Phone is required ?"
+msgstr "Le téléphone est requis ?"

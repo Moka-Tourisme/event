@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!--
+    Copyright 2022 Moka Tourisme (https://www.mokatourisme.fr).
+    # @author Bryan Laffeach <laffeach.bryan@hotmail.fr>
+    License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl).
+-->
+<odoo>
+    <template
+        id="registration_attendee_details"
+        inherit_id="website_event.registration_attendee_details"
+        priority="100"
+    >
+
+        <xpath expr="//div[hasclass('modal-body')]//div//div[3]" position="replace">
+
+            <div class="col-lg my-2">
+                <t t-if="event.phone_required">
+                    <label>Phone</label>
+                    <input
+                        class="form-control"
+                        type="tel"
+                        t-attf-name="#{counter}-phone"
+                        required="This field is required"
+                        t-att-value="default_first_attendee.get('phone', '') if counter == 1 else ''"
+                    />
+                </t>
+                <t t-else="">
+                    <label>Phone <small>(Optional)</small></label>
+                    <input
+                        class="form-control"
+                        type="tel"
+                        t-attf-name="#{counter}-phone"
+                        t-att-value="default_first_attendee.get('phone', '') if counter == 1 else ''"
+                    />
+                </t>
+            </div>
+        </xpath>
+    </template>
+</odoo>
