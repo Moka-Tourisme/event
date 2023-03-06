@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="session_portal_report" model="ir.actions.report">
+        <field name="name">Session Portal Report</field>
+        <field name="model">event.session</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">event_portal.report_session_attendees</field>
+        <field name="report_file">event_portal.report_session_attendees</field>
+        <field name="binding_type">report</field>
+    </record>
+
+    <template id="report_session_attendees">
+        <t t-call="web.external_layout">
+            <t t-foreach="docs" t-as="o">
+                <t t-call="event_portal.report_session_document"/>
+            </t>
+        </t>
+    </template>
+
+
+    <template id="report_session_document">
+        <t t-call="web.html_container">
+            <t t-call="event_portal.content"/>
+        </t>
+    </template>
+</odoo>

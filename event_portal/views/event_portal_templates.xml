@@ -1,0 +1,213 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!--    List of all events for user-->
+    <template id="portal_my_home" name="Show Events" customize_show="True" inherit_id="portal.portal_my_home"
+              priority="60">
+        <xpath expr="//div[hasclass('o_portal_docs')]" position="inside">
+            <t t-call="portal.portal_docs_entry">
+                <t t-set="title">Events</t>
+                <t t-set="url" t-value="'/my/events'"/>
+                <t t-set="placeholder_count" t-value="'event_count'"/>
+            </t>
+        </xpath>
+    </template>
+
+    <!--    List of my events-->
+    <template id="portal_my_events" name="My Events">
+        <t t-call="portal.portal_layout">
+            <t t-set="breadcrumbs_searchbar" t-value="True"/>
+
+            <t t-call="portal.portal_searchbar">
+                <t t-set="title">Events</t>
+            </t>
+            <t t-if="not events">
+                <div class="alert alert-warning mt8" role="alert">
+                    There are no events.
+                </div>
+            </t>
+            <t t-if="events" t-call="portal.portal_table">
+                <thead>
+                    <tr class="active">
+                        <th>Event</th>
+                        <th>Event Date</th>
+                        <th>Informations</th>
+                        <th class="text-right">Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr t-foreach="events" t-as="event">
+                        <td>
+                            <t t-if="event.use_sessions">
+                                <a t-attf-href="/my/event/sessions/#{event.id}?{{ keep_query() }}">
+                                    <span t-field="event.name"/>
+                                </a>
+                            </t>
+                            <t t-else="">
+                                <a t-attf-href="/my/events/#{event.id}?{{ keep_query() }}">
+                                    <span t-field="event.name"/>
+                                </a>
+                            </t>
+                        </td>
+                        <td>
+                            <t t-if="not event.use_sessions">
+                                <strong>
+                                    <span t-field="event.date_begin" t-options='{"format": "d MMM yyyy"}'/>
+                                </strong>
+                                at
+                                <span t-field="event.date_begin" t-options='{"format": "hh:mm"}'/>
+                            </t>
+                        </td>
+                        <td>
+                            <t t-if="event.use_sessions">
+                                <span class="badge badge-pill badge-secondary">
+                                    <i class="fa fa-calendar"></i>
+                                    <span t-field="event.session_count"/>
+                                    session(s)
+                                </span>
+                            </t>
+                            <t t-else="">
+                                <t t-set="attendees" t-value="event.seats_reserved+event.seats_used"/>
+                                <span class="badge badge-pill badge-primary">
+                                    <i class="fa fa-user-circle-o"></i>
+                                    <span t-out="attendees"/>
+                                    attendee(s)
+                                </span>
+                            </t>
+                        </td>
+                        <td class="text-right">
+                            <span class="badge badge-pill badge-info" t-field="event.stage_id.name"/>
+                        </td>
+                    </tr>
+                </tbody>
+            </t>
+        </t>
+    </template>
+
+    <!--    Breadcrumb -->
+    <template id="portal_layout" name="Portal layout: event menu entry" inherit_id="portal.portal_breadcrumbs"
+              priority="40">
+        <xpath expr="//ol[hasclass('o_portal_submenu')]" position="inside">
+            <li t-if="page_name == 'events' or event" class="col-lg-2"
+                t-attf-class="breadcrumb-item #{'active ' if not event else ''}">
+                <a t-if="event" t-attf-href="/my/events?{{ keep_query() }}">Event(s)</a>
+                <t t-else="">Event(s)</t>
+            </li>
+            <li t-if="event" class="breadcrumb-item active">
+                <t t-out="event.name"/>
+            </li>
+        </xpath>
+    </template>
+
+
+    <template id="portal_my_event" name="My Event" inherit_id="portal.portal_sidebar" primary="True">
+        <xpath expr="//div[hasclass('o_portal_sidebar')]" position="inside">
+            <t t-set="o_portal_fullwidth_alert">
+                <t t-call="portal.portal_back_in_edit_mode">
+                </t>
+            </t>
+
+            <div class="row mt16 o_portal_event_sidebar">
+                <!-- Sidebar -->
+                <t t-call="portal.portal_record_sidebar">
+                    <t t-set="classes" t-value="'col-lg-auto d-print-none'"/>
+                    <t t-set="attendees" t-value="event.seats_reserved+event.seats_used"/>
+                    <t t-set="title">
+                        <div class="card-body text-center pb-2 pt-3">
+                            <h2 t-if="attendees" class="mb-3">
+                                <i class="fa fa-user-circle-o"></i>
+                                <b t-out="attendees">
+                                </b>
+                            </h2>
+                            <div class="mb-0">
+                                <p t-if="event.seats_available">
+                                    <i class="fa fa-user-o" style="padding-right:10px"></i>
+                                    <b t-field="event.seats_available"></b>
+                                    <br/>
+                                    available seats
+                                </p>
+                                <p t-if="event.seats_reserved">
+                                    <i class="fa fa-user-secret" style="padding-right:10px"></i>
+                                    <b t-field="event.seats_reserved"></b>
+                                    <br/>
+                                    Confirmed
+                                </p>
+                                <p t-if="event.seats_used">
+                                    <i class="fa fa-user-plus" style="padding-right:10px"></i>
+                                    <b t-field="event.seats_used"></b>
+                                    <br/>
+                                    Checked
+                                </p>
+                            </div>
+                        </div>
+                    </t>
+                    <t t-set="entries">
+                        <ul class="list-group list-group-flush flex-wrap flex-row flex-lg-column">
+                            <li class="list-group-item flex-grow-1">
+                                <div class="o_download_pdf btn-toolbar flex-sm-nowrap">
+                                    <div class="btn-group  flex-grow-1 mr-1 mb-1">
+                                        <a class="btn btn-secondary btn-block o_download_btn"
+                                           title="Download"
+                                           t-attf-href="/report/pdf/event_portal.report_event_attendees/#{event.id}"
+                                           download="">
+                                            <i class="fa fa-download"/>
+                                            Download
+                                        </a>
+                                    </div>
+                                    <div class="btn-group flex-grow-1 mb-1">
+                                        <a class="btn btn-secondary btn-block o_print_btn o_portal_event_print"
+                                           id="print_event_report" title="Print"
+                                           t-attf-href="/report/pdf/event_portal.report_event_attendees/#{event.id}"
+                                           target="_blank">
+                                            <i class="fa fa-print"/>
+                                            Print
+                                        </a>
+                                    </div>
+                                </div>
+                            </li>
+                            <li t-if="event.user_id" class="list-group-item flex-grow-1">
+                                <div class="small mb-1">
+                                    <strong class="text-muted">
+                                        <t>
+                                            Organizer
+                                        </t>
+                                    </strong>
+                                </div>
+                                <div class="row">
+                                    <div class="col flex-grow-0 pr-2">
+                                        <img class="rounded-circle mt-1 o_portal_contact_img"
+                                             t-att-src="image_data_uri(event.organizer_id.avatar_1024)"
+                                             alt="Contact"/>
+                                    </div>
+                                    <div class="col pl-0 d-flex align-items-center">
+                                        <t t-out="event.organizer_id.name"/>
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
+                    </t>
+                </t>
+
+                <!-- Page Content -->
+                <div id="event_content" class="col-12 col-lg">
+                    <div class="o_portal_html_view shadow p-3">
+                        <div>
+                            <t t-call="event_portal.content">
+                                <t t-set="docs" t-value="event"/>
+                            </t>
+                        </div>
+                    </div>
+                    <!-- chatter -->
+                    <div id="event_communication" class="mt-4">
+                        <h2>History</h2>
+                        <t t-call="portal.message_thread">
+                            <t t-set="object" t-value="event"/>
+                        </t>
+                    </div>
+                </div>
+            </div>
+        </xpath>
+    </template>
+
+
+</odoo>
