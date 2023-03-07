@@ -92,7 +92,7 @@
 
     <template id="portal_my_session" name="My session" inherit_id="portal.portal_sidebar" primary="True">
         <xpath expr="//div[hasclass('o_portal_sidebar')]" position="inside">
-            <t t-set="o_portal_fullwidth_alert">
+            <t t-set="o_portal_fullwidth_alert" groups="event.group_event_user">
                 <t t-call="portal.portal_back_in_edit_mode">
                 </t>
             </t>
@@ -102,38 +102,49 @@
                 <t t-call="portal.portal_record_sidebar">
                     <t t-set="classes" t-value="'col-lg-auto d-print-none'"/>
                     <t t-set="title">
-                        <div class="card-body text-center pb-2 pt-3">
+                        <div class="text-center pb-2 pt-3">
                             <t t-set="attendees" t-value="session.seats_reserved+session.seats_used"/>
-                            <h2 t-if="attendees" class="mb-3">
-                                <i class="fa fa-user-circle-o"></i>
-                                <b t-out="attendees">
-                                </b>
+                            <h2 class="mb-3">
+                                <i class="fa fa-user-circle-o"/>
+                                <b t-out="attendees"/>
+                                <br/>
+                                <strong t-if="attendees &gt; 1">Attendees</strong>
+                                <strong t-else="">Attendee</strong>
                             </h2>
-                            <div class="mb-0">
-                                <p t-if="session.seats_available">
-                                    <i class="fa fa-user-o" style="padding-right:10px"></i>
-                                    <b t-field="session.seats_available"></b>
+                            <div class="row no-gutters mt-2">
+                                <div t-if="session.seats_available" class="col-12 bg-100 px-2 py-2">
+                                    <i class="fa fa-user-o px-1 py-2"/>
+                                    <b t-field="session.seats_available"/>
                                     <br/>
-                                    available seats
-                                </p>
-                                <p t-else="">
-                                    <i class="fa fa-user-o" style="padding-right:10px"></i>
-                                    <span>&#8734;</span>
+                                    <small t-if="session.seats_available &gt; 1">Remaining seats</small>
+                                    <small t-else="">Remaining seat</small>
+                                </div>
+                                <div t-else="" class="col-12 bg-100 px-2 py-2">
+                                    <i class="fa fa-user-o px-1 py-2"/>
+                                    ∞
                                     <br/>
-                                    available seats
-                                </p>
-                                <p t-if="session.seats_reserved">
-                                    <i class="fa fa-user-secret" style="padding-right:10px"></i>
-                                    <b t-field="session.seats_reserved"></b>
-                                    <br/>
-                                    Confirmed
-                                </p>
-                                <p t-if="session.seats_used">
-                                    <i class="fa fa-user-plus" style="padding-right:10px"></i>
-                                    <b t-field="session.seats_used"></b>
-                                    <br/>
-                                    Checked
-                                </p>
+                                    <small>Unlimited seats</small>
+                                </div>
+                            </div>
+                            <div class="row no-gutters mt-1">
+                                <div t-if="session.seats_reserved" class="col-6">
+                                    <div class="bg-100 px-2 py-2 mr-1">
+                                        <i class="fa fa-user-secret px-1 py-2"/>
+                                        <b t-field="session.seats_reserved"/>
+                                        <br/>
+                                        <small t-if="session.seats_reserved &gt; 1">Confirmed</small>
+                                        <small t-else="">Confirmed</small>
+                                    </div>
+                                </div>
+                                <div t-if="session.seats_used" class="col-6">
+                                    <div class="bg-100 px-2 py-2">
+                                        <i class="fa fa-user-plus px-1 py-2"/>
+                                        <b t-field="session.seats_used"/>
+                                        <br/>
+                                        <small t-if="session.seats_available &gt; 1">Attended</small>
+                                        <small t-else="">Attended</small>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </t>
@@ -142,8 +153,7 @@
                             <li class="list-group-item flex-grow-1">
                                 <div class="o_download_pdf btn-toolbar flex-sm-nowrap">
                                     <div class="btn-group  flex-grow-1 mr-1 mb-1">
-                                        <a class="btn btn-secondary btn-block o_download_btn"
-                                           title="Download"
+                                        <a class="btn btn-secondary btn-block o_download_btn" title="Download"
                                            t-attf-href="/report/pdf/event_portal.report_session_attendees/#{session.id}"
                                            download="">
                                             <i class="fa fa-download"/>
@@ -204,6 +214,5 @@
             </div>
         </xpath>
     </template>
-
 
 </odoo>
