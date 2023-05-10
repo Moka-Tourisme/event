@@ -16,8 +16,6 @@ from odoo.osv.expression import OR, AND
 from odoo.addons.web.controllers.main import HomeStaticTemplateHelpers
 
 user = request.env.user.partner_id.id
-
-
 class EventCustomerPortal(CustomerPortal):
 
     def _prepare_home_portal_values(self, counters):

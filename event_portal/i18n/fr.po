@@ -6,44 +6,14 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 15.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-03-06 16:04+0000\n"
-"PO-Revision-Date: 2023-03-06 16:04+0000\n"
+"POT-Creation-Date: 2023-05-09 15:24+0000\n"
+"PO-Revision-Date: 2023-05-09 15:24+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
 "Plural-Forms: \n"
-
-#. module: event_portal
-#: model_terms:ir.ui.view,arch_db:event_portal.portal_my_event
-#: model_terms:ir.ui.view,arch_db:event_portal.portal_my_session
-msgid ""
-"<br/>\n"
-"                                    Checked"
-msgstr ""
-"<br/>\n"
-"                                    Présent(s)"
-
-#. module: event_portal
-#: model_terms:ir.ui.view,arch_db:event_portal.portal_my_event
-#: model_terms:ir.ui.view,arch_db:event_portal.portal_my_session
-msgid ""
-"<br/>\n"
-"                                    Confirmed"
-msgstr ""
-"<br/>\n"
-"                                    Confirmé(s)"
-
-#. module: event_portal
-#: model_terms:ir.ui.view,arch_db:event_portal.portal_my_event
-#: model_terms:ir.ui.view,arch_db:event_portal.portal_my_session
-msgid ""
-"<br/>\n"
-"                                    available seats"
-msgstr ""
-"<br/>\n"
-"                                    Place(s) disponible(s)"
 
 #. module: event_portal
 #: model_terms:ir.ui.view,arch_db:event_portal.portal_my_event
@@ -66,17 +36,18 @@ msgstr ""
 "                                            Imprimer"
 
 #. module: event_portal
+#: model_terms:ir.ui.view,arch_db:event_portal.portal_my_event
 #: model_terms:ir.ui.view,arch_db:event_portal.portal_my_session
 msgid ""
-"<i class=\"fa fa-user-o\" style=\"padding-right:10px\"/>\n"
-"                                    <span>∞</span>\n"
+"<i class=\"fa fa-user-o px-1 py-2\"/>\n"
+"                                    ∞\n"
 "                                    <br/>\n"
-"                                    available seats"
+"                                    <small>Unlimited seats</small>"
 msgstr ""
-"<i class=\"fa fa-user-o\" style=\"padding-right:10px\"/>\n"
-"                                    <span>∞</span>\n"
+"<i class=\"fa fa-user-o px-1 py-2\"/>\n"
+"                                    ∞\n"
 "                                    <br/>\n"
-"                                    Places illimitées"
+"                                    <small>Illimité</small>"
 
 #. module: event_portal
 #: model_terms:ir.ui.view,arch_db:event_portal.content
@@ -132,6 +103,30 @@ msgstr ""
 #. module: event_portal
 #: model_terms:ir.ui.view,arch_db:event_portal.portal_my_event
 #: model_terms:ir.ui.view,arch_db:event_portal.portal_my_session
+msgid "Attended"
+msgstr "Présents"
+
+#. module: event_portal
+#: model_terms:ir.ui.view,arch_db:event_portal.portal_my_event
+#: model_terms:ir.ui.view,arch_db:event_portal.portal_my_session
+msgid "Attendee"
+msgstr "Participant"
+
+#. module: event_portal
+#: model_terms:ir.ui.view,arch_db:event_portal.portal_my_event
+#: model_terms:ir.ui.view,arch_db:event_portal.portal_my_session
+msgid "Attendees"
+msgstr "Participants"
+
+#. module: event_portal
+#: model_terms:ir.ui.view,arch_db:event_portal.portal_my_event
+#: model_terms:ir.ui.view,arch_db:event_portal.portal_my_session
+msgid "Confirmed"
+msgstr "Confirmé"
+
+#. module: event_portal
+#: model_terms:ir.ui.view,arch_db:event_portal.portal_my_event
+#: model_terms:ir.ui.view,arch_db:event_portal.portal_my_session
 msgid "Contact"
 msgstr ""
 
@@ -156,7 +151,7 @@ msgstr "Date"
 #. module: event_portal
 #: model:ir.actions.report,name:event_portal.event_portal_report
 msgid "Event Portal Report"
-msgstr ""
+msgstr "Rapport Event Portal "
 
 #. module: event_portal
 #: model_terms:ir.ui.view,arch_db:event_portal.portal_layout
@@ -195,9 +190,21 @@ msgid "Print"
 msgstr "Imprimer"
 
 #. module: event_portal
+#: model_terms:ir.ui.view,arch_db:event_portal.portal_my_event
+#: model_terms:ir.ui.view,arch_db:event_portal.portal_my_session
+msgid "Remaining seat"
+msgstr "Siège restant"
+
+#. module: event_portal
+#: model_terms:ir.ui.view,arch_db:event_portal.portal_my_event
+#: model_terms:ir.ui.view,arch_db:event_portal.portal_my_session
+msgid "Remaining seats"
+msgstr "Sièges restants"
+
+#. module: event_portal
 #: model:ir.actions.report,name:event_portal.session_portal_report
 msgid "Session Portal Report"
-msgstr ""
+msgstr "Rapport Event Portal"
 
 #. module: event_portal
 #: model_terms:ir.ui.view,arch_db:event_portal.portal_layout_sessions
