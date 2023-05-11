@@ -2,7 +2,7 @@
 # @author Iván Todorovich <ivan.todorovich@gmail.com>
 # License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl).
 
-from odoo import http
+from odoo import http, fields
 from odoo.http import request
 
 from odoo.addons.website_event.controllers.main import WebsiteEventController
@@ -36,18 +36,30 @@ class WebsiteEventSessionController(WebsiteEventController):
         MonetaryConverter = request.env["ir.qweb.field.monetary"]
         currency_opts = {"display_currency": currency}
         for ticket, data in zip(tickets, res):
+            converted_ticket_price = request.website.company_id.currency_id._convert(
+                ticket.price,
+                currency,
+                request.website.company_id,
+                fields.Datetime.now()
+            )
+            converted_ticket_price_reduce = request.website.company_id.currency_id._convert(
+                ticket.price_reduce,
+                currency,
+                request.website.company_id,
+                fields.Datetime.now()
+            )
             data.update(
                 {
-                    "price": ticket.price,
-                    "price_reduce": ticket.price_reduce,
+                    "price": converted_ticket_price,
+                    "price_reduce": converted_ticket_price_reduce,
                     "currency": {
                         "name": currency.name,
                     },
                     "price_html": MonetaryConverter.value_to_html(
-                        ticket.price, currency_opts
+                        converted_ticket_price, currency_opts
                     ),
                     "price_reduce_html": MonetaryConverter.value_to_html(
-                        ticket.price_reduce, currency_opts
+                        converted_ticket_price_reduce, currency_opts
                     ),
                 }
             )
