@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 {
     'name': 'Events Portal',
-    'version': '1.1',
+    'version': '15.0.1.0.0',
     'category': 'Events',
     'summary': 'List of all events',
     'description': "List of all events",
