@@ -56,13 +56,14 @@ class EventRegistration(models.Model):
         return super(EventRegistration, regular_records)._check_seats_limit()
 
     def _update_mail_schedulers(self):
-        # OVERRIDE to handle sessions' mail scheduler, not event ones.
+        # OVERRIDE to handle sessions' mail scheduler
         session_records = self.filtered("session_id")
         regular_records = self - session_records
+        res = super(EventRegistration, regular_records)._update_mail_schedulers()
         # Similar to super, only we find the schedulers linked to the session
-        open_registrations = self.filtered(lambda r: r.state == "open")
+        open_registrations = session_records.filtered(lambda r: r.state == "open")
         if not open_registrations:
-            return
+            return res
         onsubscribe_schedulers = (
             self.env["event.mail.session"]
             .sudo()
@@ -73,8 +74,11 @@ class EventRegistration(models.Model):
                 ]
             )
         )
+
         if not onsubscribe_schedulers:
-            return
+            return res
+
         onsubscribe_schedulers.mail_done = False
         onsubscribe_schedulers.with_user(SUPERUSER_ID).execute()
-        return super(EventRegistration, regular_records)._update_mail_schedulers()
+        return res
+
