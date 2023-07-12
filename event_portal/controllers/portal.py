@@ -19,7 +19,7 @@ class EventCustomerPortal(CustomerPortal):
         values = super()._prepare_home_portal_values(counters)
 
         if 'event_count' in counters:
-            event_count = request.env['event.event'].search_count(self._get_events_domain(user)) \
+            event_count = request.env['event.event'].search_count(self._get_events_domain()) \
                 if request.env['event.event'].check_access_rights('read', raise_exception=False) else 0
 
             values['event_count'] = event_count
@@ -84,7 +84,7 @@ class EventCustomerPortal(CustomerPortal):
         )
         return self._get_page_view_values(event, access_token, values, 'my_events_history', False, **kwargs)
 
-    def _get_events_domain(self, user):
+    def _get_events_domain(self):
         return [
             ('is_finished', '!=', True)
         ]
@@ -155,7 +155,7 @@ class EventCustomerPortal(CustomerPortal):
         user = request.env.user.partner_id.id
         domain = []
 
-        domain += self._get_events_domain(user)
+        domain += self._get_events_domain()
 
         if date_begin and date_end:
             domain += [('create_date', '>', date_begin), ('create_date', '<=', date_end)]
