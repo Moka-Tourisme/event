@@ -84,7 +84,7 @@ class EventMailSession(models.Model):
         for scheduler in self:
             vals_list += [
                 scheduler._prepare_mail_registration_vals(registration)
-                for registration in registrations
+                for registration in registrations.filtered(lambda r: r.email)
             ]
         if vals_list:
             return self.env["event.mail.registration"].create(vals_list)
