@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!--    List of my events-->
+    <template id="content" name="My Content">
+        <t t-foreach="docs" t-as="o">
+            <h2>
+                <t t-out="o.name"/>
+            </h2>
+            <hr/>
+            <div class="row mt-5" id="informations">
+                <div t-if="o.date_begin" class="col-auto col-3 mw-100 mb-2">
+                    <strong>Start Date:</strong>
+                    <p class="m-0" t-field="o.date_begin"/>
+                </div>
+
+                <div t-if="o.date_end" class="col-auto col-3 mw-100 mb-2" name="end_date">
+                    <strong>End date:</strong>
+                    <p class="m-0" t-field="o.date_end"/>
+                </div>
+                <div t-if="o.organizer_id.name" class="col-auto col-3 mw-100 mb-2">
+                    <strong>Organizer:</strong>
+                    <p class="m-0" t-field="o.organizer_id.name"/>
+                </div>
+                <div t-if="o.user_id.name" class="col-auto col-3 mw-100 mb-2">
+                    <strong>Responsible:</strong>
+                    <p class="m-0" t-field="o.user_id.name"/>
+                </div>
+            </div>
+            <t t-if="o.seats_expected &gt; 0">
+                <div id="attendees" class="pt16">
+                    <table class="table table-sm o_main_table" name="attendee_line_table">
+                        <thead>
+                            <tr>
+                                <th name="th_name" class="text-left">
+                                    <span>Name</span>
+                                </th>
+                                <th name="th_phone" class="text-left">
+                                    <span>Phone Number</span>
+                                </th>
+                                <th name="th_inscription_date" class="text-left">
+                                    <span>Inscription Date</span>
+                                </th>
+                                <th name="th_inscription_state" class="text-left">
+                                    <span>State</span>
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody class="attendees_tbody">
+                            <t t-foreach="o.registration_ids" t-as="attendee">
+<!--                                <t t-if="attendee.state == 'open' or attendee.state == 'done'">-->
+<!--                                    <tr>-->
+<!--                                        <td name="event_attendee_line_name">-->
+<!--                                            <span t-field="attendee.name" t-options="{'widget': 'text'}"/>-->
+<!--                                        </td>-->
+<!--                                        <td name="event_attendee_line_phone">-->
+<!--                                            <span t-field="attendee.phone" t-options="{'widget': 'text'}"/>-->
+<!--                                        </td>-->
+<!--                                        <td name="event_attendee_line_inscription_date">-->
+<!--                                            <span t-field="attendee.date_open"-->
+<!--                                                  t-field-options="{&quot;format&quot;: &quot;d MMMM y&quot;}"/>-->
+<!--                                        </td>-->
+<!--                                        <td name="event_attendee_line_inscription_state">-->
+<!--                                            <span t-field="attendee.state"/>-->
+<!--                                        </td>-->
+<!--                                    </tr>-->
+<!--                                </t>-->
+                                test
+                            </t>
+                        </tbody>
+                    </table>
+
+                </div>
+
+                ici
+
+                <div class="row s_col_no_resize s_col_no_bgcolor no-gutters o_colored_level shadow rounded o_cc o_cc1 align-items-start" style="border-radius: 5px !important;">
+                                    <div class="align-self-stretch s_media_list_img_wrapper col-lg-6">
+                                        <data inherit_id="event.event_report_template_full_page_ticket">
+                                            <xpath expr="//div[hasclass('o_event_full_page_ticket_barcode_container')]" position="inside">
+                                                <t t-if="attendee">
+                                                    <div class="mt-2">
+                                                        <img t-att-src="'/report/barcode/?type=%s&amp;value=%s&amp;width=%s&amp;height=%s&amp;humanreadable=0' % ('QR', attendee.qr_code, 512, 512)"/>
+                                                    </div>
+                                                </t>
+                                                <t t-else="">
+                                                    <h1 class="text-center mt-2">
+                                                        <i class="fa-2x fa fa-qrcode" title="QR Code" role="img" aria-label="QR Code"/>
+                                                    </h1>
+                                                </t>
+                                            </xpath>
+                                        </data>
+                                    </div>
+                                      <br/>
+                                    <div class="s_media_list_body col-lg-6" data-original-title="" title="" aria-describedby="tooltip627942" style="text-align: right;">
+                                        <span class="s_badge badge badge-secondary o_animable" data-name="Badge" data-snippet="s_badge"><i class="fa fa-1x fa-fw fa-folder o_not-animable" data-original-title="" title="" aria-describedby="tooltip317559"></i>Non confirmé</span>
+                                            <br/>
+                                        <div class="o_portal_html_view shadow p-3">
+                                            <div>
+                                              <t t-call="event_portal_ticket.content">
+                                              <t t-set="docs" t-value="event"/>
+                                              </t>
+                                            </div>
+                                        </div>
+                    <!--                        <h3 style="text-align: left;">Rob Gibson</h3>-->
+                    <!--                        <p style="text-align: left;">Réduit (Demandeur d'emploi, PMR)</p>-->
+                    <!--                        <p style="text-align: left;">-->
+                    <!--                          <span style="font-size: 24px;">5,00 €</span>-->
+                    <!--                        </p>-->
+                                    </div>
+                                </div>
+
+            </t>
+        </t>
+        <t t-if="o.seats_expected == 0">
+            <div class="s_alert w-100 clearfix alert-info s_alert_md" data-snippet="s_alert" data-name="Alert">
+                <i class="fa fa-2x s_alert_icon fa-info-circle"/>
+                <div class="s_alert_content">
+                    <p>
+                        <strong>There is no registration at the moment.</strong>
+                        <br/>
+                        As soon as the first participant has registered, they will appear on this page.
+                    </p>
+                </div>
+            </div>
+        </t>
+    </template>
+</odoo>

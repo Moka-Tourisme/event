@@ -1,0 +1,189 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!--    List of my events-->
+    <template id="portal_my_events_tickets_inherit" inherit_id="event_portal_ticket.portal_my_events_tickets">
+        <xpath expr="//tbody/tr/td[1]" position="replace">
+            <td>
+                <t t-if="not event.use_sessions">
+                    <a t-attf-href="/my/tickets/event/#{event.id}">
+                        <span t-field="event.name"/>
+                    </a>
+                </t>
+                <t t-else="">
+                    <a t-attf-href="/my/tickets/event/sessions/#{event.id}">
+                        <span t-field="event.name"/>
+                    </a>
+                </t>
+            </td>
+        </xpath>
+
+        <xpath expr="//tbody/tr/td[3]" position="replace">
+            <td>
+                <t t-if="not event.use_sessions">
+                    <t t-set="tickets" t-value="event.get_current_user_tickets_count(event.id)"/>
+                    <span class="badge badge-pill badge-primary">
+                        <i class="fa fa-ticket"></i>
+                        <span t-out="tickets"/>
+                        <t t-if="tickets &gt; 1">tickets</t>
+                        <t t-else="">
+                            ticket
+                        </t>
+                    </span>
+                </t>
+                <t t-else="">
+                    <t t-set="sessions" t-value="event.get_current_user_sessions(event.id)"/>
+                    <span class="badge badge-pill badge-secondary">
+                        <i class="fa fa-clock-o"></i>
+                        <span t-out="len(sessions)"/>
+                        <t t-if="len(sessions) &gt; 1">sessions</t>
+                        <t t-else="">
+                            session
+                        </t>
+                    </span>
+                </t>
+            </td>
+        </xpath>
+    </template>
+
+    <template id="portal_my_event_sessions" name="My Tickets">
+        <t t-call="portal.portal_layout">
+            <t t-set="breadcrumbs_searchbar" t-value="True"/>
+
+            <t t-call="portal.portal_searchbar">
+                <t t-set="title">Sessions</t>
+            </t>
+            <t t-if="not sessions">
+                <div class="alert alert-warning mt8" role="alert">
+                    There are no sessions.
+                </div>
+            </t>
+            <t t-if="sessions" t-call="portal.portal_table">
+                <thead>
+                    <tr class="active">
+                        <th>Event</th>
+                        <th>Event Date</th>
+                        <th>Informations</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr t-foreach="sessions" t-as="session">
+                        <td>
+                            <a t-attf-href="/my/tickets/event/session/#{session.id}">
+                                <span t-field="session.name"/>
+                            </a>
+                        </td>
+                        <td>
+                            <strong>
+                                <span t-field="session.date_begin" t-options='{"format": "d MMM yyyy"}'/>
+                            </strong>
+                            at
+                            <span t-field="session.date_begin" t-options='{"format": "hh:mm"}'/>
+                        </td>
+                        <td>
+                            <t t-set="tickets" t-value="session.get_current_user_tickets(session.id)"/>
+                            <span class="badge badge-pill badge-primary">
+                                <i class="fa fa-ticket"></i>
+                                <span t-out="len(tickets)"/>
+                                <t t-if="len(tickets) &gt; 1">tickets</t>
+                                <t t-else="">
+                                    ticket
+                                </t>
+                            </span>
+                        </td>
+                    </tr>
+                </tbody>
+            </t>
+        </t>
+    </template>
+
+    <template id="portal_my_event_session_tickets" name="My Tickets" inherit_id="portal.portal_sidebar" primary="True">
+        <xpath expr="//div[hasclass('o_portal_sidebar')]" position="inside">
+            <t t-set="o_portal_fullwidth_alert" groups="event.group_event_user">
+                <t t-call="portal.portal_back_in_edit_mode">
+                </t>
+            </t>
+
+            <div class="row mt16 o_portal_event_sidebar">
+                <!-- Sidebar -->
+                <t t-call="portal.portal_record_sidebar">
+                    <t t-set="classes" t-value="'col-lg-auto d-print-none'"/>
+                    <t t-set="title">
+                        <div class="text-center pb-2 pt-3">
+                            <h2 class="mb-3">
+                                <i class="fa fa-ticket"/>
+                                <b t-out="len(registrations)"/>
+                                <br/>
+                                <strong t-if="len(registrations) &gt; 1">Registrations</strong>
+                                <strong t-else="">Registration</strong>
+                            </h2>
+                        </div>
+                    </t>
+                    <t t-set="entries">
+                        <ul class="list-group list-group-flush flex-wrap flex-row flex-lg-column">
+                            <li class="list-group-item flex-grow-1">
+                                <div class="o_download_pdf btn-toolbar flex-sm-nowrap">
+                                    <div class="btn-group  flex-grow-1 mr-1 mb-1">
+                                        <a class="btn btn-primary btn-block o_download_btn"
+                                           title="Download"
+                                           t-attf-href="/report/pdf/event.event_registration_report_template_foldable_badge/#{registration_ids}"
+                                           download="">
+                                            <i class="fa fa-download"/>
+                                            Download
+                                        </a>
+                                    </div>
+                                    <div class="btn-group flex-grow-1 mb-1">
+                                        <a class="btn btn-primary btn-block o_print_btn o_portal_event_print bg-o-color-1"
+                                           id="print_event_report" title="Print"
+                                           t-attf-href="/report/pdf/event.event_registration_report_template_foldable_badge/#{registration_ids}"
+                                        >
+                                            <i class="fa fa-print"/>
+                                            Print
+                                        </a>
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
+                    </t>
+                </t>
+
+                <!-- Page Content -->
+                <div id="event_content" class="col-12 col-lg">
+                    <div class="o_portal_html_view shadow p-3">
+                        <div>
+                            <t t-call="event_session_portal_ticket.content">
+                                <t t-set="docs" t-value="session"/>
+                            </t>
+                        </div>
+                    </div>
+                    <br/>
+
+                    <!--QR code-->
+                </div>
+            </div>
+        </xpath>
+    </template>
+
+
+    <!--        Breadcrumb-->
+    <template id="portal_layout_sessions_ticket" name="Portal layout: session ticket menu entry"
+              inherit_id="portal.portal_breadcrumbs"
+              priority="40">
+        <xpath expr="//ol[hasclass('o_portal_submenu')]" position="inside">
+            <li t-if="sessions or session" t-attf-class="breadcrumb-item">
+                <a t-attf-href="/my/tickets/">Ticket(s)</a>
+            </li>
+            <li t-if="sessions"
+                t-attf-class="breadcrumb-item #{'active ' if not sessions else ''}">
+                <span t-field="sessions.event_id.name"/>
+            </li>
+            <li t-if="session"
+                t-attf-class="breadcrumb-item #{'active ' if not session else ''}">
+                <a t-attf-href="/my/tickets/event/sessions/{{ session.event_id.id }}"><span t-field="session.name"/></a>
+            </li>
+            <li t-if="session"
+                t-attf-class="breadcrumb-item #{'active ' if not session else ''}">
+                <span t-field="session.name"/> <span t-field="session.date_begin" t-options='{"format": "d MMM yyyy"}'/>
+            </li>
+        </xpath>
+    </template>
+</odoo>

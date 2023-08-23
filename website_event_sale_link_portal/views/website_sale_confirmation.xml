@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<odoo>
+    <template id="website_sale_delivery_withdrawal_confirmation" inherit_id="website_sale.confirmation">
+        <xpath expr="//div[@class='oe_cart']" position="inside">
+            <section t-if="order.has_event_ticket(order.id)" class="s_call_to_action o_cc o_cc2 o_colored_level">
+                <div class="container">
+                    <div class="row" style="align-items: center; padding-left: 10px; padding-right: 10px">
+                        <div class="col-lg-9 o_colored_level">
+                            <b>You have purchased ticket(s),</b>
+                            you can find them here
+                        </div>
+                        <div class="col-lg-3 pt8 o_colored_level" style="">
+                            <p style="text-align: center; padding-top: 1rem !important">
+                                <a class="mb-2 btn btn-primary" href="/my/tickets"
+                                   title="">My Tickets
+                                </a>
+                                <br/>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </xpath>
+    </template>
+</odoo>
