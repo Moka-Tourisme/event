@@ -90,7 +90,7 @@ class EventTicketCustomerPortal(CustomerPortal):
         )
         return self._get_page_view_values(event, access_token, values, 'my_events_history', False, **kwargs)
 
-    def _get_events_domain(self, user):
+    def _get_event_tickets_domain(self, user):
         return [
             ('registration_ids.partner_id', '=', user)
         ]
@@ -161,7 +161,7 @@ class EventTicketCustomerPortal(CustomerPortal):
         user = request.env.user.partner_id.id
         domain = []
 
-        domain += self._get_events_domain(user)
+        domain += self._get_event_tickets_domain(user)
 
         searchbar_filters = {
             'all': {'label': _('All'), 'domain': []},
