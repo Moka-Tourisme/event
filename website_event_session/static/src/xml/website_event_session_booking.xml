@@ -56,7 +56,7 @@
                         t-attf-name="nb_register-#{ticket.id}"
                         class="ticket-select custom-select"
                     >
-                        <t t-set="seats_max" t-value="10" />
+                        <t t-set="seats_max" t-value="ticket.seats_max > 0 ? ticket.seats_max + 1 : 10" />
                         <t t-foreach="Array.from(Array(seats_max).keys())" t-as="nb">
                             <option
                                 t-esc="nb"

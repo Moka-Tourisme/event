@@ -33,11 +33,12 @@ odoo.define("website_event_session.booking", function (require) {
             this.sessions = [];
             this.tickets = [];
         },
+        
 
         /**
          * @override
          */
-        start() {
+        async start() {
             const res = this._super.apply(this, arguments);
             // Don't render if we're on editable mode
             // TODO: Analyze if we need cleaning to avoid breaking website views
@@ -56,6 +57,9 @@ odoo.define("website_event_session.booking", function (require) {
             const today = new Date();
             this.selectMonth(today.getFullYear(), today.getMonth() + 1);
             this.clearSession();
+
+            
+
             return res;
         },
 
@@ -240,6 +244,31 @@ odoo.define("website_event_session.booking", function (require) {
                 .each((i, el) => (ticketCount += parseInt(el.value, 10)));
             return ticketCount;
         },
+        _getSeatsMaxEvent: async function(session) {
+            try {
+                const result = await this._rpc({
+                    model: "event.session",
+                    method: "search_read",
+                    kwargs: {
+                        domain: [['id', '=', session]],
+                        fields: ['seats_available', 'seats_limited'],
+                    }
+                });
+                if (result.length > 0) {
+                    let seats_limited = result[0].seats_limited;
+                    if (seats_limited) {
+                        let seats = result[0].seats_available;
+                        return parseInt(seats);
+                    } else {
+                        return seats_limited;
+                    }
+                } else {
+                    return 10; 
+                }
+            } catch (error) {
+                return 10;
+            }
+        },
 
         // --------------------------
         // Event Handlers
@@ -294,9 +323,30 @@ odoo.define("website_event_session.booking", function (require) {
         /**
          * @event
          */
-        _onTicketQuantityChange() {
+        async _onTicketQuantityChange() {
             const enabled = this.sessionId() && this._getTotalTicketCount() > 0;
             this.$submit.attr("disabled", !enabled);
+
+            const selectedTickets = this._getTotalTicketCount();
+            let seatMaxEvent = await this._getSeatsMaxEvent(this.sessionId());
+
+            $('select[name^="nb_register"]').each(function () {
+                const $select = $(this);
+                const optionCount = parseInt($select.val() || 0);
+                if (seatMaxEvent) {
+                    $select.find('option').not(':selected').prop('disabled', true);
+                    const maxOptions = seatMaxEvent + 1;
+                    $select.find('option').each(function(index) {
+                        if (index + selectedTickets >= maxOptions && index > optionCount) {
+                            $(this).prop('disabled', true);
+                        } else {
+                            $(this).prop('disabled', false);
+                        }
+                    });
+                } else {
+                    $select.find('option').prop('disabled', false);
+                }
+            }, this);
         },
     });
 
