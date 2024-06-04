@@ -1,0 +1,218 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!--    List of all sessions for user-->
+    <!--    <template id="portal_my_home" name="Show sessions" customize_show="True" inherit_id="portal.portal_my_home"-->
+    <!--              priority="60">-->
+    <!--        <xpath expr="//div[hasclass('o_portal_docs')]" position="inside">-->
+    <!--            <t t-call="portal.portal_docs_entry">-->
+    <!--                <t t-set="title">sessions</t>-->
+    <!--                <t t-set="url" t-value="'/my/sessions'"/>-->
+    <!--                <t t-set="placeholder_count" t-value="'event_count'"/>-->
+    <!--            </t>-->
+    <!--        </xpath>-->
+    <!--    </template>-->
+
+    <!--    List of my sessions-->
+    <template id="portal_my_ticket" name="My ticket">
+        <t t-call="portal.portal_layout">
+            <t t-set="breadcrumbs_searchbar" t-value="True"/>
+
+            <t t-call="portal.portal_searchbar">
+                <t t-set="title">Tickets</t>
+            </t>
+            <t t-if="not tickets">
+                <div class="alert alert-warning mt8" role="alert">
+                    There are no tickets.
+                </div>
+            </t>
+            <t t-if="tickets" t-call="portal.portal_table">
+                <thead>
+                    <tr class="active">
+                        <th>Event</th>
+                        <th>Event Date</th>
+                        <th>Registration</th>
+                        <th class="text-right">Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr t-foreach="tickets" t-as="ticket">
+                        <td>
+                            <a t-attf-href="/my/tickets/ticket/#{event.id}?{{ keep_query() }}">
+                                <span t-field="tickets.name"/>
+                            </a>
+                        </td>
+<!--                        <td>-->
+<!--                            <strong>-->
+<!--                                <span t-field="session.date_begin" t-options='{"format": "d MMM yyyy"}'/>-->
+<!--                            </strong>-->
+<!--                            at-->
+<!--                            <span t-field="session.date_begin" t-options='{"format": "hh:mm"}'/>-->
+<!--                        </td>-->
+<!--                        <td class="text-center">-->
+<!--                            <span class="badge badge-pill badge-primary">-->
+<!--                                <t t-set="attendees" t-value="session.seats_reserved+session.seats_used"/>-->
+<!--                                <i class="fa fa-user-circle-o"></i>-->
+<!--                                <span t-out="attendees"/>-->
+<!--                                attendee(s)-->
+<!--                            </span>-->
+<!--                        </td>-->
+                        <td class="text-right">
+                            <span class="badge badge-pill badge-info" t-field="session.stage_id.name"/>
+                        </td>
+                    </tr>
+                </tbody>
+            </t>
+        </t>
+    </template>
+
+    <!--    Breadcrumb -->
+    <template id="portal_layout_sessions" name="Portal layout: session menu entry"
+              inherit_id="portal.portal_breadcrumbs"
+              priority="40">
+        <xpath expr="//ol[hasclass('o_portal_submenu')]" position="inside">
+            <li t-if="sessions or session" t-attf-class="breadcrumb-item">
+                <a t-attf-href="/my/events">Event(s)</a>
+            </li>
+            <li t-if="sessions"
+                t-attf-class="breadcrumb-item #{'active ' if not sessions else ''}">
+                <span t-field="sessions.event_id.name"/>
+            </li>
+            <li t-if="session"
+                t-attf-class="breadcrumb-item #{'active ' if not session else ''}">
+                <a t-attf-href="/my/event/sessions/{{ session.event_id.id }}">Sessions</a>
+            </li>
+            <li t-if="session"
+                t-attf-class="breadcrumb-item #{'active ' if not session else ''}">
+                <span t-field="session.name"/>
+            </li>
+        </xpath>
+    </template>
+
+
+    <template id="portal_my_session" name="My session" inherit_id="portal.portal_sidebar" primary="True">
+        <xpath expr="//div[hasclass('o_portal_sidebar')]" position="inside">
+            <t t-set="o_portal_fullwidth_alert" groups="event.group_event_user">
+                <t t-call="portal.portal_back_in_edit_mode">
+                </t>
+            </t>
+
+            <div class="row mt16 o_portal_event_sidebar">
+                <!-- Sidebar -->
+                <t t-call="portal.portal_record_sidebar">
+                    <t t-set="classes" t-value="'col-lg-auto d-print-none'"/>
+                    <t t-set="title">
+                        <div class="text-center pb-2 pt-3">
+                            <t t-set="attendees" t-value="session.seats_reserved+session.seats_used"/>
+                            <h2 class="mb-3">
+                                <i class="fa fa-user-circle-o"/>
+                                <b t-out="attendees"/>
+                                <br/>
+                                <strong t-if="attendees &gt; 1">Attendees</strong>
+                                <strong t-else="">Attendee</strong>
+                            </h2>
+                            <div class="row no-gutters mt-2">
+                                <div t-if="session.seats_available" class="col-12 bg-100 px-2 py-2">
+                                    <i class="fa fa-user-o px-1 py-2"/>
+                                    <b t-field="session.seats_available"/>
+                                    <br/>
+                                    <small t-if="session.seats_available &gt; 1">Remaining seats</small>
+                                    <small t-else="">Remaining seat</small>
+                                </div>
+                                <div t-else="" class="col-12 bg-100 px-2 py-2">
+                                    <i class="fa fa-user-o px-1 py-2"/>
+                                    ∞
+                                    <br/>
+                                    <small>Unlimited seats</small>
+                                </div>
+                            </div>
+                            <div class="row no-gutters mt-1">
+                                <div t-if="session.seats_reserved" class="col-6">
+                                    <div class="bg-100 px-2 py-2 mr-1">
+                                        <i class="fa fa-user-secret px-1 py-2"/>
+                                        <b t-field="session.seats_reserved"/>
+                                        <br/>
+                                        <small t-if="session.seats_reserved &gt; 1">Confirmed</small>
+                                        <small t-else="">Confirmed</small>
+                                    </div>
+                                </div>
+                                <div t-if="session.seats_used" class="col-6">
+                                    <div class="bg-100 px-2 py-2">
+                                        <i class="fa fa-user-plus px-1 py-2"/>
+                                        <b t-field="session.seats_used"/>
+                                        <br/>
+                                        <small t-if="session.seats_available &gt; 1">Attended</small>
+                                        <small t-else="">Attended</small>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </t>
+                    <t t-set="entries">
+                        <ul class="list-group list-group-flush flex-wrap flex-row flex-lg-column">
+                            <li class="list-group-item flex-grow-1">
+                                <div class="o_download_pdf btn-toolbar flex-sm-nowrap">
+                                    <div class="btn-group  flex-grow-1 mr-1 mb-1">
+                                        <a class="btn btn-secondary btn-block o_download_btn" title="Download"
+                                           t-attf-href="/report/pdf/event_portal.report_session_attendees/#{session.id}"
+                                           download="">
+                                            <i class="fa fa-download"/>
+                                            Download
+                                        </a>
+                                    </div>
+                                    <div class="btn-group flex-grow-1 mb-1">
+                                        <a class="btn btn-secondary btn-block o_print_btn o_portal_event_print"
+                                           id="print_event_report" title="Print"
+                                           t-attf-href="/report/pdf/event_portal.report_session_attendees/#{session.id}"
+                                           target="_blank">
+                                            <i class="fa fa-print"/>
+                                            Print
+                                        </a>
+                                    </div>
+                                </div>
+                            </li>
+                            <li t-if="session.user_id" class="list-group-item flex-grow-1">
+                                <div class="small mb-1">
+                                    <strong class="text-muted">
+                                        <t>
+                                            Organizer
+                                        </t>
+                                    </strong>
+                                </div>
+                                <div class="row">
+                                    <div class="col flex-grow-0 pr-2">
+                                        <img class="rounded-circle mt-1 o_portal_contact_img"
+                                             t-att-src="image_data_uri(session.organizer_id.avatar_1024)"
+                                             alt="Contact"/>
+                                    </div>
+                                    <div class="col pl-0 d-flex align-items-center">
+                                        <t t-out="session.organizer_id.name"/>
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
+                    </t>
+                </t>
+
+                <!-- Page Content -->
+                <div id="event_content" class="col-12 col-lg">
+                    <div class="o_portal_html_view shadow p-3">
+                        <div>
+                            <t t-call="event_portal.content">
+                                <t t-set="docs" t-value="session"/>
+                            </t>
+                        </div>
+                    </div>
+                    <!-- chatter -->
+                    <div id="event_communication" class="mt-4">
+                        <h2>History</h2>
+                        <t t-call="portal.message_thread">
+                            <t t-set="object" t-value="session"/>
+                        </t>
+                    </div>
+                </div>
+            </div>
+        </xpath>
+    </template>
+
+</odoo>
