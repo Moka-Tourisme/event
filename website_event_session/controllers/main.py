@@ -144,6 +144,14 @@ class WebsiteEventSessionController(WebsiteEventController):
             for ticket in session.event_ticket_ids
         ]
 
+    @http.route("/event/session/<model('event.session'):session>/seatsmax", type="json", auth="public", methods=["POST"], website=True, sitemap=False)
+    def session_seatsmax(self, session):
+        result = request.env["event.session"].search_read(
+            [("id", "=", session.id)],
+            ["seats_available", "seats_limited"],
+        )
+        return result
+
     @http.route()
     def registration_new(self, event, **post):
         # COMPLETE OVERRIDE to handle events with sessions

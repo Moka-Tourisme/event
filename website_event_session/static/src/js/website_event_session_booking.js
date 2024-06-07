@@ -33,12 +33,12 @@ odoo.define("website_event_session.booking", function (require) {
             this.sessions = [];
             this.tickets = [];
         },
-        
+
 
         /**
          * @override
          */
-        async start() {
+        start() {
             const res = this._super.apply(this, arguments);
             // Don't render if we're on editable mode
             // TODO: Analyze if we need cleaning to avoid breaking website views
@@ -58,7 +58,6 @@ odoo.define("website_event_session.booking", function (require) {
             this.selectMonth(today.getFullYear(), today.getMonth() + 1);
             this.clearSession();
 
-            
 
             return res;
         },
@@ -67,6 +66,7 @@ odoo.define("website_event_session.booking", function (require) {
             return this.$datePicker.val();
         },
         sessionId() {
+            console.log("val", this.$sessionId.val())
             return parseInt(this.$sessionId.val(), 10);
         },
         eventId() {
@@ -244,15 +244,13 @@ odoo.define("website_event_session.booking", function (require) {
                 .each((i, el) => (ticketCount += parseInt(el.value, 10)));
             return ticketCount;
         },
-        _getSeatsMaxEvent: async function(session) {
+
+
+        _getSeatsMaxEvent: async function (session) {
+            console.log(session.id)
             try {
-                const result = await this._rpc({
-                    model: "event.session",
-                    method: "search_read",
-                    kwargs: {
-                        domain: [['id', '=', session]],
-                        fields: ['seats_available', 'seats_limited'],
-                    }
+                let result = await this._rpc({
+                route: `/event/session/${session}/seatsmax`,
                 });
                 if (result.length > 0) {
                     let seats_limited = result[0].seats_limited;
@@ -263,7 +261,7 @@ odoo.define("website_event_session.booking", function (require) {
                         return seats_limited;
                     }
                 } else {
-                    return 10; 
+                    return 10;
                 }
             } catch (error) {
                 return 10;
@@ -325,28 +323,33 @@ odoo.define("website_event_session.booking", function (require) {
          */
         async _onTicketQuantityChange() {
             const enabled = this.sessionId() && this._getTotalTicketCount() > 0;
+            console.log("ici", enabled)
             this.$submit.attr("disabled", !enabled);
-
             const selectedTickets = this._getTotalTicketCount();
-            let seatMaxEvent = await this._getSeatsMaxEvent(this.sessionId());
-
-            $('select[name^="nb_register"]').each(function () {
-                const $select = $(this);
-                const optionCount = parseInt($select.val() || 0);
-                if (seatMaxEvent) {
-                    $select.find('option').not(':selected').prop('disabled', true);
-                    const maxOptions = seatMaxEvent + 1;
-                    $select.find('option').each(function(index) {
-                        if (index + selectedTickets >= maxOptions && index > optionCount) {
-                            $(this).prop('disabled', true);
-                        } else {
-                            $(this).prop('disabled', false);
-                        }
-                    });
-                } else {
-                    $select.find('option').prop('disabled', false);
-                }
-            }, this);
+            // check if this.sessionId is a number
+            console.log("value", typeof this.sessionId())
+            console.log("isNan", isNaN(this.sessionId()))
+            if (!isNaN(this.sessionId())){
+                console.log("ICI")
+                let seatMaxEvent = await this._getSeatsMaxEvent(this.sessionId());
+                $('select[name^="nb_register"]').each(function () {
+                    const $select = $(this);
+                    const optionCount = parseInt($select.val() || 0);
+                    if (seatMaxEvent) {
+                        $select.find('option').not(':selected').prop('disabled', true);
+                        const maxOptions = seatMaxEvent + 1;
+                        $select.find('option').each(function (index) {
+                            if (index + selectedTickets >= maxOptions && index > optionCount) {
+                                $(this).prop('disabled', true);
+                            } else {
+                                $(this).prop('disabled', false);
+                            }
+                        });
+                    } else {
+                        $select.find('option').prop('disabled', false);
+                    }
+                }, this);
+            }
         },
     });
 
