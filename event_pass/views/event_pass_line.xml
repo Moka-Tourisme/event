@@ -1,0 +1,231 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="action_send_invitation_by_mail" model="ir.actions.server">
+            <field name="name">Send invitation by email</field>
+            <field name="type">ir.actions.server</field>
+            <field name="model_id" ref="event_pass.model_event_pass_line"/>
+            <field name="binding_model_id" ref="event_pass.model_event_pass_line"/>
+            <field name="binding_view_types">list</field>
+            <field name="state">code</field>
+            <field name="code">
+                action = records.action_send_multiple_by_mail("invitation")
+            </field>
+        </record>
+
+        <record id="invitation_mail_template" model="mail.template">
+            <field name="name">Invitation Ticket</field>
+            <field name="model_id" ref="event_pass.model_event_pass_line"/>
+            <field name="subject">Hello, your invitation ticket(s)</field>
+            <field name="email_to">{{ object.partner_id.email }}</field>
+            <field name="body_html" type="html">
+                <div>
+                    Hello,
+                    <br/>
+                    <br/>
+                    Here is your invitation ticket(s), you can distribute it to your customers.
+                    <br/>
+                    <br/>
+                    You can use it by printing it or by showing it on your smartphone.
+                    <br/>
+                    <br/>
+                    Regards,
+                    <br/>
+                </div>
+            </field>
+        </record>
+
+        <record id="action_send_pass_by_mail" model="ir.actions.server">
+            <field name="name">Send pass by email</field>
+            <field name="type">ir.actions.server</field>
+            <field name="binding_view_types">form</field>
+            <field name="model_id" ref="event_pass.model_event_pass_line"/>
+            <field name="binding_model_id" ref="event_pass.model_event_pass_line"/>
+            <field name="state">code</field>
+            <field name="code">
+                action = records.action_send_pass_by_mail()
+            </field>
+        </record>
+
+        <record id="pass_mail_template" model="mail.template">
+            <field name="name">Pass Ticket</field>
+            <field name="model_id" ref="event_pass.model_event_pass_line"/>
+            <field name="subject">Hello, your pass ticket(s)</field>
+            <field name="body_html" type="html">
+                <div>
+                    Hello,
+                    <br/>
+                    <br/>
+                    Here is your pass ticket(s).
+                    <br/>
+                    <br/>
+                    You can use it by printing it or by showing it on your smartphone.
+                    <br/>
+                    <br/>
+                    Regards,
+                    <br/>
+                </div>
+            </field>
+        </record>
+
+        <record id="view_pass_form" model="ir.ui.view">
+            <field name="model">event.pass.line</field>
+            <field name="arch" type="xml">
+                <form>
+                    <header>
+                        <button string="Confirm" name="action_confirm" states="draft" type="object"
+                                class="oe_highlight"/>
+                        <button string="Cancel" name="action_cancel" states="draft,valid" type="object"/>
+                        <button string="Set draft" name="action_draft" states="cancelled" type="object"/>
+                        <field name="state" widget="statusbar" statusbar_visible="draft,valid,expired,cancelled"/>
+                    </header>
+                    <sheet>
+                        <div class="oe_button_box" name="button_box">
+
+                        </div>
+                        <div class="oe_title">
+                            <label for="display_name"/>
+                            <h1>
+                                <field name="display_name"/>
+                            </h1>
+                            <label for="pass_type_id">
+                                Pass Model
+                            </label>
+                            <field name="pass_type_id"/>
+                        </div>
+                        <group>
+                            <group name="allowed_events" string="Allowed Events">
+                                <field name="partner_id"/>
+                                <field name="gifted_by_id"/>
+                                <field name="event_type_ids" widget="many2many_tags"/>
+                                <field name="category_ids" widget="many2many_tags"
+                                       options="{'color_field': 'color'}"/>
+                                <field name="event_stage_ids" widget="many2many_tags"/>
+                                <field name="event_ids" widget="many2many_tags"/>
+                                <field attrs="{'invisible': [('event_ids', '=', [])]}"
+                                       name="session_ids" widget="many2many_tags"
+                                       domain="[('event_id', 'in', event_ids)]"/>
+                                <field attrs="{'invisible': [('event_ids', '=', [])]}"
+                                       name="unauthorized_session_ids" widget="many2many_tags"
+                                       domain="[('event_id', 'in', event_ids)]"/>
+                                <field name="active" invisible="1"/>
+                            </group>
+
+                            <group name="authorisation_settings" string="Authorisation settings">
+                                <field name="validity_date"/>
+                                <field name="expiration_date"/>
+                                <field name="fixed_number_allowed_event"/>
+                                <field name="number_allowed_event"
+                                       attrs="{'invisible': [('fixed_number_allowed_event', '=', False)]}"/>
+                                <field name="number_visitors"/>
+                                <field name="counted_passage"/>
+                                <field name="qr_code"/>
+                            </group>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="view_pass_tree" model="ir.ui.view">
+            <field name="model">event.pass.line</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="display_name"/>
+                    <field name="partner_id"/>
+                    <field name="gifted_by_id"/>
+                    <field name="validity_date"/>
+                    <field name="expiration_date" optional="show"/>
+                    <field name="event_type_ids" widget="many2many_tags" optional="hide"/>
+                    <field name="category_ids" widget="many2many_tags"
+                           options="{'color_field': 'color'}" optional="hide"/>
+                    <field name="event_stage_ids" widget="many2many_tags" optional="hide"/>
+                    <field name="event_ids" widget="many2many_tags" optional="hide"/>
+                    <field name="session_ids" widget="many2many_tags" optional="hide"/>
+                    <field name="remaining_passage" optional="hide"/>
+                    <field name="counted_passage" optional="hide"/>
+                    <field name="number_allowed_event" optional="hide"/>
+                    <field name="number_visitors" optional="hide"/>
+                    <field name="state" decoration-danger="state == 'cancelled' or state == 'expired'"
+                           decoration-success="state == 'valid'" decoration-info="state == 'draft'" widget="badge"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="view_pass_search" model="ir.ui.view">
+            <field name="model">event.pass.line</field>
+            <field name="arch" type="xml">
+                <search>
+                    <field name="display_name"/>
+                    <field name="partner_id"/>
+                    <field name="gifted_by_id"/>
+                    <filter name="never_used" string="Never used" domain="[('counted_passage', '=', 0)]"/>
+                    <filter name="used" string="Used"
+                            domain="[('fixed_number_allowed_event', '=', True), ('number_allowed_event', '=', 0)]"/>
+                    <separator/>
+                    <filter name="valid" string="Valid" domain="[('state', '=', 'valid')]"/>
+                    <filter name="draft" string="Draft" domain="[('state', '=', 'draft')]"/>
+                    <filter name="cancelled" string="Cancelled" domain="[('state', '=', 'cancelled')]"/>
+                    <filter name="expired" string="Expired" domain="[('state', '=', 'expired')]"/>
+                    <separator/>
+                    <filter name="archived" string="Archived" domain="[('active', '=', 'false')]"/>
+                    <separator/>
+                    <group expand="0" string="Group by">
+                        <filter string="Name" name="group_by_name" context="{'group_by': 'display_name'}"/>
+                        <filter string="Validity date" name="group_by_validity_date"
+                                context="{'group_by': 'validity_date'}"/>
+                        <filter string="Expiration date" name="group_by_expiration_date"
+                                context="{'group_by': 'expiration_date'}"/>
+                        <filter string="State" name="group_by_state" context="{'group_by': 'state'}"/>
+                        <filter string="Partner" name="group_by_partner" context="{'group_by': 'partner_id'}"/>
+                        <filter string="Gifted by" name="group_by_gifted_by" context="{'group_by': 'gifted_by_id'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+
+        <record id="pass_line_inherited_tree_view" model="ir.ui.view">
+            <field name="name">pass.line.inherited.tree.view</field>
+            <field name="model">event.pass.line</field>
+            <field name="inherit_id" ref="event_pass.view_pass_tree"/>
+            <field name="arch" type="xml">
+                <xpath expr="//tree" position="attributes">
+                    <attribute name="js_class">event_pass_tree</attribute>
+                </xpath>
+            </field>
+        </record>
+
+        <record id="action_pass" model="ir.actions.act_window">
+            <field name="name">Pass &amp; Invitation</field>
+            <field name="res_model">event.pass.line</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+        <menuitem
+                id="menu_pass"
+                sequence="60"
+                name="Pass &amp; Invitations"
+                parent="event.event_main_menu"
+                action="action_pass"
+        />
+
+        <record id="event_pass_line_inherit" model="ir.ui.view">
+            <field name="name">view.event.pass.line.form.inherited</field>
+            <field name="model">event.pass.line</field>
+            <field name="inherit_id" ref="event_pass.view_pass_form"/>
+            <field name="groups_id" eval="[(5,)]"/>
+            <field name="priority" eval="6"/>
+            <field name="arch" type="xml">
+                <div name="button_box" position="inside">
+                    <button class="oe_stat_button"
+                            groups="event.group_event_user"
+                            type="object"
+                            icon="fa-ticket"
+                            name="action_event_view" attrs="{'invisible': [('event_count','=', 0)]}">
+                        <field string="Events" name="event_count" widget="statinfo"/>
+                    </button>
+                </div>
+            </field>
+        </record>
+    </data>
+</odoo>

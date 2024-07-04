@@ -1,0 +1,108 @@
+<?xml version="1.0"?>
+<odoo>
+    <data>
+
+        <!-- PASS.TYPE ACTIONS -->
+        <record model="ir.actions.act_window" id="act_menu_pass_type">
+            <field name="name">Pass Templates</field>
+            <field name="res_model">event.pass.type</field>
+            <field name="help" type="html">
+                <p class="oe_view_nocontent_create">
+                    Click to create a new pass template.
+                </p>
+            </field>
+        </record>
+
+
+        <record model="ir.ui.view" id="view_event_pass_type_tree">
+            <field name="name">event.pass.type.tree</field>
+            <field name="model">event.pass.type</field>
+            <field name="arch" type="xml">
+                <tree string="Pass Template">
+                    <field name="display_name"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="event_pass_type_view_search" model="ir.ui.view">
+            <field name="name">event.pass.type.search</field>
+            <field name="model">event.pass.type</field>
+            <field name="arch" type="xml">
+                <search string="Pass Templates">
+                    <field name="display_name"/>
+                </search>
+            </field>
+        </record>
+
+        <record id="product_event_pass_type_form_view" model="ir.ui.view">
+            <field name="name">product.event.pass.type.form</field>
+            <field name="model">product.template</field>
+            <field name="inherit_id" ref="product.product_template_form_view"/>
+            <field name="arch" type="xml">
+                <xpath expr="//group[@name='sale']" position="inside">
+                    <group name="pass_type" string="Pass Template"
+                           attrs="{'invisible': [('detailed_type','!=','pass')]}">
+                        <field name="pass_type_id"/>
+                    </group>
+                </xpath>
+            </field>
+        </record>
+
+        <record id="event_pass_type_inherit" model="ir.ui.view">
+            <field name="name">view.event.pass.type.form.inherited</field>
+            <field name="model">event.pass.type</field>
+            <field name="inherit_id" ref="event_pass.view_event_pass_type_form"/>
+            <field name="arch" type="xml">
+                <div name="button_box" position="inside">
+                    <field name="currency_id" invisible="1"/>
+                    <button
+                            name="action_view_linked_orders"
+                            type="object"
+                            class="oe_stat_button"
+                            icon="fa-dollar"
+                            groups="sales_team.group_sale_salesman"
+                            help="Total Sales for this pass type"
+                            attrs="{'invisible': [('sale_price_subtotal','=', 0)]}"
+                    >
+                        <field
+                                string="Sales"
+                                name="sale_price_subtotal"
+                                widget="statinfo"
+                                options="{'currency_field': 'currency_id'}"
+                        />
+                    </button>
+                    <button class="oe_stat_button" type="object" name="action_view_sale_order"
+                            groups="sales_team.group_sale_salesman" icon="fa-usd"
+                            attrs="{'invisible': [('sale_order_count','=', 0)]}">
+                        <field string="Sales" name="sale_order_count" widget="statinfo"/>
+                    </button>
+                    <button class="oe_stat_button"
+                            groups="event.group_event_user"
+                            type="object"
+                            icon="fa-shopping-basket"
+                            name="action_product_view" attrs="{'invisible': [('product_count','=', 0)]}"
+                    >
+                        <field string="Products" name="product_count" widget="statinfo"/>
+                    </button>
+                </div>
+            </field>
+        </record>
+
+        <record id="event_pass_sale_order_inherit" model="ir.ui.view">
+            <field name="name">view.event.pass.sale.order.inherited</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="sale.view_order_form"/>
+            <field name="groups_id" eval="[(5,)]"/>
+            <field name="priority" eval="2"/>
+            <field name="arch" type="xml">
+                <div name="button_box" position="inside">
+                    <button class="oe_stat_button" type="object" name="action_view_pass"
+                            attrs="{'invisible': [('pass_count', '=', 0)]}"
+                            icon="fa-ticket">
+                        <field string="Pass" name="pass_count" widget="statinfo"/>
+                    </button>
+                </div>
+            </field>
+        </record>
+    </data>
+</odoo>

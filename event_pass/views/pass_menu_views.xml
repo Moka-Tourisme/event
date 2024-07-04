@@ -1,0 +1,119 @@
+<?xml version="1.0"?>
+<odoo>
+    <data>
+
+        <!-- PASS.TYPE ACTIONS -->
+        <record model="ir.actions.act_window" id="act_menu_pass_type">
+            <field name="name">Pass Templates</field>
+            <field name="res_model">event.pass.type</field>
+            <field name="help" type="html">
+                <p class="oe_view_nocontent_create">
+                    Click to create a new pass template.
+                </p>
+            </field>
+        </record>
+
+        <!-- HEADER: CONFIGURATION -->
+        <menuitem name="Pass Templates"
+                  id="menu_pass_type"
+                  sequence="4"
+                  action="act_menu_pass_type"
+                  groups="event.group_event_user"
+                  parent="event.menu_event_configuration"/>
+
+
+        <!-- PASS.TYPE VIEWS -->
+        <record model="ir.ui.view" id="view_event_pass_type_form">
+            <field name="name">event.pass.type.form</field>
+            <field name="model">event.pass.type</field>
+            <field name="arch" type="xml">
+                <form>
+                    <sheet>
+                        <div class="oe_button_box" name="button_box"/>
+                        <div class="oe_title">
+                            <h1>
+                                <field name="display_name" id="field_display_name"/>
+                            </h1>
+                        </div>
+                        <group>
+                            <group name="allowed_events" string="Allowed Events">
+                                <field name="event_type_ids" widget="many2many_tags" id="field_event_type_ids"/>
+                                <field name="category_ids" widget="many2many_tags" options="{'color_field': 'color'}" id="field_category_ids"/>
+                                <field name="event_stage_ids" widget="many2many_tags" id="field_event_stage_ids"/>
+                                <field name="event_ids" widget="many2many_tags" id="field_event_ids"/>
+                                <field attrs="{'invisible': [('event_ids', '=', [])]}" name="session_ids" widget="many2many_tags" domain="[('event_id', 'in', event_ids)]" id="field_session_ids"/>
+                                <field attrs="{'invisible': [('event_ids', '=', [])]}" name="unauthorized_session_ids" widget="many2many_tags" domain="[('event_id', 'in', event_ids)]" id="field_unauthorized_session_ids"/>
+                            </group>
+
+                            <group name="authorisation_settings" string="Authorisation settings">
+                                <field name="validity_date" id="field_validity_date"/>
+                                <div class="d-flex">
+                                    <field name="fixed_expiration_date" id="field_fixed_expiration_date"/>
+                                    <field name="expiration_date" placeholder="Expiration Date" attrs="{'invisible': [('fixed_expiration_date', '=', False)]}" id="field_expiration_date"/>
+                                </div>
+                                <field name="validity_period" attrs="{'invisible': [('fixed_expiration_date', '=', True)]}" id="field_validity_period"/>
+                                <field name="fixed_number_allowed_event" id="field_fixed_number_allowed_event"/>
+                                <field name="number_allowed_event" attrs="{'invisible': [('fixed_number_allowed_event', '=', False)]}" id="field_number_allowed_event"/>
+                                <field name="number_visitors" id="field_number_visitors"/>
+                            </group>
+                            <notebook>
+                                <page string="Customization">
+                                        <group name="general_customization" string="General Customization" class="oe_clear">
+                                            <div class="row" style="width: 100%;">
+                                                <div style="padding: 10px;">
+                                                    <group name="global_colors">
+                                                        <field name="outline_color" widget="color" id="field_outline_color"/>
+                                                        <field name="background_color" widget="color" id="field_background_color"/>
+                                                    </group>
+                                                    <group name="upper_left" string="Upper Left Page">
+                                                        <field name="upper_left_text" widget="html" options="{'codeview':true}" id="field_upper_left_text"/>
+                                                    </group>
+                                                    <group name="bottom_left" string="Bottom Left Page">
+                                                        <field name="bottom_left_text" widget="html" options="{'codeview':true}" id="field_bottom_left_text"/>
+                                                    </group>
+                                                </div>
+                                                <div style="padding: 10px;">
+                                                    <group name="upper_right" string="Upper Right Page">
+                                                        <field name="base_logo" widget="html" options="{'codeview':true}" id="field_base_logo"/>
+                                                        <field name="title_text" id="field_title_text"/>
+                                                        <field name="title_color" widget="color" id="field_title_color"/>
+                                                        <field name="content_color" widget="color" id="field_content_color"/>
+                                                    </group>
+                                                    <group name="bottom_right" string="Bottom Right Page">
+                                                        <field name="bottom_right_text" widget="html" options="{'codeview':true}" id="field_bottom_right_text"/>
+                                                    </group>
+                                                </div>
+                                            </div>
+                                        </group>
+                                </page>
+                        </notebook>
+                        </group>
+                        
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+
+        <record model="ir.ui.view" id="view_event_pass_type_tree">
+            <field name="name">event.pass.type.tree</field>
+            <field name="model">event.pass.type</field>
+            <field name="arch" type="xml">
+                <tree string="Pass Template">
+                    <field name="display_name"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="event_pass_type_view_search" model="ir.ui.view">
+            <field name="name">event.pass.type.search</field>
+            <field name="model">event.pass.type</field>
+            <field name="arch" type="xml">
+                <search string="Pass Templates">
+                    <field name="display_name"/>
+                </search>
+            </field>
+        </record>
+
+    </data>
+</odoo>

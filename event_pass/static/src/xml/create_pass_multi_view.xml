@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates>
+    <t t-extend="ListView.buttons" t-name="EventPassListView.buttons">
+        <t t-jquery="button.o_list_button_add" t-operation="after">
+            <button type="button" class="btn btn-primary o_wizard_create_pass_multi" style="margin-left: 0.4vw; margin-right: 0.4vw;">Create Passes</button>
+        </t>
+    </t>
+</templates>

@@ -1,0 +1,37 @@
+<odoo>
+    <template id="event_passes_page" name="Event Passes">
+        <t t-call="website.layout">
+            <div class="container">
+                <h1>Event Passes</h1>
+                <div class="row">
+                    <t t-foreach="products" t-as="product">
+                        <div class="col-md-4">
+                            <div class="card">
+                                <div class="card-body">
+                                    <h5 class="card-title">
+                                        <a t-attf-href="/event/pass/#{product.id}">
+                                            <t t-esc="product.name"/>
+                                        </a>
+                                    </h5>
+                                    <p class="card-text">
+                                        <t t-esc="product.description_sale"/>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </t>
+                </div>
+            </div>
+        </t>
+    </template>
+
+    <template id="event_pass_page" name="Event Pass">
+        <t t-call="website.layout">
+            <div class="container">
+                <h1><t t-esc="product.name"/></h1>
+                <p><t t-esc="product.description_sale"/></p>
+                <a class="btn btn-primary" t-attf-href="/shop/product/#{product.id}">Buy Now</a>
+            </div>
+        </t>
+    </template>
+</odoo>
