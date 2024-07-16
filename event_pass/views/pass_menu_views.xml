@@ -13,13 +13,18 @@
             </field>
         </record>
 
+       
+
+
         <!-- HEADER: CONFIGURATION -->
         <menuitem name="Pass Templates"
                   id="menu_pass_type"
-                  sequence="4"
+                  sequence="3"
                   action="act_menu_pass_type"
                   groups="event.group_event_user"
                   parent="event.menu_event_configuration"/>
+
+        
 
 
         <!-- PASS.TYPE VIEWS -->
@@ -30,9 +35,10 @@
                 <form>
                     <sheet>
                         <div class="oe_button_box" name="button_box"/>
+                        <field name="base_logo" widget="image" id="field_base_logo" class="oe_avatar"/>
                         <div class="oe_title">
                             <h1>
-                                <field name="display_name" id="field_display_name"/>
+                                <field name="display_name" id="field_display_name" placeholder="For example : Annual pass"/>
                             </h1>
                         </div>
                         <group>
@@ -47,48 +53,52 @@
 
                             <group name="authorisation_settings" string="Authorisation settings">
                                 <field name="validity_date" id="field_validity_date"/>
-                                <div class="d-flex">
-                                    <field name="fixed_expiration_date" id="field_fixed_expiration_date"/>
-                                    <field name="expiration_date" placeholder="Expiration Date" attrs="{'invisible': [('fixed_expiration_date', '=', False)]}" id="field_expiration_date"/>
-                                </div>
-                                <field name="validity_period" attrs="{'invisible': [('fixed_expiration_date', '=', True)]}" id="field_validity_period"/>
-                                <field name="fixed_number_allowed_event" id="field_fixed_number_allowed_event"/>
-                                <field name="number_allowed_event" attrs="{'invisible': [('fixed_number_allowed_event', '=', False)]}" id="field_number_allowed_event"/>
+                                <label for="fixed_expiration_date" string="Expiration Date"/> 
+                                <span>
+                                    <field name="fixed_expiration_date" nolabel="1"/>
+                                    <span attrs="{'invisible': [('fixed_expiration_date', '=', False)], 'required': [('fixed_expiration_date', '=', False)]}">
+                                        <field name="expiration_date" class="oe_inline"/>
+                                    </span>
+                                </span>
+                                <field name="validity_period" attrs="{'invisible': [('fixed_expiration_date', '=', True)]}" id="field_validity_period" string="Validity Period (in days)"/>
+
+                                <label for="fixed_number_allowed_event" string="Limit passages"/>
+                                <span>
+                                    <field name="fixed_number_allowed_event" nolabel="1"/>
+                                    <span attrs="{'invisible': [('fixed_number_allowed_event', '=', False)], 'required': [('fixed_number_allowed_event', '=', False)]}">
+                                        to <field name="number_allowed_event" class="oe_inline"/>
+                                    </span>
+                                </span>
                                 <field name="number_visitors" id="field_number_visitors"/>
                             </group>
+                        </group>
                             <notebook>
                                 <page string="Customization">
-                                        <group name="general_customization" string="General Customization" class="oe_clear">
-                                            <div class="row" style="width: 100%;">
-                                                <div style="padding: 10px;">
-                                                    <group name="global_colors">
-                                                        <field name="outline_color" widget="color" id="field_outline_color"/>
-                                                        <field name="background_color" widget="color" id="field_background_color"/>
-                                                    </group>
+                                                <group name="general_customization" string="General Customization" class="oe_clear">
+                                                    <field name="outline_color" widget="color" id="field_outline_color"/>
+                                                    <field name="background_color" widget="color" id="field_background_color"/>
+                                                    <field name="title_color" widget="color" id="field_title_color"/>
+                                                    <field name="content_color" widget="color" id="field_content_color"/>
+                                                </group>
+                                                <group>
                                                     <group name="upper_left" string="Upper Left Page">
-                                                        <field name="upper_left_text" widget="html" options="{'codeview':true}" id="field_upper_left_text"/>
+                                                        <field name="upper_left_text" widget="html" options="{'codeview':true}" id="field_upper_left_text" style="height: 200px; width: 100%;"/>
                                                     </group>
-                                                    <group name="bottom_left" string="Bottom Left Page">
-                                                        <field name="bottom_left_text" widget="html" options="{'codeview':true}" id="field_bottom_left_text"/>
-                                                    </group>
-                                                </div>
-                                                <div style="padding: 10px;">
                                                     <group name="upper_right" string="Upper Right Page">
-                                                        <field name="base_logo" widget="html" options="{'codeview':true}" id="field_base_logo"/>
                                                         <field name="title_text" id="field_title_text"/>
-                                                        <field name="title_color" widget="color" id="field_title_color"/>
-                                                        <field name="content_color" widget="color" id="field_content_color"/>
+                                                    </group>
+                                                    
+                                                </group>
+                                                <group>
+                                                    <group name="bottom_left" string="Bottom Left Page">
+                                                        <field name="bottom_left_text" widget="html" options="{'codeview':true}" id="field_bottom_left_text" style="height: 200px; width: 100%;"/>
                                                     </group>
                                                     <group name="bottom_right" string="Bottom Right Page">
-                                                        <field name="bottom_right_text" widget="html" options="{'codeview':true}" id="field_bottom_right_text"/>
+                                                        <field name="bottom_right_text" widget="html" options="{'codeview':true}" id="field_bottom_right_text" style="height: 200px; width: 100%;"/>
                                                     </group>
-                                                </div>
-                                            </div>
-                                        </group>
+                                                </group>     
                                 </page>
-                        </notebook>
-                        </group>
-                        
+                        </notebook>     
                     </sheet>
                 </form>
             </field>
@@ -114,6 +124,11 @@
                 </search>
             </field>
         </record>
+
+        
+
+        
+
 
     </data>
 </odoo>

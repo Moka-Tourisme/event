@@ -35,6 +35,7 @@ class PassLine(models.Model):
         string="Pass Type",
     )
     
+    
 
     state = fields.Selection(
         [
@@ -82,6 +83,7 @@ class PassLine(models.Model):
         string="Counted passage",
         help="Number of passage counted",
         readonly=True,
+        default=0,
     )
 
     remaining_passage = fields.Integer(
@@ -404,13 +406,9 @@ class PassType(models.Model):
         required=False)
 
 
-    base_logo = fields.Html(
+    base_logo = fields.Binary(
         string="Base Logo",
         help="Please insert image by using /image",
-    )
-
-    base_logo_filename = fields.Char(
-        string="Base Logo Filename",
     )
 
     title_color = fields.Char(

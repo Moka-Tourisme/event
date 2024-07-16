@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 15.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-07-04 11:44+0000\n"
-"PO-Revision-Date: 2024-07-04 11:44+0000\n"
+"POT-Creation-Date: 2024-07-16 11:34+0000\n"
+"PO-Revision-Date: 2024-07-16 11:34+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -65,7 +65,7 @@ msgstr "Nombre de passages autorisés"
 #. module: sale_event_pass
 #: model:ir.model.fields,field_description:sale_event_pass.field_event_pass_type__number_visitors
 msgid "Allowed attendees"
-msgstr "Nombre de participants par passage"
+msgstr "Participants par passage"
 
 #. module: sale_event_pass
 #: model:ir.model.fields,field_description:sale_event_pass.field_sale_order_line__generated_pass_ids
@@ -75,7 +75,7 @@ msgstr "Pass acheté(s)"
 #. module: sale_event_pass
 #: model:ir.model.fields,field_description:sale_event_pass.field_event_pass_line__buy_line_id
 msgid "Buy Line"
-msgstr ""
+msgstr "Ligne d'achat"
 
 #. module: sale_event_pass
 #: model:ir.model.fields,field_description:sale_event_pass.field_event_pass_type__category_ids
@@ -85,7 +85,17 @@ msgstr "Catégorie"
 #. module: sale_event_pass
 #: model_terms:ir.actions.act_window,help:sale_event_pass.act_menu_pass_type
 msgid "Click to create a new pass template."
-msgstr ""
+msgstr "Cliquer pour créer un nouveau modèle de pass."
+
+#. module: sale_event_pass
+#: model:ir.model.fields,field_description:sale_event_pass.field_event_pass_line__commercial_team
+msgid "Commercial Team"
+msgstr "Équipe commerciale"
+
+#. module: sale_event_pass
+#: model_terms:ir.ui.view,arch_db:sale_event_pass.view_pass_search_inherited
+msgid "Commercial team"
+msgstr "Équipe commerciale"
 
 #. module: sale_event_pass
 #: model:ir.model.fields,field_description:sale_event_pass.field_event_pass_type__company_id
@@ -95,7 +105,7 @@ msgstr "Société"
 #. module: sale_event_pass
 #: model:ir.model.fields,field_description:sale_event_pass.field_event_pass_type__currency_id
 msgid "Currency"
-msgstr ""
+msgstr "Devise"
 
 #. module: sale_event_pass
 #: model:ir.model.fields,field_description:sale_event_pass.field_event_pass_type__event_ids
@@ -156,7 +166,7 @@ msgstr "Nombre d'utilisateur par passage fixe"
 #. module: sale_event_pass
 #: model:ir.model.fields,field_description:sale_event_pass.field_event_pass_type__display_name
 msgid "Name of the pass"
-msgstr ""
+msgstr "Nom du modèle"
 
 #. module: sale_event_pass
 #: model:ir.model.fields,help:sale_event_pass.field_event_pass_type__number_allowed_event
@@ -191,13 +201,13 @@ msgstr "Modèle de pass"
 #: model:ir.actions.act_window,name:sale_event_pass.act_menu_pass_type
 #: model_terms:ir.ui.view,arch_db:sale_event_pass.event_pass_type_view_search
 msgid "Pass Templates"
-msgstr ""
+msgstr "Modèles de pass"
 
 #. module: sale_event_pass
 #: model:ir.model.fields,field_description:sale_event_pass.field_product_product__pass_type_id
 #: model:ir.model.fields,field_description:sale_event_pass.field_product_template__pass_type_id
 msgid "Pass Type"
-msgstr ""
+msgstr "Modèle de pass"
 
 #. module: sale_event_pass
 #: model:ir.model.fields,help:sale_event_pass.field_sale_order_line__pass_id
@@ -209,7 +219,7 @@ msgstr "Pass créé(s)"
 #: code:addons/sale_event_pass/models/product.py:0
 #, python-format
 msgid "Pass type is required for pass products"
-msgstr ""
+msgstr "Un modèle de pass est requis sur un produit de type Pass"
 
 #. module: sale_event_pass
 #: model:mail.template,name:sale_event_pass.mail_template_pass
@@ -224,7 +234,7 @@ msgstr ""
 #. module: sale_event_pass
 #: model:ir.model.fields,field_description:sale_event_pass.field_event_pass_type__product_count
 msgid "Product Count"
-msgstr ""
+msgstr "Nombre de produits"
 
 #. module: sale_event_pass
 #: model:ir.model,name:sale_event_pass.model_product_template
@@ -240,12 +250,12 @@ msgstr "Type d'article"
 #. module: sale_event_pass
 #: model_terms:ir.ui.view,arch_db:sale_event_pass.event_pass_type_inherit
 msgid "Products"
-msgstr ""
+msgstr "Produits"
 
 #. module: sale_event_pass
 #: model:ir.model.fields,field_description:sale_event_pass.field_event_pass_type__sale_order_count
 msgid "Sale Order Count"
-msgstr ""
+msgstr "Commandes"
 
 #. module: sale_event_pass
 #: model:ir.model.fields,help:sale_event_pass.field_event_pass_line__buy_line_id
@@ -255,13 +265,13 @@ msgstr ""
 #. module: sale_event_pass
 #: model:ir.model.fields,field_description:sale_event_pass.field_event_pass_type__sale_price_subtotal
 msgid "Sale Price Subtotal"
-msgstr ""
+msgstr "Ventes en HT"
 
 #. module: sale_event_pass
 #: model_terms:ir.ui.view,arch_db:sale_event_pass.event_pass_line_sale_inherit
 #: model_terms:ir.ui.view,arch_db:sale_event_pass.event_pass_type_inherit
 msgid "Sales"
-msgstr ""
+msgstr "Ventes"
 
 #. module: sale_event_pass
 #: model:ir.model,name:sale_event_pass.model_sale_order
@@ -286,7 +296,7 @@ msgstr "Etape"
 #. module: sale_event_pass
 #: model:ir.model.fields,help:sale_event_pass.field_sale_order__pass_count
 msgid "The number of pass related to this order"
-msgstr ""
+msgstr "Nombre de pass liés à cette commande"
 
 #. module: sale_event_pass
 #: model:ir.model.fields,field_description:sale_event_pass.field_event_pass_line__sale_order_count
@@ -294,19 +304,29 @@ msgid "The number of sales orders related to this pass"
 msgstr ""
 
 #. module: sale_event_pass
+#: model:ir.model.fields,field_description:sale_event_pass.field_event_pass_line__total_excluding_taxes
+msgid "Total (taxes excl.)"
+msgstr "Total HT"
+
+#. module: sale_event_pass
+#: model:ir.model.fields,field_description:sale_event_pass.field_event_pass_line__total_including_taxes
+msgid "Total (taxes incl.)"
+msgstr "Total TTC"
+
+#. module: sale_event_pass
 #: model_terms:ir.ui.view,arch_db:sale_event_pass.event_pass_type_inherit
 msgid "Total Sales for this pass type"
-msgstr ""
+msgstr "Ventes totales pour ce modèle de pass"
 
 #. module: sale_event_pass
 #: model:ir.model.fields,field_description:sale_event_pass.field_event_pass_type__unauthorized_session_ids
 msgid "Unauthorized Session"
-msgstr "Session non autorisée"
+msgstr "Session exclues"
 
 #. module: sale_event_pass
 #: model:ir.model.fields,field_description:sale_event_pass.field_event_pass_type__validity_date
 msgid "Validity Date"
-msgstr "Date de validité"
+msgstr "Date initiale"
 
 #. module: sale_event_pass
 #: model:ir.model.fields,field_description:sale_event_pass.field_event_pass_type__validity_period
@@ -318,6 +338,8 @@ msgstr "Période de validité"
 msgid ""
 "Validity date of the pass if not set the validity date is the date of sale"
 msgstr ""
+"La date initiale du pass. Si non définie, le modèle prendra la date de la "
+"vente. "
 
 #. module: sale_event_pass
 #: model:ir.model.fields,help:sale_event_pass.field_event_pass_type__validity_period
@@ -325,6 +347,7 @@ msgid ""
 "Validity period of the pass in days, if not set the validity period is "
 "unlimited"
 msgstr ""
+"Période de validité en jours. Si non définie, la période sera illimitée."
 
 #. module: sale_event_pass
 #: model:mail.template,subject:sale_event_pass.mail_template_pass

@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 {
     'name': 'Point Of Sale Event Pass',
     'version': '15.0.1.0.0',

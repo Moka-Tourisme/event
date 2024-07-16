@@ -86,12 +86,12 @@
                         <div class="oe_title">
                             <label for="display_name"/>
                             <h1>
-                                <field name="display_name"/>
+                                <field name="display_name" placeholder="For example : Annual pass"/>
                             </h1>
                             <label for="pass_type_id">
                                 Pass Model
                             </label>
-                            <field name="pass_type_id"/>
+                            <field name="pass_type_id" required="True"/>
                         </div>
                         <group>
                             <group name="allowed_events" string="Allowed Events">
@@ -114,11 +114,15 @@
                             <group name="authorisation_settings" string="Authorisation settings">
                                 <field name="validity_date"/>
                                 <field name="expiration_date"/>
-                                <field name="fixed_number_allowed_event"/>
-                                <field name="number_allowed_event"
-                                       attrs="{'invisible': [('fixed_number_allowed_event', '=', False)]}"/>
+                                <label for="fixed_number_allowed_event" string="Limit passages"/>
+                                <span>
+                                    <field name="fixed_number_allowed_event" nolabel="1"/>
+                                    <span attrs="{'invisible': [('fixed_number_allowed_event', '=', False)], 'required': [('fixed_number_allowed_event', '=', False)]}">
+                                        to <field name="number_allowed_event" class="oe_inline"/>
+                                    </span>
+                                </span>    
                                 <field name="number_visitors"/>
-                                <field name="counted_passage"/>
+                                <field name="counted_passage" groups="base.group_no_one"/>
                                 <field name="qr_code"/>
                             </group>
                         </group>
@@ -133,6 +137,7 @@
                 <tree>
                     <field name="display_name"/>
                     <field name="partner_id"/>
+                    <field name="pass_type_id"/>
                     <field name="gifted_by_id"/>
                     <field name="validity_date"/>
                     <field name="expiration_date" optional="show"/>
@@ -158,10 +163,10 @@
                 <search>
                     <field name="display_name"/>
                     <field name="partner_id"/>
+                    
                     <field name="gifted_by_id"/>
                     <filter name="never_used" string="Never used" domain="[('counted_passage', '=', 0)]"/>
-                    <filter name="used" string="Used"
-                            domain="[('fixed_number_allowed_event', '=', True), ('number_allowed_event', '=', 0)]"/>
+                    <filter name="used" string="Used" domain="[('counted_passage', '>', 0)]"/>
                     <separator/>
                     <filter name="valid" string="Valid" domain="[('state', '=', 'valid')]"/>
                     <filter name="draft" string="Draft" domain="[('state', '=', 'draft')]"/>
@@ -172,6 +177,7 @@
                     <separator/>
                     <group expand="0" string="Group by">
                         <filter string="Name" name="group_by_name" context="{'group_by': 'display_name'}"/>
+                        <filter string="Pass Template" name="pass_type_id" context="{'group_by': 'pass_type_id'}"/>
                         <filter string="Validity date" name="group_by_validity_date"
                                 context="{'group_by': 'validity_date'}"/>
                         <filter string="Expiration date" name="group_by_expiration_date"
@@ -203,7 +209,7 @@
 
         <menuitem
                 id="menu_pass"
-                sequence="60"
+                sequence="40"
                 name="Pass &amp; Invitations"
                 parent="event.event_main_menu"
                 action="action_pass"
@@ -225,6 +231,40 @@
                         <field string="Events" name="event_count" widget="statinfo"/>
                     </button>
                 </div>
+            </field>
+        </record>
+
+
+        <record id="action_pass_invitations_analysis" model="ir.actions.act_window">
+            <field name="name">Pass and Invitations Analysis</field>
+            <field name="res_model">event.pass.line</field>
+            <field name="view_mode">pivot,graph</field>
+            <field name="context">{}</field>
+        </record>
+
+        <menuitem id="menu_event_pass_graph" name="Pass &amp; Invitations" sequence="60"
+            parent="event.menu_reporting_events" action="action_pass_invitations_analysis"/>
+
+        <record id="view_event_pass_graph" model="ir.ui.view">
+            <field name="name">event.pass.line.graph</field>
+            <field name="model">event.pass.line</field>
+            <field name="arch" type="xml">
+                <graph string="Pass and Invitations Analysis" type="bar">
+                    <field name="id"/>
+                    <!-- <field name="amount" type="measure"/> -->
+                </graph>
+            </field>
+        </record>
+
+        <record id="view_event_pass_pivot" model="ir.ui.view">
+            <field name="name">event.pass.line.pivot</field>
+            <field name="model">event.pass.line</field>
+            <field name="arch" type="xml">
+                <pivot string="Pass and Invitations Analysis">
+                    <field name="pass_type_id" type="row"/>
+                    <field name="state" type="col"/>
+                    <!-- <field name="amount" type="measure"/> -->
+                </pivot>
             </field>
         </record>
     </data>

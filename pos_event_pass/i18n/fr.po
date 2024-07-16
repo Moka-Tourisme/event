@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 15.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-05-16 10:27+0000\n"
-"PO-Revision-Date: 2023-05-16 10:27+0000\n"
+"POT-Creation-Date: 2024-07-16 11:33+0000\n"
+"PO-Revision-Date: 2024-07-16 11:33+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -22,7 +22,16 @@ msgid "Bought Pass"
 msgstr "Pass acheté(s)"
 
 #. module: pos_event_pass
-#: model:ir.model.fields,field_description:pos_event_pass.field_pos_order__pass_id
+#: model:ir.model.fields,field_description:pos_event_pass.field_event_pass_line__commercial_team
+msgid "Commercial Team"
+msgstr "équipe commerciale"
+
+#. module: pos_event_pass
+#: model:ir.model.fields,field_description:pos_event_pass.field_event_pass_type__currency_id
+msgid "Currency"
+msgstr "Devise"
+
+#. module: pos_event_pass
 #: model:ir.model.fields,field_description:pos_event_pass.field_pos_order_line__pass_id
 msgid "Event Pass"
 msgstr "Pass"
@@ -30,21 +39,64 @@ msgstr "Pass"
 #. module: pos_event_pass
 #: model:ir.model,name:pos_event_pass.model_event_pass_line
 msgid "Event Pass Line"
-msgstr ""
+msgstr "Pass"
 
 #. module: pos_event_pass
 #. openerp-web
 #: code:addons/pos_event_pass/static/src/js/db.js:0
+#: code:addons/pos_event_pass/static/src/js/db.js:0
 #, python-format
 msgid "Event Ticket not found: %d"
-msgstr ""
+msgstr "Ticket d'évènement non trouvé : %d"
 
 #. module: pos_event_pass
 #. openerp-web
 #: code:addons/pos_event_pass/static/src/xml/ReceiptScreen/EventPassReceipt.xml:0
+#: code:addons/pos_event_pass/static/src/xml/ReceiptScreen/EventPassReceipt.xml:0
 #, python-format
 msgid "Logo"
 msgstr ""
+
+#. module: pos_event_pass
+#: model_terms:ir.ui.view,arch_db:pos_event_pass.event_pass_type_pos_inherit
+msgid "POS Sales"
+msgstr "Ventes en PDV"
+
+#. module: pos_event_pass
+#: model:ir.model.fields,field_description:pos_event_pass.field_event_pass_type__pos_price_subtotal
+msgid "POS Sales (Tax Excluded)"
+msgstr "Ventes en PDV HT"
+
+#. module: pos_event_pass
+#: model_terms:ir.ui.view,arch_db:pos_event_pass.event_pass_pos_order_inherit
+msgid "Pass"
+msgstr ""
+
+#. module: pos_event_pass
+#: model:ir.model.fields,field_description:pos_event_pass.field_pos_order__pass_count
+msgid "Pass Count"
+msgstr "Nombre de Pass"
+
+#. module: pos_event_pass
+#: model:ir.model,name:pos_event_pass.model_event_pass_type
+msgid "Pass Template"
+msgstr "Modèle de pass"
+
+#. module: pos_event_pass
+#: model:ir.model.fields,field_description:pos_event_pass.field_pos_order_line__pass_type_id
+msgid "Pass Type"
+msgstr "Modèle de pass"
+
+#. module: pos_event_pass
+#: model_terms:ir.ui.view,arch_db:pos_event_pass.event_pass_line_pos_inherit
+#: model_terms:ir.ui.view,arch_db:pos_event_pass.event_pass_type_pos_inherit
+msgid "PoS Orders"
+msgstr "Commandes PDV"
+
+#. module: pos_event_pass
+#: model:ir.model,name:pos_event_pass.model_pos_config
+msgid "Point of Sale Configuration"
+msgstr "Paramétrage du point de vente"
 
 #. module: pos_event_pass
 #: model:ir.model,name:pos_event_pass.model_pos_order_line
@@ -62,6 +114,12 @@ msgid "Pos Order"
 msgstr "Commande PdV"
 
 #. module: pos_event_pass
+#: model:ir.model.fields,field_description:pos_event_pass.field_event_pass_line__pos_order_count
+#: model:ir.model.fields,field_description:pos_event_pass.field_event_pass_type__pos_order_count
+msgid "Pos Order Count"
+msgstr "Commandes"
+
+#. module: pos_event_pass
 #: model:ir.model.fields,field_description:pos_event_pass.field_event_pass_line__pos_order_line_id
 msgid "Pos Order Line"
 msgstr "Ligne de vente PdV"
@@ -69,25 +127,109 @@ msgstr "Ligne de vente PdV"
 #. module: pos_event_pass
 #: model:ir.model.fields,help:pos_event_pass.field_event_pass_line__pos_order_line_id
 msgid "Pos Order line where this pass has been bought."
-msgstr ""
+msgstr "Commandes liées à ce pass."
+
+#. module: pos_event_pass
+#: model:ir.model.fields,field_description:pos_event_pass.field_pos_config__iface_print_pass
+msgid "Print Pass QR Code on receipt"
+msgstr "Imprimer le QRCode sur le reçu"
 
 #. module: pos_event_pass
 #. openerp-web
+#: code:addons/pos_event_pass/static/src/xml/ReceiptScreen/EventPassReceipt.xml:0
 #: code:addons/pos_event_pass/static/src/xml/ReceiptScreen/EventPassReceipt.xml:0
 #, python-format
 msgid "QRCode"
 msgstr ""
 
 #. module: pos_event_pass
-#. openerp-web
-#: code:addons/pos_event_pass/static/src/xml/ReceiptScreen/EventPassReceipt.xml:0
-#, python-format
-msgid "To be used before"
-msgstr "A utiliser avant le"
+#: model:ir.model.fields,help:pos_event_pass.field_pos_order__pass_count
+msgid "The number of pass related to this order"
+msgstr "Nombre de pass liés à cette commande"
+
+#. module: pos_event_pass
+#: model:ir.model.fields,help:pos_event_pass.field_event_pass_line__pos_order_count
+#: model:ir.model.fields,help:pos_event_pass.field_event_pass_type__pos_order_count
+msgid "The number of point of sales orders related to this pass"
+msgstr "Nombre de commandes en PDV liées à ce pass"
 
 #. module: pos_event_pass
 #. openerp-web
 #: code:addons/pos_event_pass/static/src/xml/ReceiptScreen/EventPassReceipt.xml:0
+#: code:addons/pos_event_pass/static/src/xml/ReceiptScreen/EventPassReceipt.xml:0
 #, python-format
-msgid "Valid from"
-msgstr "Valide à partir du "
+msgid "To be used"
+msgstr "A utiliser avant"
+
+#. module: pos_event_pass
+#: model:ir.model.fields,field_description:pos_event_pass.field_event_pass_line__total_excluding_taxes
+msgid "Total (taxes excl.)"
+msgstr "Total HT"
+
+#. module: pos_event_pass
+#: model:ir.model.fields,field_description:pos_event_pass.field_event_pass_line__total_including_taxes
+msgid "Total (taxes incl.)"
+msgstr "Total TTC"
+
+#. module: pos_event_pass
+#: model_terms:ir.ui.view,arch_db:pos_event_pass.event_pass_type_pos_inherit
+msgid "Total POS Sales for this pass type"
+msgstr "Total de commandes en PDV pour ce modèle de pass"
+
+#. module: pos_event_pass
+#. openerp-web
+#: code:addons/pos_event_pass/static/src/xml/ReceiptScreen/EventPassReceipt.xml:0
+#: code:addons/pos_event_pass/static/src/xml/ReceiptScreen/EventPassReceipt.xml:0
+#, python-format
+msgid "event"
+msgstr "évènement"
+
+#. module: pos_event_pass
+#. openerp-web
+#: code:addons/pos_event_pass/static/src/xml/ReceiptScreen/EventPassReceipt.xml:0
+#: code:addons/pos_event_pass/static/src/xml/ReceiptScreen/EventPassReceipt.xml:0
+#, python-format
+msgid "events"
+msgstr "évènements"
+
+#. module: pos_event_pass
+#. openerp-web
+#: code:addons/pos_event_pass/static/src/xml/ReceiptScreen/EventPassReceipt.xml:0
+#: code:addons/pos_event_pass/static/src/xml/ReceiptScreen/EventPassReceipt.xml:0
+#: code:addons/pos_event_pass/static/src/xml/ReceiptScreen/EventPassReceipt.xml:0
+#: code:addons/pos_event_pass/static/src/xml/ReceiptScreen/EventPassReceipt.xml:0
+#, python-format
+msgid "for"
+msgstr "pour"
+
+#. module: pos_event_pass
+#. openerp-web
+#: code:addons/pos_event_pass/static/src/xml/ReceiptScreen/EventPassReceipt.xml:0
+#: code:addons/pos_event_pass/static/src/xml/ReceiptScreen/EventPassReceipt.xml:0
+#, python-format
+msgid "from"
+msgstr "le"
+
+#. module: pos_event_pass
+#. openerp-web
+#: code:addons/pos_event_pass/static/src/xml/ReceiptScreen/EventPassReceipt.xml:0
+#: code:addons/pos_event_pass/static/src/xml/ReceiptScreen/EventPassReceipt.xml:0
+#, python-format
+msgid "to"
+msgstr "au"
+
+#. module: pos_event_pass
+#. openerp-web
+#: code:addons/pos_event_pass/static/src/xml/ReceiptScreen/EventPassReceipt.xml:0
+#: code:addons/pos_event_pass/static/src/xml/ReceiptScreen/EventPassReceipt.xml:0
+#, python-format
+msgid "visitor"
+msgstr "visiteur"
+
+#. module: pos_event_pass
+#. openerp-web
+#: code:addons/pos_event_pass/static/src/xml/ReceiptScreen/EventPassReceipt.xml:0
+#: code:addons/pos_event_pass/static/src/xml/ReceiptScreen/EventPassReceipt.xml:0
+#, python-format
+msgid "visitors"
+msgstr "visiteurs"

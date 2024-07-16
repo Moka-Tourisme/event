@@ -18,5 +18,30 @@
                 </div>
             </field>
         </record>
+
+
+        <record id="view_pass_search_inherited" model="ir.ui.view">
+            <field name="model">event.pass.line</field>
+            <field name="inherit_id" ref="event_pass.view_pass_search"  />
+            <field name="arch" type="xml">
+                <xpath expr="//group" position="inside">
+                    <filter string="Commercial team" name="commercial_team" context="{'group_by': 'commercial_team'}"/>
+                </xpath>
+            </field>
+        </record>
+
+
+        <record id="view_event_pass_pivot_inherit_sale" model="ir.ui.view">
+            <field name="name">event.pass.line.pivot.inherit.sale</field>
+            <field name="model">event.pass.line</field>
+            <field name="inherit_id" ref="event_pass.view_event_pass_pivot"/>
+            <field name="arch" type="xml">
+                <xpath expr="//pivot" position="inside">
+                    <field name="total_excluding_taxes" type="measure"/>
+                    <field name="total_including_taxes" type="measure"/>
+                </xpath>
+            </field>
+        </record>
+
     </data>
 </odoo>

@@ -29,6 +29,48 @@ class PassLine(models.Model):
         groups="point_of_sale.group_pos_user",
     )
 
+    commercial_team = fields.Many2one(
+        "crm.team",
+        string="Commercial Team",
+        compute="_compute_commercial_team",
+        store=True,
+    )
+
+    total_excluding_taxes = fields.Float(string='Total (taxes excl.)', compute='_compute_total_excluding_taxes', store=True)
+
+    total_including_taxes = fields.Float(string='Total (taxes incl.)', compute='_compute_total_including_taxes',
+                                         store=True)
+    
+    @api.depends('pos_order_line_id')
+    def _compute_total_including_taxes(self):
+        for record in self:
+            if record.pos_order_line_id:
+                print(record.pos_order_line_id)
+                record.total_including_taxes = record.pos_order_line_id.price_subtotal_incl
+            else:
+                print("Passage retour vers super")
+                return super()._compute_total_including_taxes()
+
+    @api.depends('pos_order_line_id')
+    def _compute_total_excluding_taxes(self):
+        for record in self:
+            if record.pos_order_line_id:
+                print("Il y a un subtotal")
+                record.total_excluding_taxes = record.pos_order_line_id.price_subtotal
+            else:
+                return super()._compute_total_excluding_taxes()
+
+    @api.depends("pos_order_id", "buy_line_id")
+    def _compute_commercial_team(self):
+        print("je passe dans le pos")
+        for record in self:
+            if record.pos_order_id.crm_team_id:
+                record.commercial_team = record.pos_order_id.crm_team_id
+            else:
+                return super()._compute_commercial_team()
+            
+
+
     def _compute_pos_order(self):
         for record in self:
             record.pos_order_count = self.env['pos.order'].search_count([('lines.generated_pass_ids', 'in', record.id)])

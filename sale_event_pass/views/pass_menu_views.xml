@@ -39,11 +39,8 @@
             <field name="model">product.template</field>
             <field name="inherit_id" ref="product.product_template_form_view"/>
             <field name="arch" type="xml">
-                <xpath expr="//group[@name='sale']" position="inside">
-                    <group name="pass_type" string="Pass Template"
-                           attrs="{'invisible': [('detailed_type','!=','pass')]}">
-                        <field name="pass_type_id"/>
-                    </group>
+                <xpath expr="//field[@name='detailed_type']" position="after">
+                    <field string="Pass Template" name="pass_type_id" attrs="{'invisible': [('detailed_type','!=','pass')]}"/>
                 </xpath>
             </field>
         </record>

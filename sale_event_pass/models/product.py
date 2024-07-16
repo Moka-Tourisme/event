@@ -15,6 +15,7 @@ class ProductTemplate(models.Model):
     pass_type_id = fields.Many2one(
         "event.pass.type",
         string="Pass Type",
+        required=True,
     )
 
     def _detailed_type_mapping(self):

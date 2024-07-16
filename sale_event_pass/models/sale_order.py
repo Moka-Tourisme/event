@@ -37,7 +37,6 @@ class SaleOrder(models.Model):
             self.ensure_one()
             pass_lines = self.order_line.mapped("generated_pass_ids")
             if pass_lines:
-                print(pass_lines, "On rentre bien dans le cas d'envoi de mails")
                 pass_lines.action_send_multiple_by_mail("invitation", auto = True)
 
 class SaleOrderLine(models.Model):

@@ -207,12 +207,10 @@
                     <div class="oe_structure"/>
                     <div class="new_class" t-attf-style="background-color: #{pass.pass_type_id.background_color}">
                         <div class="row">
-                            <t t-if="pass.pass_type_id.base_logo and ('img' in pass.pass_type_id.base_logo)" class="img_logo">
+                            <t t-if="pass.pass_type_id.base_logo" class="img_logo">
                                 <span
                                 >
-                                    <t t-set="cover_html" t-value="pass.pass_type_id.base_logo"/>
-                                    <t t-raw="0"/>
-                                    <img t-att-src="cover_html.split('src=&quot;')[1].split('&quot;')[0]"
+                                    <img t-att-src="image_data_uri(pass.pass_type_id.base_logo)"
                                         style="position: absolute;left: 65px;top: 70px;width: 30%;"
                                     />
                                 </span>
@@ -317,7 +315,7 @@
             </div>
             <div class="row">
                 <!-- Inner left -->
-                <div class="page p-1 col-6 o_event_foldable_badge_top body_part_2" t-attf-style="background-color: #{pass.pass_type_id.outline_color}">
+                <div class="page p-1 col-6 o_event_foldable_badge_top" t-attf-style="background-color: #{pass.pass_type_id.outline_color}">
                     <div class="oe_structure">
                         <div class="p-4 new_class overflow-hidden" t-attf-style="background-color: #{pass.pass_type_id.background_color}">
                             <t t-if="pass.pass_type_id.bottom_left_text">
@@ -336,7 +334,7 @@
                     </div>
                 </div>
                 <!-- Inner right -->
-                <div class="page p-1 col-6 o_event_foldable_badge_top body_part_2" t-attf-style="background-color: #{pass.pass_type_id.outline_color}">
+                <div class="page p-1 col-6 o_event_foldable_badge_top" t-attf-style="background-color: #{pass.pass_type_id.outline_color}">
                     <div class="oe_structure"/>
                     <div class="p-4 new_class overflow-hidden" t-attf-style="background-color: #{pass.pass_type_id.background_color}">
                         <t t-if="pass.pass_type_id.bottom_right_text">

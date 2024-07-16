@@ -14,6 +14,31 @@ class PassLine(models.Model):
     sale_order_count = fields.Integer(compute='_compute_sale_order_count',
                                       string='The number of sales orders related to this pass',
                                       groups="base.group_user")
+    
+    commercial_team = fields.Many2one('crm.team', string='Commercial Team', compute='_compute_commercial_team', store=True)
+
+    total_excluding_taxes = fields.Float(string='Total (taxes excl.)', compute='_compute_total_excluding_taxes', store=True)
+
+    total_including_taxes = fields.Float(string='Total (taxes incl.)', compute='_compute_total_including_taxes',
+                                         store=True)
+    
+    @api.depends('buy_line_id')
+    def _compute_total_including_taxes(self):
+        for record in self:
+            if record.buy_line_id.price_total:
+                record.total_including_taxes = record.buy_line_id.price_total
+
+    @api.depends('buy_line_id')
+    def _compute_total_excluding_taxes(self):
+        for record in self:
+            if record.buy_line_id:
+                record.total_excluding_taxes = record.buy_line_id.price_subtotal
+
+    @api.depends("buy_line_id")
+    def _compute_commercial_team(self):
+        for record in self:
+            if record.buy_line_id.order_id.team_id:
+                record.commercial_team = record.buy_line_id.order_id.team_id
 
     def _compute_sale_order_count(self):
         for record in self:
