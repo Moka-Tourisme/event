@@ -5,7 +5,9 @@
     <template id="content" name="My Content">
         <t t-foreach="docs" t-as="o">
             <h2>
-                <t t-out="o.name"/>
+                <a t-att-href="'/event/' + str(o.id)">
+                    <t t-out="o.name"/>
+                </a>
             </h2>
             <hr/>
             <div class="row mt-5" id="informations">
@@ -34,9 +36,7 @@
                             <div class="card h-100 shadow border-primary"
                                  style="border-style: dashed !important;">
                                 <img class="card-img-top o_we_image_cropped"
-                                     t-att-src="'/report/barcode/?type=%s&amp;value=%s&amp;width=%s&amp;height=%s&amp;humanreadable=0' % ('QR', registration.qr_code, 168, 168)"
-                                     alt="" loading="lazy"
-                                     data-mimetype="image/svg+xml" data-resize-width="400"
+                                     t-attf-src="/report/barcode/?barcode_type=QR&amp;value={{registration.qr_code}}&amp;width=168&amp;height=168"
                                      style="padding: 20px !important;"/>
                                 <div class="card-body" style="text-align: center; padding-top: 0 !important">
                                     <span class="s_badge badge o_animable bg-primary" data-name="Badge"

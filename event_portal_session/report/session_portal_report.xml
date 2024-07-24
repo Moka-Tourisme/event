@@ -4,8 +4,8 @@
         <field name="name">Session Portal Report</field>
         <field name="model">event.session</field>
         <field name="report_type">qweb-pdf</field>
-        <field name="report_name">event_portal.report_session_attendees</field>
-        <field name="report_file">event_portal.report_session_attendees</field>
+        <field name="report_name">event_portal_session.report_session_attendees</field>
+        <field name="report_file">event_portal_session.report_session_attendees</field>
         <field name="binding_type">report</field>
     </record>
 

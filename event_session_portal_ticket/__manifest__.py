@@ -1,6 +1,6 @@
 {
     'name': 'Event Session Portal Ticket',
-    'version': '16.0.1.0.0',
+    'version': '16.0.0.0.1',
     'summary': 'List of all event session tickets',
     'author': 'Moka Tourisme',
     'description': "List of all event session tickets",

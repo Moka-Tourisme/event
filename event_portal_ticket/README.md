@@ -17,4 +17,4 @@ Credits
 * Duciel Romain : <https://github.com/Rom10811>
 
 ## Maintainers
-This module is maintained by Moka Tourisme.
+Ce module est maintenu par Moka Tourisme.

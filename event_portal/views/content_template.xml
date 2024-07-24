@@ -5,7 +5,11 @@
     <template id="content" name="My Content">
         <t t-foreach="docs" t-as="o">
             <h2>
-                <t t-out="o.name"/>
+                <t>
+                    <a t-attf-href="/my/tickets/event/#{event.id}">
+                        <span t-field="event.name"/>
+                    </a>
+                </t>
             </h2>
             <hr/>
             <div class="row mt-5" id="informations">
@@ -57,7 +61,7 @@
                                             <span t-field="attendee.phone" t-options="{'widget': 'text'}"/>
                                         </td>
                                         <td name="event_attendee_line_inscription_date">
-                                            <span t-field="attendee.date_open"
+                                            <span t-field="attendee.create_date"
                                                   t-field-options="{&quot;format&quot;: &quot;d MMMM y&quot;}"/>
                                         </td>
                                         <td name="event_attendee_line_inscription_state">

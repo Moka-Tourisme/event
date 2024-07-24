@@ -1,0 +1,31 @@
+<?xml version="1.0"?>
+<odoo>
+    <record id="view_registration_complete_inherit" model="ir.ui.view">
+        <field name="name">registration.complete.inherit</field>
+        <field name="inherit_id"
+               ref="website_event.registration_complete"/>
+        <field name="arch" type="xml">
+            <xpath expr="//div[@id='add_to_calendar']" position="inside">
+                <a role="button" class="btn btn-primary ml-md-2 mt-2 mt-md-0" t-att-href="'/my/tickets'">
+                    <i class="fa fa-fw fa-ticket"/>
+                    View My Tickets
+                </a>
+            </xpath>
+        </field>
+    </record>
+
+    <template id="sale_order_portal_content_inherit" name="Sales Order Portal Content Inherit" customize_show="True"
+              inherit_id="sale.sale_order_portal_content"
+              priority="60">
+        <xpath expr="//section[@id='details']" position="after">
+             <section t-if="sale_order.has_event_ticket(sale_order.id) and sale_order.state == 'sale'" id="terms" class="mt-5">
+                <h3 class="">Tickets</h3>
+                <hr class="mt-0 mb-1"/>
+                <t>
+                    <t t-set="tc_url" t-value="'%s/my/tickets' % (sale_order.get_base_url())"/>
+                    <em>Tickets: <a href="/my/tickets"><t t-esc="tc_url"/></a></em>
+                </t>
+            </section>
+        </xpath>
+    </template>
+</odoo>

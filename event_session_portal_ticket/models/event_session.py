@@ -1,6 +1,3 @@
-# -*- coding: utf-8 -*-
-# Part of Odoo. See LICENSE file for full copyright and licensing details.
-
 import logging
 import pytz
 
@@ -14,7 +11,6 @@ _logger = logging.getLogger(__name__)
 
 
 class EventEventInherit(models.Model):
-    """Event"""
     _inherit = 'event.session'
 
     @api.model
@@ -27,3 +23,11 @@ class EventEventInherit(models.Model):
             ('state', 'in', ['open', 'done'])
         ])
         return registrations
+
+    @api.model
+    def get_session_count(self, session_id):
+        event = self.browse(session_id)
+        return event.session_count
+
+    def get_participants_count(self):
+        return len(self.registration_ids.filtered(lambda r: r.state in ['open', 'done']))

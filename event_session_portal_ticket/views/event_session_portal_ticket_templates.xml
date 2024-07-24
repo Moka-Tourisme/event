@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-    <!--    List of my events-->
+    <!-- List of my events -->
     <template id="portal_my_events_tickets_inherit" inherit_id="event_portal_ticket.portal_my_events_tickets">
         <xpath expr="//tbody/tr/td[1]" position="replace">
             <td>
@@ -20,31 +20,52 @@
         <xpath expr="//tbody/tr/td[3]" position="replace">
             <td>
                 <t t-if="not event.use_sessions">
-                    <t t-set="tickets" t-value="event.get_current_user_tickets_count(event.id)"/>
-                    <span class="badge badge-pill badge-primary">
-                        <i class="fa fa-ticket"></i>
-                        <span t-out="tickets"/>
-                        <t t-if="tickets &gt; 1">tickets</t>
-                        <t t-else="">
-                            ticket
-                        </t>
-                    </span>
+                    <t>
+                        <t t-set="tickets" t-value="event.get_current_user_tickets_count(event.id)"/>
+                        <span class="badge" t-attf-style="background-color: var(--o-cc1-btn-primary); padding-right: .6em; padding-left: .6em; border-radius: 10rem;">
+                            <span class="fa fa-ticket"/>
+                                <t t-esc="tickets"/>
+                                <t t-if="tickets &gt; 1">tickets</t>
+                                <t t-else="">
+                                    ticket
+                                </t>
+                        </span>
+                    </t>
                 </t>
                 <t t-else="">
                     <t t-set="sessions" t-value="event.get_current_user_sessions(event.id)"/>
-                    <span class="badge badge-pill badge-secondary">
-                        <i class="fa fa-clock-o"></i>
-                        <span t-out="len(sessions)"/>
-                        <t t-if="len(sessions) &gt; 1">sessions</t>
-                        <t t-else="">
-                            session
-                        </t>
+                    <t t-set='sessions_count' t-value='len(sessions)'/>
+                    <t t-if="sessions_count == 1">
+                        <t t-set="participants_count" t-value="len(event.get_sessions_registrations(sessions))"/>
+                        <span class="badge" t-attf-style="background-color: var(--o-cc1-btn-primary); padding-right: .6em; padding-left: .6em; border-radius: 10rem;">
+                            <span class="fa fa-ticket"></span>
+                            <span><t t-esc="participants_count"/> 
+                            <t t-if="participants_count &gt; 1">billets</t>
+                                <t t-else="">
+                                    billet
+                                </t>
+                            </span>
+                        </span>
+                    </t>
+                    <t t-else="">
+                    <span class="badge" t-attf-style="background-color: var(--o-cc1-btn-primary); padding-right: .6em; padding-left: .6em; border-radius: 10rem;">
+                        <span class="fa fa-calendar"></span>
+                        <span>
+                            <span><t t-esc="sessions_count"/> 
+                            <t t-if="sessions_count &gt; 1">séances</t>
+                                <t t-else="">
+                                    séance
+                                </t>
+                            </span>
+                        </span>
                     </span>
+                    </t>
                 </t>
             </td>
         </xpath>
     </template>
 
+    <!-- Session details -->
     <template id="portal_my_event_sessions" name="My Tickets">
         <t t-call="portal.portal_layout">
             <t t-set="breadcrumbs_searchbar" t-value="True"/>
@@ -77,17 +98,18 @@
                                 <span t-field="session.date_begin" t-options='{"format": "d MMM yyyy"}'/>
                             </strong>
                             at
-                            <span t-field="session.date_begin" t-options='{"format": "hh:mm"}'/>
+                            <span t-field="session.date_begin" t-options='{"format": "H:mm"}'/>
                         </td>
                         <td>
-                            <t t-set="tickets" t-value="session.get_current_user_tickets(session.id)"/>
-                            <span class="badge badge-pill badge-primary">
-                                <i class="fa fa-ticket"></i>
-                                <span t-out="len(tickets)"/>
-                                <t t-if="len(tickets) &gt; 1">tickets</t>
-                                <t t-else="">
-                                    ticket
-                                </t>
+                            <t t-set="participants_count" t-value="session.get_participants_count()"/>
+                            <span class="badge" t-attf-style="background-color: var(--o-cc1-btn-primary);padding-right: .6em; padding-left: .6em; border-radius: 10rem;">
+                                <span class="fa fa-ticket"></span>
+                                <span><t t-esc="participants_count"/>
+                                    <t t-if="participants_count &gt; 1">billets</t>
+                                    <t t-else="">
+                                        billet
+                                    </t>
+                                </span>
                             </span>
                         </td>
                     </tr>
@@ -96,6 +118,7 @@
         </t>
     </template>
 
+    <!-- Session ticket view -->
     <template id="portal_my_event_session_tickets" name="My Tickets" inherit_id="portal.portal_sidebar" primary="True">
         <xpath expr="//div[hasclass('o_portal_sidebar')]" position="inside">
             <t t-set="o_portal_fullwidth_alert" groups="event.group_event_user">
@@ -111,7 +134,7 @@
                         <div class="text-center pb-2 pt-3">
                             <h2 class="mb-3">
                                 <i class="fa fa-ticket"/>
-                                <b t-out="len(registrations)"/>
+                                <b t-esc="len(registrations)"/>
                                 <br/>
                                 <strong t-if="len(registrations) &gt; 1">Registrations</strong>
                                 <strong t-else="">Registration</strong>
@@ -131,7 +154,7 @@
                                             Download
                                         </a>
                                     </div>
-                                    <div class="btn-group flex-grow-1 mb-1">
+                                    <div class="btn-group flex-grow-1 mb-1" t-attf-style="margin-left: 4px">
                                         <a class="btn btn-primary btn-block o_print_btn o_portal_event_print bg-o-color-1"
                                            id="print_event_report" title="Print"
                                            t-attf-href="/report/pdf/event.event_registration_report_template_foldable_badge/#{registration_ids}"
@@ -162,7 +185,6 @@
             </div>
         </xpath>
     </template>
-
 
     <!--        Breadcrumb-->
     <template id="portal_layout_sessions_ticket" name="Portal layout: session ticket menu entry"

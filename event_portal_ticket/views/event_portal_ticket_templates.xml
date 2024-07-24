@@ -49,22 +49,31 @@
                                     <span t-field="event.date_begin" t-options='{"format": "d MMM yyyy"}'/>
                                 </strong>
                                 at
-                                <span t-field="event.date_begin" t-options='{"format": "hh:mm"}'/>
+                                <span t-field="event.date_begin" t-options='{"format": "H:mm"}'/>
                             </t>
                         </td>
                         <td>
                             <t>
                                 <t t-set="tickets" t-value="event.get_current_user_tickets_count(event.id)"/>
-                                <span class="badge badge-pill badge-primary">
-                                    <i class="fa fa-ticket"></i>
-                                    <span t-out="tickets"/>
-                                    <t t-if="tickets &gt; 1">tickets</t>
-                                    <t t-else="">
-                                        ticket
-                                    </t>
+                                <span class="badge" t-attf-style="background-color: var(--o-cc1-btn-primary);padding-right: .6em; padding-left: .6em; border-radius: 10rem;">
+                                    <span class="fa fa-ticket"/>
+                                        <t t-esc="tickets"/>
+                                        <t t-if="tickets &gt; 1">tickets</t>
+                                        <t t-else="">
+                                            ticket
+                                        </t>
                                 </span>
                             </t>
                         </td>
+                        <!-- <td>
+                            <t>
+                                <t t-set="participants_count" t-value="event.get_attendees(event.id)"/>
+                                <span class="fa fa-users"></span>
+                                <span>
+                                <t t-esc="participants_count"/> participant(s)
+                                </span>
+                            </t>
+                        </td> -->
                     </tr>
                 </tbody>
             </t>
@@ -102,7 +111,7 @@
                         <div class="text-center pb-2 pt-3">
                             <h2 class="mb-3">
                                 <i class="fa fa-ticket"/>
-                                <b t-out="len(registrations)"/>
+                                <b t-esc="len(registrations)"/>
                                 <br/>
                                 <strong t-if="len(registrations) &gt; 1">Registrations</strong>
                                 <strong t-else="">Registration</strong>
@@ -122,7 +131,7 @@
                                             Download
                                         </a>
                                     </div>
-                                    <div class="btn-group flex-grow-1 mb-1">
+                                    <div class="btn-group flex-grow-1 mb-1" t-attf-style="margin-left: 4px">
                                         <a class="btn btn-primary btn-block o_print_btn o_portal_event_print bg-o-color-1"
                                            id="print_event_report" title="Print"
                                            t-attf-href="/report/pdf/event.event_registration_report_template_foldable_badge/#{registration_ids}"

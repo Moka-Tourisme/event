@@ -1,8 +1,8 @@
-event_session_portal_ticket
+event_portal_session
 =========
 
-Extension de event_portal_ticket. 
-Les clients peuvent consulter leurs tickets d'évènements à session. 
+Les organisateurs et partenaires peuvent consulter les sessions d'évènements et leurs détails depuis la page web.
+Extension de event_portal. 
 
 
 Credits
@@ -19,4 +19,3 @@ Credits
 
 ## Maintainers
 Ce module est maintenu par Moka Tourisme.
-

@@ -1,6 +1,3 @@
-# -*- coding: utf-8 -*-
-# Part of Odoo. See LICENSE file for full copyright and licensing details.
-
 from collections import OrderedDict
 
 from odoo import http, _
@@ -33,7 +30,6 @@ class EventSessionTicketCustomerPortal(EventTicketCustomerPortal):
     # ------------------------------------------------------------
     def _session_get_page_view_values(self, session, access_token, page=1, date_begin=None, date_end=None, sortby=None,
                                       search=None, search_in='content', groupby=None, **kwargs):
-        # TODO: refactor this because most of this code is duplicated from portal_my_events_tickets method
         values = self._prepare_portal_layout_values()
 
         # default sort by value
@@ -41,7 +37,7 @@ class EventSessionTicketCustomerPortal(EventTicketCustomerPortal):
             sortby = 'date'
 
         # default filter by value
-        domain = [('id', '=', session.id)]
+        domain = [('id', '=', session.id), ('registration_ids.state', '!=', 'cancel')]
 
         # default group by value
         if not groupby:
@@ -70,8 +66,7 @@ class EventSessionTicketCustomerPortal(EventTicketCustomerPortal):
             step=self._items_per_page
         )
 
-        events = Session.search(domain, limit=self._items_per_page, offset=pager['offset'])
-        # request.session['my_event_events_history'] = events.ids[:100]
+        sessions = Session.search(domain, limit=self._items_per_page, offset=pager['offset'])
 
         values.update(
             date=date_begin,
@@ -109,7 +104,7 @@ class EventSessionTicketCustomerPortal(EventTicketCustomerPortal):
 
         searchbar_filters = {
             'all': {'label': _('All'), 'domain': []},
-            'upcoming': {'label': _('Upcoming'), 'domain': [('stage_id', 'in', [1, 2, 3])]},
+            'upcoming': {'label': _('Upcoming'), 'domain': [('stage_id', 'in', [1, 2, 3]), ('registration_ids.state', '!=', 'cancel')]},
         }
 
         if not filterby:
@@ -118,6 +113,13 @@ class EventSessionTicketCustomerPortal(EventTicketCustomerPortal):
 
         # sessions count
         session_count = Session.search_count(domain)
+
+        # If user is registered to only one session, redirect to that session
+        if session_count == 1:
+            single_session = Session.search(domain, limit=1)
+            return request.redirect("/my/tickets/event/session/%s" % single_session.id)
+        
+        
         # pager
         pager = portal_pager(
             url="/my/tickets/event/sessions/%s" % event_id,

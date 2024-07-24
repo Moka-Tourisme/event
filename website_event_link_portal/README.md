@@ -1,8 +1,7 @@
-event_session_portal_ticket
+website_event_link_portal
 =========
 
-Extension de event_portal_ticket. 
-Les clients peuvent consulter leurs tickets d'évènements à session. 
+Ajoute une page de redirection vers les billets après un achat en ligne.
 
 
 Credits
@@ -19,4 +18,3 @@ Credits
 
 ## Maintainers
 Ce module est maintenu par Moka Tourisme.
-

@@ -14,15 +14,22 @@ _logger = logging.getLogger(__name__)
 
 
 class EventEventInherit(models.Model):
-    """Event"""
     _inherit = 'event.event'
 
     @api.model
     def get_current_user_tickets_count(self, event_id):
-        current_user = self.env.user
+        current_user = self.env.user.partner_id.id
         registrations = self.env['event.registration'].search([
             ('event_id', '=', event_id),
-            ('partner_id', '=', current_user.partner_id.id),
+            ('partner_id', '=', current_user),
+            ('state', 'in', ['open', 'done'])
+        ])
+        return len(registrations)
+    
+    @api.model
+    def get_attendees(self, event_id):
+        registrations = self.env['event.registration'].search([
+            ('event_id', '=', event_id),
             ('state', 'in', ['open', 'done'])
         ])
         return len(registrations)

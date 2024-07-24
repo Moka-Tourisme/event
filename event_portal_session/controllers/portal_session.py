@@ -2,24 +2,25 @@ from collections import OrderedDict
 from operator import itemgetter
 from markupsafe import Markup
 
-from odoo import conf, http, _, api, fields, models, tools
+from odoo import conf, http, _
 from odoo.exceptions import AccessError, MissingError
 from odoo.http import request
 from odoo.addons.portal.controllers.portal import CustomerPortal, pager as portal_pager
-from odoo.tools import groupby as groupbyelem
 
 from odoo.osv.expression import OR, AND
 
 
-class EventTicketCustomerPortal(CustomerPortal):
+
+class EventCustomerPortalSession(CustomerPortal):
+
     def _prepare_home_portal_values(self, counters):
         values = super()._prepare_home_portal_values(counters)
-        user = request.env.user.partner_id.id
-        if 'ticket_count' in counters:
-            ticket_count = request.env['event.registration'].search_count([('partner_id', '=', user), ('state', '!=', 'cancel')]) \
-                if request.env['event.registration'].check_access_rights('read', raise_exception=False) else 0
 
-            values['ticket_count'] = ticket_count
+        if 'event_count' in counters:
+            event_count = request.env['event.event'].search_count(self._get_events_domain()) \
+                if request.env['event.event'].check_access_rights('read', raise_exception=False) else 0
+
+            values['event_count'] = event_count
         return values
 
     # ------------------------------------------------------------
@@ -35,7 +36,7 @@ class EventTicketCustomerPortal(CustomerPortal):
             sortby = 'date'
 
         # default filter by value
-        domain = [('id', '=', event.id), ('registration_ids.state', '!=', 'cancel')]
+        domain = [('id', '=', event.id)]
 
         # default group by value
         if not groupby:
@@ -54,7 +55,7 @@ class EventTicketCustomerPortal(CustomerPortal):
         # event count
         event_count = Event.search_count(domain)
         # pager
-        url = "/my/tickets/%s" % event.id
+        url = "/my/events/%s" % event.id
         pager = portal_pager(
             url=url,
             url_args={'date_begin': date_begin, 'date_end': date_end, 'sortby': sortby, 'groupby': groupby,
@@ -78,15 +79,13 @@ class EventTicketCustomerPortal(CustomerPortal):
             sortby=sortby,
             groupby=groupby,
             event=event,
-            registrations=event.registration_ids.filtered(lambda r: r.partner_id.id == request.env.user.partner_id.id and r.state != 'cancel' and r.state != 'draft'),
-            registration_ids=','.join(map(str, event.registration_ids.filtered(lambda r: r.partner_id.id == request.env.user.partner_id.id and r.state != 'cancel' and r.state != 'draft').ids)),
         )
+        
         return self._get_page_view_values(event, access_token, values, 'my_events_history', False, **kwargs)
 
-    def _get_event_tickets_domain(self, user):
+    def _get_events_domain(self):
         return [
-            ('registration_ids.partner_id', '=', user),
-            ('registration_ids.state', '!=', 'cancel')
+            ('is_finished', '!=', True)
         ]
 
     # ------------------------------------------------------------
@@ -94,7 +93,7 @@ class EventTicketCustomerPortal(CustomerPortal):
     # ------------------------------------------------------------
     def _session_get_page_view_values(self, session, access_token, page=1, date_begin=None, date_end=None, sortby=None,
                                       search=None, search_in='content', groupby=None, **kwargs):
-
+        # TODO: refactor this because most of this code is duplicated from portal_my_events method
         values = self._prepare_portal_layout_values()
 
         # default sort by value
@@ -102,7 +101,7 @@ class EventTicketCustomerPortal(CustomerPortal):
             sortby = 'date'
 
         # default filter by value
-        domain = [('id', '=', session.id), ('registration_ids.state', '!=', 'cancel')]
+        domain = [('id', '=', session.id)]
 
         # default group by value
         if not groupby:
@@ -121,7 +120,7 @@ class EventTicketCustomerPortal(CustomerPortal):
         # event count
         session_count = Session.search_count(domain)
         # pager
-        url = "/my/tickets/event/sessions/session/%s" % session.id
+        url = "/my/event/sessions/session/%s" % session.id
         pager = portal_pager(
             url=url,
             url_args={'date_begin': date_begin, 'date_end': date_end, 'sortby': sortby, 'groupby': groupby,
@@ -132,6 +131,7 @@ class EventTicketCustomerPortal(CustomerPortal):
         )
 
         events = Session.search(domain, limit=self._items_per_page, offset=pager['offset'])
+        # request.session['my_event_events_history'] = events.ids[:100]
 
         values.update(
             date=date_begin,
@@ -145,76 +145,57 @@ class EventTicketCustomerPortal(CustomerPortal):
             groupby=groupby,
             session=session,
         )
+        values.update({
+            'prev_record' : False,
+            'next_record' : False,
+        })
         return self._get_page_view_values(session, access_token, values, 'my_events_history', False, **kwargs)
 
-    @http.route(['/my/tickets', '/my/tickets/page/<int:page>'], type='http', auth="user", website=True)
-    def portal_my_events_tickets(self, page=1, date_begin=None, date_end=None, sortby=None, filterby=None, **kw):
+
+    @http.route(['/my/event/sessions/<int:event_id>', '/my/event/sessions/page/<int:page>'], type='http', auth="user",
+                website=True)
+    def portal_my_event_sessions(self, page=1, event_id=None, date_begin=None, date_end=None, sortby=None, **kw):
         values = self._prepare_portal_layout_values()
-        Event = request.env['event.event']
         user = request.env.user.partner_id.id
+        Session = request.env['event.session']
         domain = []
 
-        domain += self._get_event_tickets_domain(user)
+        domain += [('event_id', '=', event_id)]
 
-        searchbar_filters = {
-            'all': {'label': _('All'), 'domain': []},
-            'upcoming': {'label': _('Upcoming'), 'domain': [('stage_id', 'in', [1, 2, 3]), ('registration_ids.state', '!=', 'cancel')]},
-        }
-
-        # default filter by value
-        if not filterby:
-            filterby = 'upcoming'
-        domain += searchbar_filters[filterby]['domain']
-
-        # events count
-        event_count = Event.search_count(domain)
+        # session count
+        session_count = Session.search_count(domain)
         # pager
         pager = portal_pager(
-            url="/my/tickets",
+            url="/my/events",
             url_args={'date_begin': date_begin, 'date_end': date_end, 'sortby': sortby},
-            total=event_count,
+            total=session_count,
             page=page,
             step=self._items_per_page
         )
 
-        # content according to pager and archive selected
-        events = Event.search(domain, limit=self._items_per_page, offset=pager['offset'])
-        request.session['my_events_history'] = events.ids[:100]
+        #             # content according to pager and archive selected
+        sessions = Session.search(domain, limit=self._items_per_page, offset=pager['offset'])
 
         values.update({
             'date': date_begin,
             'date_end': date_end,
-            'events': events,
-            'page_name': 'events',
-            'default_url': '/my/tickets',
+            'sessions': sessions,
+            'page_name': 'session',
+            'default_url': '/my/event/sessions',
             'pager': pager,
-            'user': user,
             'sortby': sortby,
-            'searchbar_filters': OrderedDict(sorted(searchbar_filters.items())),
-            'filterby': filterby,
+            'user': user
         })
-        return request.render("event_portal_ticket.portal_my_events_tickets", values)
-
-    @http.route(['/my/tickets/event/<int:event_id>'], type='http', auth="public", website=True)
-    def portal_my_event_tickets(self, event_id=None, access_token=None, page=1, date_begin=None, date_end=None,
-                                sortby=None,
-                                search=None, search_in='content', groupby=None, **kw):
-        try:
-            event_sudo = self._document_check_access('event.event', event_id, access_token)
-        except (AccessError, MissingError):
-            return request.redirect('/my')
-        event_sudo = event_sudo if access_token else event_sudo.with_user(request.env.user)
-        values = self._event_get_page_view_values(event_sudo, access_token, page, date_begin, date_end, sortby, search,
-                                                  search_in, groupby, **kw)
         values.update({
             'prev_record' : False,
+            'next_record' : False,
         })
-        return request.render("event_portal_ticket.portal_my_event_tickets", values)
+        return request.render("event_portal_session.portal_my_sessions", values)
 
-    @http.route(['/my/tickets/event/sessions/session/<int:session_id>'], type='http', auth="public", website=True)
-    def portal_my_session_tickets(self, session_id=None, access_token=None, page=1, date_begin=None, date_end=None,
-                                  sortby=None,
-                                  search=None, search_in='content', groupby=None, **kw):
+
+    @http.route(['/my/event/sessions/session/<int:session_id>'], type='http', auth="public", website=True)
+    def portal_my_session(self, session_id=None, access_token=None, page=1, date_begin=None, date_end=None, sortby=None,
+                          search=None, search_in='content', groupby=None, **kw):
         try:
             session_sudo = self._document_check_access('event.session', session_id, access_token)
         except (AccessError, MissingError):
@@ -223,4 +204,8 @@ class EventTicketCustomerPortal(CustomerPortal):
         values = self._session_get_page_view_values(session_sudo, access_token, page, date_begin, date_end, sortby,
                                                     search,
                                                     search_in, groupby, **kw)
-        return request.render("event_portal_ticket.portal_my_session_tickets", values)
+        values.update({
+            'prev_record' : False,
+            'next_record' : False,
+        })
+        return request.render("event_portal_session.portal_my_session", values)

@@ -1,6 +1,3 @@
-# -*- coding: utf-8 -*-
-# Part of Odoo. See LICENSE file for full copyright and licensing details.
-
 import logging
 import pytz
 
@@ -14,7 +11,6 @@ _logger = logging.getLogger(__name__)
 
 
 class EventEventInherit(models.Model):
-    """Event"""
     _inherit = 'event.event'
 
     @api.model
@@ -23,5 +19,36 @@ class EventEventInherit(models.Model):
         sessions = self.env['event.session'].search([
             ('event_id', '=', event_id),
             ('registration_ids.partner_id', '=', current_user.partner_id.id),
+            ('registration_ids.state', 'in', ['open', 'done']),
+            ('stage_id.id', '!=', 5),
         ])
+
         return sessions
+    
+    def get_sessions_count(self, event_id):
+        current_user = self.env.user
+        registrations = self.env['event.registration'].search([
+            ('event_id', '=', event_id),
+            ('partner_id', '=', current_user.partner_id.id),
+            ('state', '!=', 'cancel'),
+            ('state', 'in', ['open', 'done'])
+        ])
+        
+        session_ids = registrations.mapped('session_id.id')
+        session_count = len(set(session_ids))
+        
+        return session_count
+    
+    def get_sessions_registrations(self, sessions):
+        registrations = self.env['event.registration'].search([
+            ('session_id', 'in', sessions.ids),
+            ('state', '!=', 'cancel'),
+            ('state', 'in', ['open', 'done'])
+        ])
+        return registrations
+
+    
+    @api.model
+    def get_participants_count(self, session_id):
+        session = self.env['event.session'].browse(session_id)
+        return len(session.registration_ids.filtered(lambda r: r.state in ['open', 'done']))
