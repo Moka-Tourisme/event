@@ -18,4 +18,17 @@
             </field>
         </field>
     </record>
+
+    <record id="view_registration_search_inherit" model="ir.ui.view">
+        <field name="model">event.registration</field>
+        <field name="inherit_id" ref="event.view_registration_search"/>
+        <field name="arch" type="xml">
+            <group position="inside">
+                <filter string="Pass Line" name="filter_pass_line_id" domain="[]"
+                    context="{'group_by':'pass_line_id'}"/>
+                <filter string="Pass Type" name="filter_pass_type_id" domain="[]"
+                    context="{'group_by':'pass_type_id'}"/>
+            </group>
+        </field>
+    </record>
 </odoo>
