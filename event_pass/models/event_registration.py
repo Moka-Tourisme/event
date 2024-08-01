@@ -12,6 +12,9 @@ class EventRegistration(models.Model):
     pass_line_id = fields.Many2one(
         "event.pass.line", string="Pass Line", ondelete="restrict"
     )
+    pass_type_id = fields.Many2one(
+        "event.pass.type", string="Pass Type", related="pass_line_id.pass_type_id", store=True
+    )
 
     @api.model
     def create(self, vals):
