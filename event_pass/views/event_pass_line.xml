@@ -134,7 +134,7 @@
         <record id="view_pass_tree" model="ir.ui.view">
             <field name="model">event.pass.line</field>
             <field name="arch" type="xml">
-                <tree>
+                <tree multi_edit="1">
                     <field name="display_name"/>
                     <field name="partner_id"/>
                     <field name="pass_type_id"/>
