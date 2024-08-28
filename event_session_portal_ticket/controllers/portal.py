@@ -1,3 +1,6 @@
+# -*- coding: utf-8 -*-
+# Part of Odoo. See LICENSE file for full copyright and licensing details.
+
 from collections import OrderedDict
 
 from odoo import http, _
@@ -9,27 +12,12 @@ from ...event_portal_ticket.controllers.portal import EventTicketCustomerPortal,
 
 
 class EventSessionTicketCustomerPortal(EventTicketCustomerPortal):
-    def _prepare_portal_layout_values(self):
-        """Values for /my/* templates rendering.
-
-        Does not include the record counts.
-        """
-        # get customer sales rep
-        sales_user = False
-        partner = request.env.user.partner_id
-        if partner.user_id and not partner.user_id._is_public():
-            sales_user = partner.user_id
-
-        return {
-            'sales_user': sales_user,
-            'page_name': 'home',
-        }
-
     # ------------------------------------------------------------
     # My Session
     # ------------------------------------------------------------
     def _session_get_page_view_values(self, session, access_token, page=1, date_begin=None, date_end=None, sortby=None,
                                       search=None, search_in='content', groupby=None, **kwargs):
+        # TODO: refactor this because most of this code is duplicated from portal_my_events_tickets method
         values = self._prepare_portal_layout_values()
 
         # default sort by value
@@ -37,8 +25,8 @@ class EventSessionTicketCustomerPortal(EventTicketCustomerPortal):
             sortby = 'date'
 
         # default filter by value
-        domain = [('id', '=', session.id), ('registration_ids.state', '!=', 'cancel')]
-
+        domain = [('id', '=', session.id)]
+        print("la session demandée est : ", session.id)
         # default group by value
         if not groupby:
             groupby = 'session'
@@ -66,8 +54,9 @@ class EventSessionTicketCustomerPortal(EventTicketCustomerPortal):
             step=self._items_per_page
         )
 
-        sessions = Session.search(domain, limit=self._items_per_page, offset=pager['offset'])
-
+        events = Session.search(domain, limit=self._items_per_page, offset=pager['offset'])
+        request.session['my_event_events_history'] = events.ids[:100]
+        print("la session est toujours : ", session, session.id)
         values.update(
             date=date_begin,
             date_end=date_end,
@@ -80,31 +69,32 @@ class EventSessionTicketCustomerPortal(EventTicketCustomerPortal):
             groupby=groupby,
             session=session,
             registrations=session.registration_ids.filtered(lambda
-                                                                r: r.partner_id.id == request.env.user.partner_id.id and r.state != 'cancel' and r.state != 'draft'),
+                                                                r: r.partner_id.id == request.env.user.partner_id.id and r.state != 'cancel' and r.state != 'draft' and r.state == 'open' or r.state == 'done'),
             registration_ids=','.join(map(str, session.registration_ids.filtered(lambda
-                                                                                     r: r.partner_id.id == request.env.user.partner_id.id and r.state != 'cancel' and r.state != 'draft').ids)),
+                                                                                     r: r.partner_id.id == request.env.user.partner_id.id and r.state != 'cancel' and r.state != 'draft' and r.state == 'open' or r.state == 'done').ids)),
         )
         return self._get_page_view_values(session, access_token, values, 'my_events_history', False, **kwargs)
 
     def _get_sessions_domain(self, event_id, user):
         return [
             ('event_id', '=', event_id),
-            ('registration_ids.partner_id', '=', user)
+            ('registration_ids.partner_id', '=', user),
+            ('registration_ids.state', 'in', ['open', 'done']),
+            ('is_finished', '!=', True) 
         ]
 
     @http.route(['/my/tickets/event/sessions/<int:event_id>'], type='http', auth="public", website=True)
-    def portal_my_event_sessions(self, event_id=None, access_token=None, page=1, date_begin=None, date_end=None,
+    def portal_my_event_sessions_tickets(self, event_id=None, access_token=None, page=1, date_begin=None, date_end=None,
                                  sortby=None, search=None, search_in='content', groupby=None, filterby=None, **kw):
         values = self._prepare_portal_layout_values()
         Session = request.env['event.session']
         user = request.env.user.partner_id.id
         domain = []
-
         domain += self._get_sessions_domain(event_id, user)
 
         searchbar_filters = {
             'all': {'label': _('All'), 'domain': []},
-            'upcoming': {'label': _('Upcoming'), 'domain': [('stage_id', 'in', [1, 2, 3]), ('registration_ids.state', '!=', 'cancel')]},
+            'upcoming': {'label': _('Upcoming'), 'domain': [('stage_id', 'in', [1, 2, 3])]},
         }
 
         if not filterby:
@@ -113,13 +103,6 @@ class EventSessionTicketCustomerPortal(EventTicketCustomerPortal):
 
         # sessions count
         session_count = Session.search_count(domain)
-
-        # If user is registered to only one session, redirect to that session
-        if session_count == 1:
-            single_session = Session.search(domain, limit=1)
-            return request.redirect("/my/tickets/event/session/%s" % single_session.id)
-        
-        
         # pager
         pager = portal_pager(
             url="/my/tickets/event/sessions/%s" % event_id,
@@ -131,6 +114,7 @@ class EventSessionTicketCustomerPortal(EventTicketCustomerPortal):
         )
 
         sessions = Session.search(domain, limit=self._items_per_page, offset=pager['offset'])
+        print(sessions, "Résultat des sessions de l'événement")
         request.session['my_event_sessions_history'] = sessions.ids[:100]
 
         values.update({
@@ -151,6 +135,7 @@ class EventSessionTicketCustomerPortal(EventTicketCustomerPortal):
 
     @http.route(['/my/tickets/event/session/<int:session_id>'], type='http', auth="public", website=True)
     def portal_my_event_session(self, session_id=None, access_token=None, **kw):
+        print(session_id, "Session ID")
         session = request.env['event.session'].browse(session_id)
         values = self._session_get_page_view_values(session, access_token, **kw)
         return request.render("event_session_portal_ticket.portal_my_event_session_tickets", values)

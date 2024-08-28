@@ -10,116 +10,66 @@ from odoo.addons.portal.controllers.portal import CustomerPortal, pager as porta
 from odoo.osv.expression import OR, AND
 
 
-
 class EventCustomerPortalSession(CustomerPortal):
 
     def _prepare_home_portal_values(self, counters):
         values = super()._prepare_home_portal_values(counters)
-
-        if 'event_count' in counters:
-            event_count = request.env['event.event'].search_count(self._get_events_domain()) \
-                if request.env['event.event'].check_access_rights('read', raise_exception=False) else 0
-
-            values['event_count'] = event_count
+        if 'event_session_count' in counters:
+            event_session_count = request.env['event.session'].search_count(self._get_sessions_domain()) \
+                if request.env['event.session'].check_access_rights('read', raise_exception=False) else 0
+            values['event_session_count'] = event_session_count
         return values
 
-    # ------------------------------------------------------------
-    # My Events
-    # ------------------------------------------------------------
-    def _event_get_page_view_values(self, event, access_token, page=1, date_begin=None, date_end=None, sortby=None,
-                                    search=None, search_in='content', groupby=None, **kwargs):
-
-        values = self._prepare_portal_layout_values()
-
-        # default sort by value
-        if not sortby:
-            sortby = 'date'
-
-        # default filter by value
-        domain = [('id', '=', event.id)]
-
-        # default group by value
-        if not groupby:
-            groupby = 'event'
-
-        if date_begin and date_end:
-            domain += [('create_date', '>', date_begin), ('create_date', '<=', date_end)]
-
-        Event = request.env['event.event']
-        if access_token:
-            Event = Event.sudo()
-        elif not request.env.user._is_public():
-            domain = AND([domain, request.env['ir.rule']._compute_domain(Event._name, 'read')])
-            Event = Event.sudo()
-
-        # event count
-        event_count = Event.search_count(domain)
-        # pager
-        url = "/my/events/%s" % event.id
-        pager = portal_pager(
-            url=url,
-            url_args={'date_begin': date_begin, 'date_end': date_end, 'sortby': sortby, 'groupby': groupby,
-                      'search_in': search_in, 'search': search},
-            total=event_count,
-            page=page,
-            step=self._items_per_page
-        )
-
-        events = Event.search(domain, limit=self._items_per_page, offset=pager['offset'])
-        request.session['my_event_events_history'] = events.ids[:100]
-
-        values.update(
-            date=date_begin,
-            date_end=date_end,
-            page_name='event',
-            default_url=url,
-            pager=pager,
-            search_in=search_in,
-            search=search,
-            sortby=sortby,
-            groupby=groupby,
-            event=event,
-        )
-        
-        return self._get_page_view_values(event, access_token, values, 'my_events_history', False, **kwargs)
-
-    def _get_events_domain(self):
-        return [
-            ('is_finished', '!=', True)
+    def _get_sessions_domain(self):
+        user = request.env.user
+        is_portal_user = user.has_group('base.group_portal')
+        is_admin_user = user.has_group('event.group_event_manager')
+        if is_portal_user:
+            domain = [
+                ('organizer_id', '=', user.partner_id.id),
+                ('is_finished', '!=', True)
+            ]
+        elif is_admin_user :
+            domain = [
+                ('is_finished', '!=', True)
+            ]
+        else : 
+            domain = [
+            '|',
+            '|',
+            ('organizer_id', '=', user.partner_id.id),
+            ('message_follower_ids.partner_id', '=', user.partner_id.id),
+            ('is_finished', '!=', True) 
         ]
+            
+        return domain
+
 
     # ------------------------------------------------------------
-    # My Session
+    # My Sessions
     # ------------------------------------------------------------
     def _session_get_page_view_values(self, session, access_token, page=1, date_begin=None, date_end=None, sortby=None,
                                       search=None, search_in='content', groupby=None, **kwargs):
-        # TODO: refactor this because most of this code is duplicated from portal_my_events method
         values = self._prepare_portal_layout_values()
 
         # default sort by value
         if not sortby:
             sortby = 'date'
 
-        # default filter by value
         domain = [('id', '=', session.id)]
-
-        # default group by value
-        if not groupby:
-            groupby = 'session'
-
+        print('session recommandée : ', session.id)
+        # Pagination et filtre par date
         if date_begin and date_end:
             domain += [('create_date', '>', date_begin), ('create_date', '<=', date_end)]
 
         Session = request.env['event.session']
         if access_token:
             Session = Session.sudo()
-        elif not request.env.user._is_public():
+        else:
             domain = AND([domain, request.env['ir.rule']._compute_domain(Session._name, 'read')])
             Session = Session.sudo()
 
-        # event count
         session_count = Session.search_count(domain)
-        # pager
         url = "/my/event/sessions/session/%s" % session.id
         pager = portal_pager(
             url=url,
@@ -130,13 +80,23 @@ class EventCustomerPortalSession(CustomerPortal):
             step=self._items_per_page
         )
 
-        events = Session.search(domain, limit=self._items_per_page, offset=pager['offset'])
-        # request.session['my_event_events_history'] = events.ids[:100]
+        sessions = Session.search(domain, limit=self._items_per_page, offset=pager['offset'])
+
+        # Stockage dans l'historique
+        request.session['my_event_sessions_history'] = sessions.ids[:100]
+
+        # Gestion des boutons précédent et suivant
+        history = request.session.get('my_event_sessions_history', [])
+        if session.id in history:
+            current_index = history.index(session.id)
+            prev_record = history[current_index - 1] if current_index > 0 else False
+            next_record = history[current_index + 1] if current_index < len(history) - 1 else False
+        else:
+            prev_record = next_record = False
 
         values.update(
             date=date_begin,
             date_end=date_end,
-            page_name='sessions',
             default_url=url,
             pager=pager,
             search_in=search_in,
@@ -144,13 +104,10 @@ class EventCustomerPortalSession(CustomerPortal):
             sortby=sortby,
             groupby=groupby,
             session=session,
+            prev_record=prev_record,
+            next_record=next_record
         )
-        values.update({
-            'prev_record' : False,
-            'next_record' : False,
-        })
-        return self._get_page_view_values(session, access_token, values, 'my_events_history', False, **kwargs)
-
+        return self._get_page_view_values(session, access_token, values, 'my_event_sessions_history', False, **kwargs)
 
     @http.route(['/my/event/sessions/<int:event_id>', '/my/event/sessions/page/<int:page>'], type='http', auth="user",
                 website=True)
@@ -158,40 +115,33 @@ class EventCustomerPortalSession(CustomerPortal):
         values = self._prepare_portal_layout_values()
         user = request.env.user.partner_id.id
         Session = request.env['event.session']
-        domain = []
+        domain = [('event_id', '=', event_id)]
 
-        domain += [('event_id', '=', event_id)]
-
-        # session count
         session_count = Session.search_count(domain)
-        # pager
         pager = portal_pager(
-            url="/my/events",
+            url="/my/event/sessions",
             url_args={'date_begin': date_begin, 'date_end': date_end, 'sortby': sortby},
             total=session_count,
             page=page,
             step=self._items_per_page
         )
 
-        #             # content according to pager and archive selected
         sessions = Session.search(domain, limit=self._items_per_page, offset=pager['offset'])
+
+        # Mise à jour de l'historique des sessions visualisées
+        request.session['my_event_sessions_history'] = sessions.ids[:100]
 
         values.update({
             'date': date_begin,
             'date_end': date_end,
             'sessions': sessions,
-            'page_name': 'session',
+            'page_name': 'event_sessions',
             'default_url': '/my/event/sessions',
             'pager': pager,
             'sortby': sortby,
             'user': user
         })
-        values.update({
-            'prev_record' : False,
-            'next_record' : False,
-        })
         return request.render("event_portal_session.portal_my_sessions", values)
-
 
     @http.route(['/my/event/sessions/session/<int:session_id>'], type='http', auth="public", website=True)
     def portal_my_session(self, session_id=None, access_token=None, page=1, date_begin=None, date_end=None, sortby=None,
@@ -202,10 +152,5 @@ class EventCustomerPortalSession(CustomerPortal):
             return request.redirect('/my')
         session_sudo = session_sudo if access_token else session_sudo.with_user(request.env.user)
         values = self._session_get_page_view_values(session_sudo, access_token, page, date_begin, date_end, sortby,
-                                                    search,
-                                                    search_in, groupby, **kw)
-        values.update({
-            'prev_record' : False,
-            'next_record' : False,
-        })
+                                                    search, search_in, groupby, **kw)
         return request.render("event_portal_session.portal_my_session", values)

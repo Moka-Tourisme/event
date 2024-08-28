@@ -140,7 +140,7 @@ msgstr "Télécharger"
 #: model_terms:ir.ui.view,arch_db:event_portal.portal_my_events
 #: model_terms:ir.ui.view,arch_db:event_portal.portal_my_sessions
 msgid "Event"
-msgstr "Evénement"
+msgstr "Événement"
 
 #. module: event_portal
 #: model_terms:ir.ui.view,arch_db:event_portal.portal_my_events
@@ -157,13 +157,13 @@ msgstr "Rapport Event Portal "
 #: model_terms:ir.ui.view,arch_db:event_portal.portal_layout
 #: model_terms:ir.ui.view,arch_db:event_portal.portal_layout_sessions
 msgid "Event(s)"
-msgstr "Evénement(s)"
+msgstr "Événement(s)"
 
 #. module: event_portal
 #: model_terms:ir.ui.view,arch_db:event_portal.portal_my_events
 #: model_terms:ir.ui.view,arch_db:event_portal.portal_my_home
 msgid "Events"
-msgstr "Evénements"
+msgstr "Événements"
 
 #. module: event_portal
 #: model_terms:ir.ui.view,arch_db:event_portal.portal_my_event
@@ -226,7 +226,7 @@ msgstr "Il n'y a pas d'événement."
 #. module: event_portal
 #: model_terms:ir.ui.view,arch_db:event_portal.portal_my_sessions
 msgid "There are no sessions."
-msgstr "Il n'y a pas de séance."
+msgstr "Il n'y a pas de séances."
 
 #. module: event_portal
 #: model_terms:ir.ui.view,arch_db:event_portal.portal_my_events

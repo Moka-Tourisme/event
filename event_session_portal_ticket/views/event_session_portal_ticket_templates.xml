@@ -67,7 +67,7 @@
 
     <!-- Session details -->
     <template id="portal_my_event_sessions" name="My Tickets">
-        <t t-call="portal.portal_layout">
+        <t t-call="portal.portal_layout" groups="base.group_portal,event.group_event_user, event.group_event_manager">
             <t t-set="breadcrumbs_searchbar" t-value="True"/>
 
             <t t-call="portal.portal_searchbar">
@@ -121,7 +121,7 @@
     <!-- Session ticket view -->
     <template id="portal_my_event_session_tickets" name="My Tickets" inherit_id="portal.portal_sidebar" primary="True">
         <xpath expr="//div[hasclass('o_portal_sidebar')]" position="inside">
-            <t t-set="o_portal_fullwidth_alert" groups="event.group_event_user">
+            <t t-set="o_portal_fullwidth_alert" groups="base.group_portal,event.group_event_user, event.group_event_manager">
                 <t t-call="portal.portal_back_in_edit_mode">
                 </t>
             </t>
@@ -134,6 +134,7 @@
                         <div class="text-center pb-2 pt-3">
                             <h2 class="mb-3">
                                 <i class="fa fa-ticket"/>
+
                                 <b t-esc="len(registrations)"/>
                                 <br/>
                                 <strong t-if="len(registrations) &gt; 1">Registrations</strong>
@@ -173,7 +174,7 @@
                 <div id="event_content" class="col-12 col-lg">
                     <div class="o_portal_html_view shadow p-3">
                         <div>
-                            <t t-call="event_session_portal_ticket.content">
+                            <t t-call="event_session_portal_ticket.content" groups="base.group_portal,event.group_event_user, event.group_event_manager">
                                 <t t-set="docs" t-value="session"/>
                             </t>
                         </div>
@@ -187,25 +188,34 @@
     </template>
 
     <!--        Breadcrumb-->
-    <template id="portal_layout_sessions_ticket" name="Portal layout: session ticket menu entry"
-              inherit_id="portal.portal_breadcrumbs"
+    <template id="portal_layout_session_ticket" name="Portal layout: event menu entry" inherit_id="portal.portal_breadcrumbs"
               priority="40">
         <xpath expr="//ol[hasclass('o_portal_submenu')]" position="inside">
-            <li t-if="sessions or session" t-attf-class="breadcrumb-item">
-                <a t-attf-href="/my/tickets/">Ticket(s)</a>
-            </li>
-            <li t-if="sessions"
-                t-attf-class="breadcrumb-item #{'active ' if not sessions else ''}">
-                <span t-field="sessions.event_id.name"/>
-            </li>
-            <li t-if="session"
-                t-attf-class="breadcrumb-item #{'active ' if not session else ''}">
-                <a t-attf-href="/my/tickets/event/sessions/{{ session.event_id.id }}"><span t-field="session.name"/></a>
-            </li>
-            <li t-if="session"
-                t-attf-class="breadcrumb-item #{'active ' if not session else ''}">
-                <span t-field="session.name"/> <span t-field="session.date_begin" t-options='{"format": "d MMM yyyy"}'/>
-            </li>
+        
+            <t t-if="page_name == 'sessions'">
+                <li t-if="sessions"
+                    t-attf-class="breadcrumb-item #{'active ' if not sessions else ''}">
+                    <span t-field="sessions.event_id.name"/>
+                </li>
+                
+                
+                <!-- <li class="col-lg-2"
+                    t-attf-class="breadcrumb-item #{'active ' if not event else ''}">
+                    <a t-if="event" t-attf-href="/my/tickets/event/session?{{ keep_query() }}">Ticket(s)</a>
+                    <t t-else="">Ticket(s)</t>
+                </li>
+                <li t-if="session"
+                    t-attf-class="breadcrumb-item #{'active ' if not session else ''}">
+                    <a t-attf-href="/my/tickets/event/sessions/{{ session.event_id.id }}">
+                        <span t-field="session.name"/>
+                    </a>
+                </li>
+                <li t-if="session"
+                    t-attf-class="breadcrumb-item #{'active ' if not session else ''}">
+                    <span t-field="session.name"/>
+                    <span t-field="session.date_begin" t-options='{"format": "d MMM yyyy"}'/>
+                </li> -->
+            </t>
         </xpath>
     </template>
 </odoo>

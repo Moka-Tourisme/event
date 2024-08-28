@@ -28,6 +28,7 @@ class EventCustomerPortal(CustomerPortal):
     def _event_get_page_view_values(self, event, access_token, page=1, date_begin=None, date_end=None, sortby=None,
                                     search=None, search_in='content', groupby=None, **kwargs):
         values = self._prepare_portal_layout_values()
+        user = request.env.user
 
         # default sort by value
         if not sortby:
@@ -69,7 +70,7 @@ class EventCustomerPortal(CustomerPortal):
         values.update(
             date=date_begin,
             date_end=date_end,
-            page_name='event',
+            page_name='events',
             default_url=url,
             pager=pager,
             search_in=search_in,
@@ -80,11 +81,32 @@ class EventCustomerPortal(CustomerPortal):
         )
         
         return self._get_page_view_values(event, access_token, values, 'my_events_history', False, **kwargs)
+    
 
     def _get_events_domain(self):
-        return [
-            ('is_finished', '!=', True)
+        user = request.env.user
+        is_portal_user = user.has_group('base.group_portal')
+        is_admin_user = user.has_group('event.group_event_manager')
+        if is_portal_user:
+            domain = [
+                ('organizer_id', '=', user.partner_id.id),
+                ('is_finished', '!=', True)
+            ]
+        elif is_admin_user :
+            domain = [
+                ('is_finished', '!=', True)
+            ]
+        else : 
+            domain = [
+            '|',
+            '|',
+            ('organizer_id', '=', user.partner_id.id),
+            ('message_follower_ids.partner_id', '=', user.partner_id.id),
+            ('is_finished', '!=', True) 
         ]
+            
+        return domain
+
 
     
 
@@ -99,6 +121,7 @@ class EventCustomerPortal(CustomerPortal):
 
         if date_begin and date_end:
             domain += [('create_date', '>', date_begin), ('create_date', '<=', date_end)]
+
 
         # events count
         event_count = Event.search_count(domain)

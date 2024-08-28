@@ -22,14 +22,16 @@
                     <strong>End date:</strong>
                     <p class="m-0" t-field="session.date_end"/>
                 </div>
-                <div t-if="session.organizer_id.name" class="col-auto col-3 mw-100 mb-2">
-                    <strong>Organizer:</strong>
-                    <p class="m-0" t-field="session.organizer_id.name"/>
-                </div>
-                <div t-if="session.user_id.name" class="col-auto col-3 mw-100 mb-2">
-                    <strong>Responsible:</strong>
-                    <p class="m-0" t-field="session.user_id.name"/>
-                </div>
+                <t groups="event.group_event_user">
+                    <div t-if="o.organizer_id.name" class="col-auto col-3 mw-100 mb-2">
+                        <strong>Organizer:</strong>
+                        <p class="m-0" t-field="o.organizer_id.name"/>
+                    </div>
+                    <div t-if="o.user_id.name" class="col-auto col-3 mw-100 mb-2">
+                        <strong>Responsible:</strong>
+                        <p class="m-0" t-field="o.user_id.name"/>
+                    </div>
+                </t>
             </div>
             <t t-if="session.seats_expected &gt; 0">
                 <div id="attendees" class="pt16">

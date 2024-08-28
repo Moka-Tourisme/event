@@ -10,7 +10,6 @@
         'security/account_security.xml',
         'security/ir.model.access.csv',
         'views/event_portal_templates.xml',
-        'views/content_template.xml',
         'report/event_portal_report.xml',
     ],
     'assets': {

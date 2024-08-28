@@ -2,11 +2,11 @@
 <odoo>
 
     <template id="portal_my_sessions" name="My Sessions">
-        <t t-call="portal.portal_layout">
+        <t t-call="portal.portal_layout" groups="base.group_portal,event.group_event_user, event.group_event_manager">
             <t t-set="breadcrumbs_searchbar" t-value="True"/>
 
             <t t-call="portal.portal_searchbar">
-                <t t-set="title">Sessions</t>
+                <!-- <t t-set="title">Sessions</t> -->
             </t>
             <t t-if="not sessions">
                 <div class="alert alert-warning mt8" role="alert">
@@ -58,28 +58,30 @@
               inherit_id="portal.portal_breadcrumbs"
               priority="40">
         <xpath expr="//ol[hasclass('o_portal_submenu')]" position="inside">
-            <li t-if="sessions or session" t-attf-class="breadcrumb-item">
-                <a t-attf-href="/my/events">Event(s)</a>
+             <!-- <li t-if="page_name == 'event_sessions'" class="breadcrumb-item">
+                <a t-attf-href="/my/events?{{ keep_query() }}">Session(s)</a>
+            </li> -->
+            <!-- <li t-if="session"
+                t-attf-class="breadcrumb-item #{'active ' if not sessions else ''}">
+                <span t-field="session.event_id.name"/>
+            </li> -->
+            <li t-if="page_name == 'event_sessions'" class="breadcrumb-item">
+                <a t-attf-href="/my/events?{{ keep_query() }}">Event(s)</a>
             </li>
-            <li t-if="sessions"
+
+            <!-- revoir ici  -->
+             <li t-if="page_name == 'event_sessions'"
                 t-attf-class="breadcrumb-item #{'active ' if not sessions else ''}">
                 <span t-field="sessions.event_id.name"/>
             </li>
-            <li t-if="session"
-                t-attf-class="breadcrumb-item #{'active ' if not session else ''}">
-                <a t-attf-href="/my/event/sessions/{{ session.event_id.id }}">Sessions</a>
-            </li>
-            <li t-if="session"
-                t-attf-class="breadcrumb-item #{'active ' if not session else ''}">
-                <span t-field="session.name"/>
-            </li>
+            
         </xpath>
     </template>
 
 
     <template id="portal_my_session" name="My session" inherit_id="portal.portal_sidebar" primary="True">
         <xpath expr="//div[hasclass('o_portal_sidebar')]" position="inside">
-            <t t-set="o_portal_fullwidth_alert" groups="event.group_event_user">
+            <t t-set="o_portal_fullwidth_alert">
                 <t t-call="portal.portal_back_in_edit_mode">
                 </t>
             </t>
@@ -99,14 +101,14 @@
                                 <strong t-else="">Attendee</strong>
                             </h2>
                             <div class="row no-gutters mt-2">
-                                <div t-if="session.seats_available" class="col-12 bg-100 px-2 py-2">
+                                <div t-if="session.seats_available" class="bg-100 px-2 py-2" style="width: 90%; margin: auto" >
                                     <i class="fa fa-user-o px-1 py-2"/>
                                     <b t-field="session.seats_available"/>
                                     <br/>
                                     <small t-if="session.seats_available &gt; 1">Remaining seats</small>
                                     <small t-else="">Remaining seat</small>
                                 </div>
-                                <div t-else="" class="col-12 bg-100 px-2 py-2">
+                                <div t-else="" class="bg-100 px-2 py-2" style="width: 90%; margin: auto">
                                     <i class="fa fa-user-o px-1 py-2"/>
                                     ∞
                                     <br/>
@@ -185,10 +187,15 @@
                 <div id="event_content" class="col-12 col-lg">
                     <div class="o_portal_html_view shadow p-3">
                         <div>
-                            <t t-call="event_portal_session.content">
-                                <t t-set="docs" t-value="session"/>
+                            <t if="page_name == 'event_sessions'">
+                                <t t-call="event_portal_session.content">
+                                    <t t-set="docs" t-value="session"/>
+                                </t>
                             </t>
                         </div>
+                        <div class="mt-4">
+
+                </div>
                     </div>
                     <!-- chatter -->
                     <div id="event_communication" class="mt-4">
