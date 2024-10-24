@@ -1,0 +1,62 @@
+.container{
+   padding: 0 !important;;
+}
+
+.new_class {
+    margin: 30px;
+    height: 490px;
+}
+.body_part_1 {
+    padding: 20px;
+}
+.body_part_2 {
+    padding: 30px;
+    font-size: 12px;
+    text-transform: uppercase;
+}
+.body_part_2 hr {
+    height: 1px;
+}
+.border_left_dashed {
+    border-left: 1px dashed black;
+}
+.img_qr_code {
+    position: absolute;
+    left: 230px;
+    top: 60px;
+}
+.img_macaron {
+    position: absolute;
+    left: 260px;
+    top: 5px;
+}
+.head_top_right {
+    padding-top: 170px;
+}
+.custom-title {
+    font-weight: bolder;
+}
+.font-part-2 {
+    font-size: 13px;
+}
+.no-border {
+    margin: 0 !important;
+    padding: 0 !important;
+}
+.margin-top-1 {
+    margin-top: 1px;
+}
+
+.o_event_foldable_badge_bottom_left{
+    border-top: 1px dashed black;
+}
+
+.bottom-right {
+    margin: 30px;
+    padding-top: 35px !important;
+    height: 490px;
+}
+
+.o_event_foldable_badge_container {
+    height: 149.4mm;
+}

@@ -1,0 +1,208 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* event_ticket_custom
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 16.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2024-07-17 08:22+0000\n"
+"PO-Revision-Date: 2024-07-17 08:22+0000\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: event_ticket_custom
+#: model:ir.model.fields,help:event_ticket_custom.field_event_event__logo_position
+msgid "-10 to 100. Corresponds to the top property in css"
+msgstr ""
+
+#. module: event_ticket_custom
+#: model_terms:ir.ui.view,arch_db:event_ticket_custom.event_report_template_foldable_badge
+msgid "<span>JOHN DOE</span>"
+msgstr ""
+
+#. module: event_ticket_custom
+#: model_terms:ir.ui.view,arch_db:event_ticket_custom.event_report_template_foldable_badge
+msgid "Attendee"
+msgstr "Participant"
+
+#. module: event_ticket_custom
+#: model:ir.model.fields,field_description:event_ticket_custom.field_event_event__background_color
+msgid "Background Color"
+msgstr "Couleur de Fond"
+
+#. module: event_ticket_custom
+#: model:ir.model.fields,field_description:event_ticket_custom.field_event_event__base_logo
+msgid "Base Logo"
+msgstr "Logo"
+
+#. module: event_ticket_custom
+#: model:ir.model.fields,field_description:event_ticket_custom.field_event_event__content_color
+msgid "Content Color"
+msgstr "Couleur du texte"
+
+#. module: event_ticket_custom
+#: model_terms:ir.ui.view,arch_db:event_ticket_custom.view_event_form
+msgid "Customization"
+msgstr "Personnalisation"
+
+#. module: event_ticket_custom
+#: model_terms:ir.ui.view,arch_db:event_ticket_custom.event_report_template_foldable_badge
+msgid "Date and Time"
+msgstr "Date & Horaire"
+
+#. module: event_ticket_custom
+#: model:ir.model,name:event_ticket_custom.model_event_event
+msgid "Event"
+msgstr "Évènement"
+
+#. module: event_ticket_custom
+#: model:ir.model,name:event_ticket_custom.model_event_type
+msgid "Event Template"
+msgstr "Modèle d'événement"
+
+#. module: event_ticket_custom
+#: model:ir.model.fields,field_description:event_ticket_custom.field_event_event__bottom_left_full_screen_image
+#: model:ir.model.fields,field_description:event_ticket_custom.field_event_event__bottom_right_full_screen_image
+#: model:ir.model.fields,field_description:event_ticket_custom.field_event_event__upper_left_full_screen_image
+msgid "Full Screen Image"
+msgstr "Image en pleine page"
+
+#. module: event_ticket_custom
+#: model_terms:ir.ui.view,arch_db:event_ticket_custom.view_event_form
+msgid "General Settings"
+msgstr "Personnalisation Générales"
+
+#. module: event_ticket_custom
+#: model_terms:ir.ui.view,arch_db:event_ticket_custom.event_report_template_foldable_badge
+msgid "Location"
+msgstr "Lieu d'embarquement"
+
+#. module: event_ticket_custom
+#: model:ir.model.fields,field_description:event_ticket_custom.field_event_event__logo_position
+msgid "Logo Position"
+msgstr "Hauteur du logo"
+
+#. module: event_ticket_custom
+#: model:ir.model.fields,help:event_ticket_custom.field_event_event__base_logo
+msgid "Logo on the ticket"
+msgstr ""
+
+#. module: event_ticket_custom
+#: model_terms:ir.ui.view,arch_db:event_ticket_custom.view_event_form
+msgid "Lower Left Settings"
+msgstr "Volet Bas/Gauche"
+
+#. module: event_ticket_custom
+#: model_terms:ir.ui.view,arch_db:event_ticket_custom.view_event_form
+msgid "Lower Right Settings"
+msgstr "Volet Bas/Droite"
+
+#. module: event_ticket_custom
+#: model:ir.model.fields,field_description:event_ticket_custom.field_event_event__outline_color
+msgid "Outline Color"
+msgstr "Couleur de contour"
+
+#. module: event_ticket_custom
+#: model_terms:ir.ui.view,arch_db:event_ticket_custom.view_event_form
+msgid "Set the bottom left image in full screen"
+msgstr "Image pleine largeur"
+
+#. module: event_ticket_custom
+#: model_terms:ir.ui.view,arch_db:event_ticket_custom.view_event_form
+msgid "Set the bottom right image in full screen"
+msgstr "Image pleine largeur"
+
+#. module: event_ticket_custom
+#: model_terms:ir.ui.view,arch_db:event_ticket_custom.view_event_form
+msgid "Set the upper left image in full screen"
+msgstr "Image pleine largeur"
+
+#. module: event_ticket_custom
+#: model:ir.model.fields,help:event_ticket_custom.field_event_event__ticket_bottom_left
+msgid ""
+"This information will be printed on your tickets on back left position. Use "
+"a custom image to set it to full screen"
+msgstr "Cette information s'affichera sur votre billet en bas à gauche"
+
+#. module: event_ticket_custom
+#: model:ir.model.fields,help:event_ticket_custom.field_event_event__ticket_bottom_right
+msgid ""
+"This information will be printed on your tickets on back right position"
+msgstr "Cette information s'affichera sur votre billet en bas à droite"
+
+#. module: event_ticket_custom
+#: model:ir.model.fields,help:event_ticket_custom.field_event_event__ticket_upper_left
+msgid "This information will be printed on your tickets on top left position"
+msgstr "Cette information s'affichera sur votre billet en haut à gauche"
+
+#. module: event_ticket_custom
+#: model:ir.model.fields,help:event_ticket_custom.field_event_type__ticket_bottom_right
+#: model:ir.model.fields,help:event_ticket_custom.field_event_type__ticket_upper_left
+msgid "This information will be printed on your tickets."
+msgstr "Cette information s'affichera sur votre billet"
+
+#. module: event_ticket_custom
+#: model:ir.model.fields,help:event_ticket_custom.field_event_event__bottom_left_full_screen_image
+msgid "This will set the bottom left image to full screen"
+msgstr ""
+"Si une image est définie dans la description, cochez cette case pour la "
+"passer en pleine largeur"
+
+#. module: event_ticket_custom
+#: model:ir.model.fields,help:event_ticket_custom.field_event_event__bottom_right_full_screen_image
+msgid "This will set the bottom right image to full screen"
+msgstr ""
+"Si une image est définie dans la description, cochez cette case pour la "
+"passer en pleine largeur"
+
+#. module: event_ticket_custom
+#: model:ir.model.fields,help:event_ticket_custom.field_event_event__upper_left_full_screen_image
+msgid "This will set the upper left image to full screen"
+msgstr ""
+"Si une image est définie dans la description, cochez cette case pour la "
+"passer en pleine largeur"
+
+#. module: event_ticket_custom
+#: model:ir.model.fields,field_description:event_ticket_custom.field_event_type__ticket_upper_left
+msgid "Ticket Extra Information"
+msgstr ""
+
+#. module: event_ticket_custom
+#: model:ir.model.fields,field_description:event_ticket_custom.field_event_type__ticket_bottom_right
+msgid "Ticket Fold Information"
+msgstr ""
+
+#. module: event_ticket_custom
+#: model_terms:ir.ui.view,arch_db:event_ticket_custom.view_event_form
+msgid "Upper Left Settings"
+msgstr "Volet Haut/Gauche"
+
+#. module: event_ticket_custom
+#: model_terms:ir.ui.view,arch_db:event_ticket_custom.view_event_form
+msgid "Upper Right Settings"
+msgstr "Volet Haut/Droite"
+
+#. module: event_ticket_custom
+#: model_terms:ir.ui.view,arch_db:event_ticket_custom.view_event_form
+msgid "Your custom text here"
+msgstr "Votre texte personnalisé ici"
+
+#. module: event_ticket_custom
+#: model:ir.model.fields,field_description:event_ticket_custom.field_event_event__ticket_bottom_left
+msgid "bottom_left"
+msgstr "Volet Bas/Gauche"
+
+#. module: event_ticket_custom
+#: model:ir.model.fields,field_description:event_ticket_custom.field_event_event__ticket_bottom_right
+msgid "bottom_right"
+msgstr "Volet Bas/Droite"
+
+#. module: event_ticket_custom
+#: model:ir.model.fields,field_description:event_ticket_custom.field_event_event__ticket_upper_left
+msgid "upper_left"
+msgstr "Volet Haut/Gauche"

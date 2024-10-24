@@ -1,0 +1,206 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!--
+Copyright 2024 Moka Tourisme (https://www.mokatourisme.fr).
+    @author Horvat Damien <ultrarushgame@gmail.com>
+    License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl).
+-->
+<odoo>
+
+    <template
+            id="event_report_template_foldable_badge"
+            inherit_id="event.event_report_template_foldable_badge"
+    >
+        <xpath expr="//div[hasclass('o_event_foldable_badge_container')]" position="replace">
+        <link rel="stylesheet" type="text/css" href="/event_ticket_custom/static/src/css/ticket.css"/>
+            <div>
+                <div class="row" t-attf-style="min-height: 50%; width: 100dvw; margin : 0; max-height: 50%">
+                    <!-- Front -->
+                    <div class="page p-1 col-6 o_event_foldable_badge_top"
+                         t-attf-style="background-color: #{event.outline_color} !important;">
+                        <div class="oe_structure"/>
+                        <div class="new_class"
+                             t-attf-style="background-color: #{event.background_color} !important;margin: 30px;
+    height: 490px;">
+                            <t t-if="event.ticket_upper_left">
+                                <t t-if="event.ticket_upper_left and ('img' in event.ticket_upper_left) and event.upper_left_full_screen_image == True">
+                                    <span>
+                                        <t t-set="ticket_upper_left" t-value="event.ticket_upper_left"/>
+                                        <t t-raw="0"/>
+                                        <img t-att-src="ticket_upper_left.split('src=&quot;')[1].split('&quot;')[0]"
+                                             t-attf-style="width: 100%;"/>
+                                    </span>
+                                </t>
+                                <t t-else="">
+                                    <div t-field="event.ticket_upper_left"/>
+                                </t>
+                            </t>
+                        </div>
+                    </div>
+                    <!-- Back -->
+                    <div class="page col-6 o_event_foldable_badge_top p-1 body_part border_left_dashed"
+                         t-attf-style="background-color: #{event.outline_color} !important">
+                        <div class="oe_structure"/>
+                        <div class="new_class" t-attf-style="background-color: #{event.background_color} !important; margin: 30px;
+    height: 490px;">
+                            <div class="row">
+                                <t t-if="event.base_logo" class="img_logo">
+                                    <t t-set="base_logo" t-value="event.base_logo"/>
+                                    <t t-raw="0"/>
+                                    <img t-att-src="image_data_uri(event.base_logo)"
+                                         t-attf-style="position: absolute;left: 450px;top: #{event.logo_position}px; width: #{event.logo_width}px; height: #{event.logo_height}px; max-height:170px; max-width:130px"/>
+                                </t>
+                                <t t-else="">
+                                    <img src="/event_pass/static/src/img/logo_back.svg" class="img_logo"
+                                         object-fit="contain"
+                                         t-attf-style="position: absolute;left: 450px;top: 70px;max-width: 130px"/>
+                                </t>
+                                <t t-if="attendee">
+                                    
+                                    <div class="o_event_foldable_badge_barcode mt-2">
+                                        <div class="o_event_foldable_badge_barcode_container" t-attf-style="position: absolute;left: 400px;width: 96px; height: 96px;">
+                                            <img class="img_qr_code"
+                                            t-att-src="'/report/barcode/?barcode_type=%s&amp;value=%s&amp;width=%s&amp;height=%s&amp;humanreadable=0' % ('QR', attendee.qr_code, 96, 96)"/>
+                                        </div>
+                                    </div>
+                                </t>
+
+                            </div>
+                            <div class="head_top_right body_part_2 overflow-hidden"
+                                 t-attf-style="color: #{event.content_color} !important;">
+                                <h6
+                                        t-attf-style="color: #{event.title_color} !important;"
+                                        class="font-weight-bold custom-title"
+                                        t-field="event.name"
+                                />
+                                <div>
+                                    PARTICIPANT
+                                    <br/>
+                                    <span class="font-part-2">
+                                        <span
+                                                t-if="attendee"
+                                                class="font-weight-bold"
+                                                t-field="attendee.name"
+                                        />
+                                        <br/>
+                                        <span
+                                                t-if="attendee and attendee.event_ticket_id"
+                                                class="font-weight-bold"
+                                                t-field="attendee.event_ticket_id"
+                                        />
+                                    </span>
+                                    <hr t-attf-style="color: #{event.content_color} !important; background-color: #{event.content_color} !important; height: 1px;"/>
+                                    DATE &amp; HORAIRE
+                                    <br/>
+                                    <t t-if="attendee">
+                                        <span t-if="attendee.session_id.date_begin" class="font-part-2">
+                                            <span
+                                                    class="font-weight-bold"
+                                                    t-if="attendee.session_id.date_begin"
+                                                    t-field="attendee.session_id.date_begin"
+                                            />
+                                        </span>
+                                    </t>
+                                    <t t-else="">
+                                        <span class="font-part-2">
+                                            <span
+                                                    class="font-weight-bold"
+                                                    t-field="event.date_begin"
+                                            />
+                                        </span>
+                                    </t>
+                                    <hr t-attf-style="color: #{event.content_color} !important; background-color: #{event.content_color} !important; height: 1px;"/>
+                                    LIEU DE RENDEZ VOUS
+                                    <br/>
+                                    <t t-set="address" t-value="event.address_id"/>
+                                    <t t-if="address">
+                                        <span class="font-part-2">
+                                            <span
+                                                    class="font-weight-bold"
+                                                    t-field="address.name"
+                                            />
+                                            <br/>
+                                            <span
+                                                    class="font-weight-bold"
+                                                    t-field="address.street"
+                                            />
+                                            <br/>
+                                            <span
+                                                    class="font-weight-bold"
+                                                    t-field="address.street2"/>
+                                            <br/>
+                                            <span class="font-weight-bold">
+                                                <span t-field="address.zip"/>
+                                                <span t-field="address.city"/>
+                                            </span>
+                                        </span>
+                                    </t>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row" t-attf-style="min-height: 50%; max-height: 50%">
+                    <!-- Inner left -->
+                    <div class="page o_event_foldable_badge_left o_event_foldable_badge_container p-1 px-2 col-6 overflow-hidden no-border body_part_3 o_event_foldable_badge_bottom_left"
+                         t-attf-style="background-color: #{event.outline_color} !important;">
+                        <div class="oe_structure"/>
+                        <div class="new_class"
+                             t-attf-style="background-color: #{event.background_color} !important; margin: 30px;
+    height: 490px;                        ">
+                            <!-- If there is a image, the image take the full page here-->
+                            <t t-if="event.ticket_bottom_left">
+                                <t t-if="event.ticket_bottom_left and ('img' in event.ticket_bottom_left) and event.bottom_left_full_screen_image == True">
+                                    <span>
+                                        <t t-set="ticket_bottom_left" t-value="event.ticket_bottom_left"/>
+                                        <t t-raw="0"/>
+                                        <img t-att-src="ticket_bottom_left.split('src=&quot;')[1].split('&quot;')[0]"
+                                             t-attf-style="width: 100%;top: 0; left: 0;"/>
+                                    </span>
+                                </t>
+                                <t t-else="">
+                                    <div t-field="event.ticket_bottom_left" class="p-4"/>
+                                </t>
+                            </t>
+                        </div>
+                    </div>
+                    <!-- Inner right -->
+                    <div class="page o_event_foldable_badge_right o_event_foldable_badge_container px-2 col-6 overflow-hidden border_left_dashed body_part_3 o_event_foldable_badge_bottom_left"
+                         t-attf-style="background-color: #{event.outline_color} !important">
+                        <div class="oe_structure"/>
+                        <div class="new_class"
+                             t-attf-style="background-color: #{event.background_color} !important;margin: 30px;
+    height: 490px;">
+                            <!-- If there is a image, the image take the full page here-->
+                            <t t-if="event.ticket_bottom_right">
+                                <t t-if="event.ticket_bottom_right and ('img' in event.ticket_bottom_right) and event.bottom_right_full_screen_image == True">
+                                    <span>
+                                        <t t-set="ticket_bottom_right" t-value="event.ticket_bottom_right"/>
+                                        <t t-raw="0"/>
+                                        <img t-att-src="ticket_bottom_right.split('src=&quot;')[1].split('&quot;')[0]"
+                                             t-attf-style="width: 100%;top: 0; left: 0;"/>
+                                    </span>
+                                </t>
+                                <t t-else="">
+                                    <div t-field="event.ticket_bottom_right" class="p-4"/>
+                                </t>
+                            </t>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </xpath>
+    </template>
+
+    <template
+            id="event_report_template_full_page_ticket"
+            inherit_id="event.event_report_template_full_page_ticket"
+    >
+        <div t-field="event.ticket_instructions" position="after">
+            <div
+                    t-field="event.ticket_upper_left"
+                    class="o_event_full_page_upper_left px-2 pt-3"
+            />
+        </div>
+    </template>
+
+</odoo>

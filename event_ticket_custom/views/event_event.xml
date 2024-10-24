@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!--
+    Copyright 2024 Moka Tourisme (https://www.mokatourisme.fr).
+    @author Horvat Damien <ultrarushgame@gmail.com>
+    License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl).
+-->
+<odoo>
+
+    <record id="view_event_form" model="ir.ui.view">
+        <field name="model">event.event</field>
+        <field name="inherit_id" ref="event.view_event_form" />
+        <field name="arch" type="xml">
+            <xpath expr="//label[@for='ticket_instructions']" position="replace">
+
+            </xpath>
+            <xpath expr="//field[@name='ticket_instructions']" position="replace">
+
+            </xpath>
+            <xpath expr="//notebook" position="inside">
+                <page name="Customization" string="Customization">
+                    <group class="row">
+                        <group class="col-6">
+                            <separator string="General Settings"/>
+                            <field name="background_color" widget="color"/>
+                            <field name="outline_color" widget="color"/>
+                            <field name="content_color" widget="color"/>
+                        </group>
+                        <group class="col-6">
+                            <separator string="Upper Right Settings"/>
+                            <field name="base_logo" widget="image" class="oe_avatar"/>
+                            <field name="logo_position" widget="numeric_step" options="{'step': 1, 'min': -10, 'max': 100}"/>
+                            <field name="logo_width" widget="numeric_step" options="{'step': 1, 'min': 0, 'max': 160}"/>
+                            <field name="logo_height" widget="numeric_step" options="{'step': 1, 'min': 0, 'max': 170}"/>
+                            <field name="title_color" widget="color"/>
+                        </group>
+                    </group>
+                    
+                    <group class="row">
+                        <group class="col-6">
+                            <separator string="Upper Left Settings"/>
+                            <field name="ticket_upper_left" widget="html" options="{'codeview':true}" placeholder="Your custom text here"/>
+                            <field name="upper_left_full_screen_image" widget="checkbox" string="Set the upper left image in full screen"/>
+                            
+                            <separator string="Lower Left Settings"/>
+                            <field name="ticket_bottom_left" widget="html" options="{'codeview':true}" placeholder="Your custom text here"/>
+                            <field name="bottom_left_full_screen_image" widget="checkbox" string="Set the bottom left image in full screen"/>
+                        </group>
+                        <group class="col-6">
+                            <separator string="Lower Right Settings"/>
+                            <field name="ticket_bottom_right" widget="html" options="{'codeview':true}" placeholder="Your custom text here"/>
+                            <field name="bottom_right_full_screen_image" widget="checkbox" string="Set the bottom right image in full screen"/>
+                        </group>
+                    </group>
+                </page>
+            </xpath>
+        </field>
+    </record>
+
+</odoo>
