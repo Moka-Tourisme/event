@@ -1,0 +1,367 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <record id="paperformat_pass" model="report.paperformat">
+        <field name="name">Custom Paperformat for pass line</field>
+        <field name="default" eval="True"/>
+        <field name="format">custom</field>
+        <field name="orientation">Landscape</field>
+        <field name="page_height">86</field>
+        <field name="page_width">54</field>
+        <field name="margin_top">0</field>
+        <field name="margin_bottom">0</field>
+        <field name="margin_left">0</field>
+        <field name="margin_right">0</field>
+        <field name="header_spacing">0</field>
+        <field name="disable_shrinking" eval="True"/>
+        <field name="dpi">96</field>
+    </record>
+
+    <record id="partner_pass_report" model="ir.actions.report">
+        <field name="name">Print the partner badge</field>
+        <field name="model">res.partner</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">event_pass.partner_pass_template</field>
+        <field name="report_file">event_pass.partner_pass_template</field>
+        <field name="paperformat_id" ref="paperformat_pass"/>
+        <field name="binding_model_id" ref="model_res_partner"/>
+        <field name="binding_type">report</field>
+    </record>
+
+    <record id="pass_report" model="ir.actions.report">
+        <field name="name">Print the pass badge</field>
+        <field name="model">event.pass.line</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">event_pass.pass_template</field>
+        <field name="report_file">event_pass.pass_template</field>
+        <field name="paperformat_id" ref="paperformat_pass"/>
+        <field name="binding_model_id" ref="model_event_pass_line"/>
+        <field name="binding_type">report</field>
+    </record>
+
+    <record id="invitation_report" model="ir.actions.report">
+        <field name="name">Print the invitation ticket</field>
+        <field name="model">event.pass.line</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">event_pass.invitation_template</field>
+        <field name="report_file">event_pass.invitation_template</field>
+        <field name="paperformat_id" ref="event.paperformat_event_foldable_badge"/>
+        <field name="binding_model_id" ref="model_event_pass_line"/>
+        <field name="binding_type">report</field>
+    </record>
+
+    <template id="partner_pass_template">
+        <t t-call="web.basic_layout">
+            <link rel="stylesheet" type="text/css" href="/event_pass/static/src/css/invitation.css"/>
+            <t t-foreach="docs" t-as="partner">
+                <t t-call="event_pass.partner_pass_template_content"/>
+            </t>
+        </t>
+    </template>
+
+    <template id="partner_pass_template_content">
+        <div class="page max_size" style="page-break-after: always">
+            <t t-foreach="docs" t-as="partner">
+                <div>
+                    <table style="width:244pt; table-layout: fixed; height:153pt; margin-left:-15px">
+                        <td style="width:40%;" valign="center">
+                            <table style="width:100%; height:80%">
+                                <tr style="height:30%">
+                                    <td align="center" valign="center">
+                                        <img t-if="partner.parent_id.image_1920"
+                                             t-att-src="image_data_uri(partner.parent_id.image_1920)"
+                                             style="max-height:45pt;max-width:90%;object-fit:contain"
+                                             alt="Company Logo"/>
+                                    </td>
+                                </tr>
+                                <tr style="height:70%;">
+                                    <td align="center" valign="center">
+                                        <img t-att-src="image_data_uri(partner.image_1920)"
+                                             style="max-height:85pt;max-width:90%" alt="partner Image"/>
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+                        <td style="width:60%" valign="center">
+                            <table style="width:100%; height:80%">
+                                <tr>
+                                    <th>
+                                        <div style="font-size:15pt; margin-bottom:0pt;margin-top:0pt;" align="center">
+                                            <t t-esc="partner.name"/>
+                                        </div>
+                                    </th>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <div align="center" style="font-size:10pt;margin-bottom:5pt;">
+                                            <t t-esc="partner.function"/>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <div align="center">
+                                            <t t-if="partner.barcode">
+                                                <img style=""
+                                                     t-att-src="'/report/barcode/?barcode_type=%s&amp;value=%s&amp;width=%s&amp;height=%s&amp;humanreadable=0' % ('QR', partner.barcode, 120, 120)"/>
+                                            </t>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+                    </table>
+                </div>
+            </t>
+        </div>
+    </template>
+
+    <template id="pass_template">
+        <t t-call="web.html_container">
+            <link rel="stylesheet" type="text/css" href="/event_pass/static/src/css/invitation.css"/>
+            <t t-foreach="docs" t-as="pass">
+                <t t-call="event_pass.pass_template_content"/>
+            </t>
+        </t>
+    </template>
+
+    <template id="pass_template_content">
+        <div style="page-break-after: always" width="595,2765pt" min-height="841,88965pt" max-height="841,88965pt">
+            <table style="width:244pt; table-layout: fixed; height:152pt; margin-left:-15px">
+                <tr style="height:30%; max-height: 30%">
+
+                    <!-- Display Partner logo or Company logo -->
+                    <td style="background-color:#FFF; width:50%; vertical-align:top; text-align: center; padding: 15px">
+                        <t t-if="pass.partner_id.parent_id">
+                            <img t-if="pass.partner_id.parent_id.image_1920"
+                                 t-att-src="image_data_uri(pass.partner_id.parent_id.image_1920)"
+                                 style="max-width:80%; max-height: 50pt; object-fit:contain" alt="Logo"/>
+                        </t>
+                        <t t-else="">
+                            <img t-if="res_company.logo" t-att-src="image_data_uri(res_company.logo)" alt="Logo"
+                                 style="max-width:80%;object-fit:contain"/>
+                        </t>
+                    </td>
+
+                    <!-- Display Pass name -->
+                    <td style="width:50%; vertical-align:top; text-align: right; padding: 15px 15px 0 0">
+                        <p style="font-size:0.8em">
+                            <t t-esc="pass.display_name"/>
+                        </p>
+                    </td>
+                </tr>
+                <tr style="height:50%">
+
+                    <!-- Display QR Code -->
+                    <td style="vertical-align:bottom; text-align: center; padding-bottom: 15px">
+                        <img t-att-src="'/report/barcode/?barcode_type=%s&amp;value=%s&amp;width=%s&amp;height=%s&amp;humanreadable=0' % ('QR', pass.qr_code, 90, 90)"/>
+                    </td>
+
+                    <!-- Display Partner name & function -->
+                    <td style="background-color:#FFF; vertical-align: bottom; text-align: left; padding: 0 0 15px 15px">
+                        <t t-if="pass.partner_id">
+                            <strong>
+                                <t t-esc="pass.partner_id.name"/>
+                            </strong>
+                        </t>
+                        <br/>
+                        <t t-if="pass.partner_id.function">
+                            <span style="font-size:0.8em;">
+                                <t t-esc="pass.partner_id.function"/>
+                            </span>
+                        </t>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </template>
+
+    <template id="invitation_template">
+        <t t-call="web.basic_layout">
+            <link rel="stylesheet" type="text/css" href="/event_pass/static/src/css/invitation.css"/>
+            <t t-foreach="docs" t-as="pass">
+                <t t-call="event_pass.invitation_template_content"/>
+            </t>
+        </t>
+    </template>
+
+    <template id="invitation_template_content">
+        <div class="o_event_foldable_badge_container">
+            <div class="row" t-attf-style="min-height:50vh">
+                <!-- Front -->
+                <div class="page p-1 col-6 o_event_foldable_badge_top"
+                     t-attf-style="background-color: #{pass.pass_type_id.outline_color} !important">
+                    <div class="oe_structure"/>
+                    <div
+                            class="p-4 new_class overflow-hidden"
+                            t-attf-style="background-color: #{pass.pass_type_id.background_color}"
+                    >
+                        <t t-if="pass.pass_type_id.upper_left_text">
+                            <span
+                                    t-attf-style="color: #{pass.pass_type_id.content_color} !important"
+                                    t-field="pass.pass_type_id.upper_left_text"
+                            />
+                        </t>
+                    </div>
+                </div>
+                <!-- Back -->
+                <div
+                        class="page col-6 o_event_foldable_badge_top p-1"
+                        t-attf-style="background-color: #{pass.pass_type_id.outline_color}; border-left: 1px dashed black;"
+                >
+                    <div class="oe_structure"/>
+                    <div class="new_class" t-attf-style="background-color: #{pass.pass_type_id.background_color}">
+                        <div id="images_row" class="row pt-3 ps-1 pe-1 align-items-center justify-content-center"
+                             t-attf-style="max-height:10vh">
+                            <div class="col-8">
+                                <t t-if="pass.pass_type_id.base_logo and ('img' in pass.pass_type_id.base_logo)">
+                                    <span
+                                    >
+                                        <t t-set="cover_html" t-value="pass.pass_type_id.base_logo"/>
+                                        <t t-raw="0"/>
+                                        <img t-att-src="cover_html.split('src=&quot;')[1].split('&quot;')[0]"
+                                             t-attf-class="img_logo"
+                                        />
+                                    </span>
+                                </t>
+                                <div t-else="">
+                                    <img
+                                            src="/event_pass/static/src/img/logo_back.svg"
+                                            class="img_logo"
+                                    />
+                                </div>
+                            </div>
+                            <div class="col-4">
+                                <div class="img_qr_code">
+                                    <img
+                                            class="img_qr_code"
+                                            t-att-src="'/report/barcode/?barcode_type=%s&amp;value=%s&amp;width=%s&amp;height=%s&amp;humanreadable=0' % ('QR', pass.qr_code, 96, 96)"
+                                    />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mt-1 body_part_2 overflow-hidden">
+                            <t t-if="pass.pass_type_id.title_text">
+                                <h4
+                                        class="font-weight-bold"
+                                        t-field="pass.pass_type_id.title_text"
+                                        t-attf-style="color: #{pass.pass_type_id.title_color} !important"
+                                />
+                            </t>
+                            <t t-else="">
+                                <h4
+                                        class="font-weight-bold"
+                                        t-field="pass.display_name"
+                                        t-attf-style="color: #{pass.pass_type_id.title_color} !important"
+                                />
+                            </t>
+                            <div t-attf-style="color: #{pass.pass_type_id.content_color} !important">
+                                <t t-if="pass.gifted_by_id">
+                                    GIFTED BY
+                                    <br/>
+                                    <span class="font-part-2">
+                                        <span
+                                                t-if="pass.gifted_by_id"
+                                                class="font-weight-bold"
+                                                t-field="pass.gifted_by_id.name"
+                                        />
+                                        <br/>
+                                    </span>
+                                </t>
+                                <hr t-attf-style="color: #{pass.pass_type_id.content_color} !important; background: #{pass.pass_type_id.content_color} !important"/>
+                                <t t-if="pass.expiration_date">
+                                    TO BE USED BEFORE:
+                                    <br/>
+                                    <span class="font-part-2">
+                                        <span
+                                                t-if="pass.expiration_date"
+                                                class="font-weight-bold"
+                                                t-field="pass.expiration_date"
+                                        />
+                                        <br/>
+                                    </span>
+                                </t>
+                                <t t-if="pass.event_ids">
+                                    VALID FOR:
+                                    <br/>
+                                    <t t-foreach="pass.event_ids" t-as="event">
+                                        <span t-field="event.name" class="font-weight-bold"/>
+                                        <span t-if="not event == pass.event_ids[-1]">,</span>
+                                    </t>
+                                    <br/>
+                                    <t t-if="pass.session_ids">
+                                        VALID FOR:
+                                        <br/>
+                                        <t t-foreach="pass.session_ids" t-as="session">
+                                            <span t-field="session.name" class="font-weight-bold"/>
+                                            <span t-field="session.date_begin" class="font-weight-bold"/>
+                                            <span t-if="not session == pass.session_ids[-1]">,</span>
+                                        </t>
+                                        <br/>
+                                        <t t-if="pass.unauthorized_session_ids">
+                                            NOT VALID FOR:
+                                            <br/>
+                                            <t t-foreach="pass.unauthorized_session_ids" t-as="session">
+                                                <span t-field="session.name" class="font-weight-bold"/>
+                                                <span t-field="session.date_begin" class="font-weight-bold"/>
+                                                <span t-if="not session == pass.unauthorized_session_ids[-1]">,</span>
+                                            </t>
+                                            <br/>
+                                        </t>
+                                    </t>
+                                </t>
+                                <t t-else="">
+                                    <t t-if="pass.event_type_ids">
+                                        VALID FOR:
+                                        <br/>
+                                        <t t-foreach="pass.event_type_ids" t-as="event_type">
+                                            <span t-field="event_type.name" class="font-weight-bold"/>
+                                            <span t-if="not event_type == pass.event_type_ids[-1]">,</span>
+                                        </t>
+                                        <br/>
+                                    </t>
+                                </t>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row" t-attf-style="min-height: 50vh">
+                <!-- Inner left -->
+                <div class="page o_event_foldable_badge_bottom o_event_foldable_badge_left p-1 px-2 col-6 overflow-hidden"
+                     t-attf-style="background-color: #{pass.pass_type_id.outline_color}">
+                    <div class="oe_structure"/>
+                    <div class="p-4 new_class overflow-hidden"
+                         t-attf-style="background-color: #{pass.pass_type_id.background_color}">
+                        <t t-if="pass.pass_type_id.bottom_left_text">
+                            <span
+                                    t-attf-style="color: #{pass.pass_type_id.content_color} !important"
+                                    t-field="pass.pass_type_id.bottom_left_text"
+                            />
+                        </t>
+                        <t t-else="">
+                            <img
+                                    src="/event_pass/static/src/img/logo_back.svg"
+                                    attrs="{'object-fit': 'contain', 'max-width': '100%', 'height': 'auto'}"
+                                    class="img_logo_back"
+                            />
+                        </t>
+                    </div>
+                </div>
+                <!-- Inner right -->
+                <div class="page o_event_foldable_badge_bottom o_event_foldable_badge_right col-6"
+                     t-attf-style="background-color: #{pass.pass_type_id.outline_color}">
+                    <div class="oe_structure"/>
+                    <div class="p-4 new_class overflow-hidden"
+                         t-attf-style="background-color: #{pass.pass_type_id.background_color}">
+                        <t t-if="pass.pass_type_id.bottom_right_text">
+                            <span
+                                    t-attf-style="color: #{pass.pass_type_id.content_color} !important"
+                                    t-field="pass.pass_type_id.bottom_right_text"
+                            />
+                        </t>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </template>
+</odoo>

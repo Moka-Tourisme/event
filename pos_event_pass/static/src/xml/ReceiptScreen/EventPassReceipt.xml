@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates id="template" xml:space="preserve">
+
+    <t t-name="EventPassReceipt" owl="1">
+        <div class="pos-receipt event-pass-receipt">
+
+            <!-- Header -->
+
+            <t t-if="receipt.company.logo">
+                <img
+                        class="pos-receipt-logo"
+                        t-att-src="receipt.company.logo"
+                        alt="Logo"
+                />
+                <br/>
+            </t>
+            <t t-if="!receipt.company.logo">
+                <h2 class="pos-receipt-center-align">
+                    <t t-esc="receipt.company.name"/>
+                </h2>
+                <br/>
+            </t>
+
+            <!-- Pass -->
+
+            <div class="pos-receipt-event-pass">
+                <div class="event-title">
+                    <strong class="event-name" t-esc="pass.display_name"/>
+                </div>
+                <div class="event-pass-info">
+                    <b>To be used
+                    <span t-if="pass.validity_date">
+                        from
+                        <t t-esc="formatDate(pass.validity_date)"/>
+                    </span>
+                    <span t-if="pass.expiration_date">
+                        to
+                        <t t-esc="formatDate(pass.expiration_date)"/>
+                    </span>
+                    <span t-if="pass.fixed_number_allowed_event">
+                        for
+                        <t t-if="pass.number_allowed_event == 1">
+                            <t t-esc="pass.number_allowed_event"/>
+                            <span>
+                                 event
+                            </span>
+                        </t>
+                        <t t-else="">
+                            <t t-esc="pass.number_allowed_event"/>
+                            <span>
+                                 events
+                            </span>
+                        </t>
+                    </span>
+                    <span>
+                        for
+                        <t t-esc="pass.number_visitors"/>
+                        <t t-if="pass.number_visitors == 1" >
+                            <span>
+                                 visitor
+                            </span>
+                        </t>
+                        <t t-else="">
+                            <span>
+                                 visitors
+                            </span>
+                        </t>
+                    </span>
+                    </b>
+                </div>
+                <br/>
+                <div class="pass-ticket">
+                    <t t-if="pass.partner_id[1]" t-esc="pass.partner_id[1]"/>
+                </div>
+                <div class="event-pass-barcode">
+                    <div t-if="pass.qr_code">
+                        <img
+                                class="qr_code"
+                                t-attf-src="/report/barcode/?barcode_type=QR&amp;value={{pass.qr_code}}&amp;width=164&amp;height=164&amp;humanreadable=1"
+                                alt="QRCode"
+                        />
+                    </div>
+                </div>
+            </div>
+
+            <!-- Footer -->
+
+            <br/>
+            <div class="pos-receipt-order-data">
+                <div><t t-esc="receipt.name" /></div>
+                <t t-if="receipt.date.localestring">
+                    <div><t t-esc="receipt.date.localestring" /></div>
+                </t>
+                <t t-else="">
+                    <div><t t-esc="receipt.date.validation_date" /></div>
+                </t>
+            </div>
+        </div>
+    </t>
+
+</templates>

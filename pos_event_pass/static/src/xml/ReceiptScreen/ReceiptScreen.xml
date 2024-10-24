@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates id="template" xml:space="preserve">
+
+    <t t-inherit="point_of_sale.ReceiptScreen" t-inherit-mode="extension">
+        <xpath expr="//div[hasclass('pos-receipt-container')]" position="inside">
+            <t t-if="currentOrder.event_pass">
+                <EventPassReceipt
+                    t-foreach="currentOrder.event_pass"
+                    t-as="pass"
+                    t-key="pass.id"
+                    order="currentOrder"
+                    pass="pass"
+                />
+            </t>
+        </xpath>
+    </t>
+
+</templates>

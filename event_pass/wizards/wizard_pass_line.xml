@@ -1,0 +1,65 @@
+<?xml version="1.0" ?>
+<odoo>
+    <record id="act_wizard_event_pass_line" model="ir.actions.act_window">
+        <field name="name">Create Pass Lines</field>
+        <field name="res_model">wizard.pass.line</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+
+    <record id="view_wizard_event_pass_line_form" model="ir.ui.view">
+        <field name="model">wizard.pass.line</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <div class="oe_title">
+                        <label for="display_name"/>
+                        <h1>
+                            <field name="display_name"/>
+                        </h1>
+                    </div>
+                    <div style="max-width: 5vw">
+                        <label for="display_name" string="Quantity"/>
+                        <field name="number_pass"/>
+                        <label for="pass_type_id" string="Pass Type"/>
+                        <field name="pass_type_id"/>
+                    </div>
+                    <group name="validity_dates" string="Validity Dates" colspan="4">
+                            <label for="validity_date" string="Dates"/>
+                            <div class="o_row">
+                                    <field name="validity_date" widget="daterange" nolabel="1" class="oe_inline"
+                                        options="{'related_end_date': 'expiration_date'}"
+                                       />
+                                    <i class="fa fa-long-arrow-right mx-2" aria-label="Arrow icon" title="Arrow" />
+                                    <field name="expiration_date" widget="daterange" nolabel="1" class="oe_inline"
+                                        options="{'related_start_date': 'validity_date'}"
+                                    />
+                            </div>
+                    </group>
+                    <group>
+                        <group name="allowed_events" string="Allowed Events">
+                            <field name="partner_id"/>
+                            <field name="gifted_by_id"/>
+                            <field name="event_type_ids" widget="many2many_tags"/>
+                            <field name="category_ids" widget="many2many_tags"
+                                   options="{'color_field': 'color'}"/>
+                            <field name="event_stage_ids" widget="many2many_tags"/>
+                            <field name="event_ids" widget="many2many_tags"/>
+                            <field attrs="{'invisible': [('event_ids', '=', [])]}"
+                                   name="session_ids" widget="many2many_tags"
+                                   domain="[('event_id', 'in', event_ids)]"/>
+                            <field attrs="{'invisible': [('event_ids', '=', [])]}"
+                                   name="unauthorized_session_ids" widget="many2many_tags"
+                                   domain="[('event_id', 'in', event_ids)]"/>
+                        </group>
+                    </group>
+                </sheet>
+                <footer>
+                    <button name="action_create_pass_lines" type="object" class="oe_highlight" string="Create Pass"/>
+                    <button name="action_create_pass_lines_and_send" type="object" string="Create Pass and Send"/>
+                    <button string="Cancel" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+</odoo>

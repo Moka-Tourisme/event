@@ -1,0 +1,954 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* event_pass
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 16.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2024-10-22 08:40+0000\n"
+"PO-Revision-Date: 2024-10-22 10:45+0200\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Language: fr\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+"X-Generator: Poedit 3.5\n"
+
+#. module: event_pass
+#: model:ir.model.fields,field_description:event_pass.field_event_pass_line__event_count
+msgid "# Events"
+msgstr "# Événements"
+
+#. module: event_pass
+#: model:ir.model.fields,field_description:event_pass.field_res_partner__pass_count
+#: model:ir.model.fields,field_description:event_pass.field_res_users__pass_count
+msgid "# Passes"
+msgstr "# Pass"
+
+#. module: event_pass
+#: model:mail.template,body_html:event_pass.invitation_mail_template
+msgid ""
+"<div>\n"
+"                    Hello,\n"
+"                    <br>\n"
+"                    <br>\n"
+"                    Here is your invitation ticket(s), you can distribute it to your customers.\n"
+"                    <br>\n"
+"                    <br>\n"
+"                    You can use it by printing it or by showing it on your smartphone.\n"
+"                    <br>\n"
+"                    <br>\n"
+"                    Regards,\n"
+"                    <br>\n"
+"                </div>\n"
+"            "
+msgstr ""
+"<div>Bonjour,<br><br> Voici votre/vos ticket(s) d'invitation, vous pourrez les distribuer à vos clients.<br><br> Vous "
+"pouvez l'utiliser en l'imprimant ou en l'affichant sur votre smartphone.<br><br> Cordialement,<br></div>\n"
+"            "
+
+#. module: event_pass
+#: model:mail.template,body_html:event_pass.pass_mail_template
+msgid ""
+"<div>\n"
+"                    Hello,\n"
+"                    <br>\n"
+"                    <br>\n"
+"                    Here is your pass ticket(s).\n"
+"                    <br>\n"
+"                    <br>\n"
+"                    You can use it by printing it or by showing it on your smartphone.\n"
+"                    <br>\n"
+"                    <br>\n"
+"                    Regards,\n"
+"                    <br>\n"
+"                </div>\n"
+"            "
+msgstr ""
+"<div>Bonjour,<br><br> Voici votre/vos ticket(s) d'invitation, vous pourrez les distribuer à vos clients.<br><br> Vous "
+"pouvez l'utiliser en l'imprimant ou en l'affichant sur votre smartphone.<br><br> Cordialement,<br></div>\n"
+"            "
+
+#. module: event_pass
+#: model_terms:ir.ui.view,arch_db:event_pass.view_event_pass_type_form
+#: model_terms:ir.ui.view,arch_db:event_pass.view_pass_form
+#: model_terms:ir.ui.view,arch_db:event_pass.view_wizard_event_pass_line_form
+msgid "<i class=\"fa fa-long-arrow-right mx-2\" aria-label=\"Arrow icon\" title=\"Arrow\"/>"
+msgstr ""
+"<i class=\"fa fa-long-arrow-right mx-2\" aria-label=\"Arrow icon\" title=\"Arrow\" attrs=\"{'invisible': "
+"[('use_validity_dates', '=', False)]}\"/>"
+
+#. module: event_pass
+#: model:ir.model.fields,field_description:event_pass.field_event_pass_line__active
+msgid "Active"
+msgstr "Actif"
+
+#. module: event_pass
+#: model_terms:ir.ui.view,arch_db:event_pass.view_event_pass_type_form
+#: model_terms:ir.ui.view,arch_db:event_pass.view_wizard_event_pass_line_form
+msgid "Allowed Events"
+msgstr "Événements Autorisés"
+
+#. module: event_pass
+#: model:ir.model.fields,field_description:event_pass.field_event_pass_line__number_allowed_event
+#: model:ir.model.fields,field_description:event_pass.field_event_pass_type__number_allowed_event
+#: model:ir.model.fields,field_description:event_pass.field_wizard_pass_line__number_allowed_event
+msgid "Allowed attendance"
+msgstr ""
+
+#. module: event_pass
+#: model:ir.model.fields,field_description:event_pass.field_event_pass_line__number_visitors
+#: model:ir.model.fields,field_description:event_pass.field_event_pass_type__number_visitors
+#: model:ir.model.fields,field_description:event_pass.field_wizard_pass_line__number_visitors
+msgid "Allowed attendees"
+msgstr ""
+
+#. module: event_pass
+#: model_terms:ir.ui.view,arch_db:event_pass.view_pass_search
+msgid "Archived"
+msgstr "Archivé"
+
+#. module: event_pass
+#: model_terms:ir.ui.view,arch_db:event_pass.view_pass_form
+msgid "Authorisation Settings"
+msgstr "Règles d'autorisation"
+
+#. module: event_pass
+#: model_terms:ir.ui.view,arch_db:event_pass.view_pass_form
+msgid "Authorized Sessions"
+msgstr "Session  autorisées"
+
+#. module: event_pass
+#: model:ir.model.fields,field_description:event_pass.field_event_pass_type__background_color
+msgid "Background Color"
+msgstr "Couleur de fond"
+
+#. module: event_pass
+#: model:ir.model,name:event_pass.model_barcode_rule
+msgid "Barcode Rule"
+msgstr "Règle de code-barres"
+
+#. module: event_pass
+#: model:ir.model.fields,field_description:event_pass.field_event_pass_type__base_logo
+msgid "Base Logo"
+msgstr "Logo"
+
+#. module: event_pass
+#: model:ir.model.fields,field_description:event_pass.field_event_pass_type__base_logo_filename
+msgid "Base Logo Filename"
+msgstr "Logo"
+
+#. module: event_pass
+#: model_terms:ir.ui.view,arch_db:event_pass.view_event_pass_type_form
+msgid "Bottom Left Page"
+msgstr "Volet Bas/Gauche"
+
+#. module: event_pass
+#: model_terms:ir.ui.view,arch_db:event_pass.view_event_pass_type_form
+msgid "Bottom Right Page"
+msgstr "Volet Bas/Droite"
+
+#. module: event_pass
+#: model:ir.model.fields,field_description:event_pass.field_event_pass_type__bottom_left_text
+msgid "Bottom left text"
+msgstr "Volet Haut/Gauche"
+
+#. module: event_pass
+#: model:ir.model.fields,field_description:event_pass.field_event_pass_type__bottom_right_text
+msgid "Bottom right text"
+msgstr "Volet Haut/Droite"
+
+#. module: event_pass
+#: model_terms:ir.ui.view,arch_db:event_pass.view_pass_form
+#: model_terms:ir.ui.view,arch_db:event_pass.view_wizard_event_pass_line_form
+msgid "Cancel"
+msgstr "Annuler"
+
+#. module: event_pass
+#: model:ir.model.fields.selection,name:event_pass.selection__event_pass_line__state__cancelled
+#: model_terms:ir.ui.view,arch_db:event_pass.view_pass_search
+msgid "Cancelled"
+msgstr "Annulé"
+
+#. module: event_pass
+#: model_terms:ir.ui.view,arch_db:event_pass.view_pass_form
+msgid "Categories"
+msgstr "Catégories"
+
+#. module: event_pass
+#: model:ir.model.fields,field_description:event_pass.field_event_pass_line__category_ids
+#: model:ir.model.fields,field_description:event_pass.field_event_pass_type__category_ids
+#: model:ir.model.fields,field_description:event_pass.field_wizard_pass_line__category_ids
+msgid "Category"
+msgstr "Catégorie"
+
+#. module: event_pass
+#: model_terms:ir.actions.act_window,help:event_pass.act_menu_pass_type
+msgid "Click to create a new pass template."
+msgstr "Cliquer pour créer un nouveau modèle de pass."
+
+#. module: event_pass
+#: model_terms:ir.ui.view,arch_db:event_pass.view_pass_form
+msgid "Client"
+msgstr ""
+
+#. module: event_pass
+#: model:ir.model.fields,field_description:event_pass.field_event_pass_line__company_id
+#: model:ir.model.fields,field_description:event_pass.field_event_pass_type__company_id
+msgid "Company"
+msgstr "Société"
+
+#. module: event_pass
+#: model_terms:ir.ui.view,arch_db:event_pass.partner_pass_template_content
+msgid "Company Logo"
+msgstr "Logo de la société"
+
+#. module: event_pass
+#: model_terms:ir.ui.view,arch_db:event_pass.view_pass_form
+msgid "Confirm"
+msgstr "Confirmer"
+
+#. module: event_pass
+#: model:ir.model,name:event_pass.model_res_partner
+msgid "Contact"
+msgstr ""
+
+#. module: event_pass
+#: model:ir.model.fields,field_description:event_pass.field_event_pass_type__content_color
+msgid "Content Color"
+msgstr "Couleur de contenu"
+
+#. module: event_pass
+#: model_terms:ir.ui.view,arch_db:event_pass.view_pass_form
+msgid "Counted Passage"
+msgstr "Nombre de passages"
+
+#. module: event_pass
+#: model:ir.model.fields,field_description:event_pass.field_event_pass_line__counted_passage
+msgid "Counted passage"
+msgstr "Nombres de passages comptés"
+
+#. module: event_pass
+#: model_terms:ir.ui.view,arch_db:event_pass.view_wizard_event_pass_line_form
+msgid "Create Pass"
+msgstr "Créer un Pass"
+
+#. module: event_pass
+#: model:ir.actions.act_window,name:event_pass.act_wizard_event_pass_line
+msgid "Create Pass Lines"
+msgstr "Créer des lignes de pass"
+
+#. module: event_pass
+#. odoo-javascript
+#: code:addons/event_pass/static/src/xml/create_pass_multi_view.xml:0
+#, python-format
+msgid "Create Pass Multi"
+msgstr "Créer plusieurs Pass"
+
+#. module: event_pass
+#: model_terms:ir.ui.view,arch_db:event_pass.view_wizard_event_pass_line_form
+msgid "Create Pass and Send"
+msgstr "Créer un Pass et envoyer"
+
+#. module: event_pass
+#. odoo-javascript
+#: code:addons/event_pass/static/src/xml/create_pass_multi_view.xml:0
+#, python-format
+msgid "Create Passes"
+msgstr "Créer un Pass"
+
+#. module: event_pass
+#: model:ir.model.fields,field_description:event_pass.field_event_pass_line__create_uid
+#: model:ir.model.fields,field_description:event_pass.field_event_pass_type__create_uid
+#: model:ir.model.fields,field_description:event_pass.field_wizard_pass_line__create_uid
+msgid "Created by"
+msgstr "Crée par"
+
+#. module: event_pass
+#: model:ir.model.fields,field_description:event_pass.field_event_pass_line__create_date
+#: model:ir.model.fields,field_description:event_pass.field_event_pass_type__create_date
+#: model:ir.model.fields,field_description:event_pass.field_wizard_pass_line__create_date
+msgid "Created on"
+msgstr ""
+
+#. module: event_pass
+#: model:ir.model.fields,field_description:event_pass.field_event_pass_line__currency_id
+msgid "Currency"
+msgstr "Devise"
+
+#. module: event_pass
+#: model:ir.model.fields,field_description:event_pass.field_event_pass_line__partner_id
+msgid "Customer"
+msgstr "Client"
+
+#. module: event_pass
+#: model_terms:ir.ui.view,arch_db:event_pass.view_event_pass_type_form
+msgid "Customization"
+msgstr "Personnalisation"
+
+#. module: event_pass
+#: model_terms:ir.ui.view,arch_db:event_pass.view_event_pass_type_form
+#: model_terms:ir.ui.view,arch_db:event_pass.view_pass_form
+#: model_terms:ir.ui.view,arch_db:event_pass.view_wizard_event_pass_line_form
+msgid "Dates"
+msgstr ""
+
+#. module: event_pass
+#: model:ir.model.fields,field_description:event_pass.field_event_pass_line__display_name
+msgid "Display Name"
+msgstr "Nom d'affichage"
+
+#. module: event_pass
+#: model:ir.model.fields.selection,name:event_pass.selection__event_pass_line__state__draft
+#: model_terms:ir.ui.view,arch_db:event_pass.view_pass_search
+msgid "Draft"
+msgstr "Brouillon"
+
+#. module: event_pass
+#: model:ir.model.fields,field_description:event_pass.field_event_pass_line__event_ids
+#: model:ir.model.fields,field_description:event_pass.field_event_pass_type__event_ids
+#: model:ir.model.fields,field_description:event_pass.field_wizard_pass_line__event_ids
+msgid "Event"
+msgstr "Événement"
+
+#. module: event_pass
+#: model:ir.model,name:event_pass.model_event_pass_line
+msgid "Event Pass Line"
+msgstr "Ligne de pass"
+
+#. module: event_pass
+#: model:ir.model,name:event_pass.model_event_registration
+msgid "Event Registration"
+msgstr "Inscription à l'événement"
+
+#. module: event_pass
+#: model_terms:ir.ui.view,arch_db:event_pass.view_pass_form
+msgid "Event Stages"
+msgstr "Statut d'événements"
+
+#. module: event_pass
+#: model:ir.model.fields,field_description:event_pass.field_event_pass_line__event_type_ids
+#: model:ir.model.fields,field_description:event_pass.field_event_pass_type__event_type_ids
+#: model:ir.model.fields,field_description:event_pass.field_wizard_pass_line__event_type_ids
+msgid "Event Type"
+msgstr "Type d'événement"
+
+#. module: event_pass
+#: model_terms:ir.ui.view,arch_db:event_pass.view_pass_form
+msgid "Event Types"
+msgstr "Événements"
+
+#. module: event_pass
+#: model_terms:ir.ui.view,arch_db:event_pass.event_pass_line_inherit
+#: model_terms:ir.ui.view,arch_db:event_pass.view_pass_form
+msgid "Events"
+msgstr "Événements"
+
+#. module: event_pass
+#: model:ir.model.fields,field_description:event_pass.field_event_pass_line__expiration_date
+#: model:ir.model.fields,field_description:event_pass.field_event_pass_type__expiration_date
+#: model:ir.model.fields,field_description:event_pass.field_wizard_pass_line__expiration_date
+msgid "Expiration Date"
+msgstr "Date d'expiration"
+
+#. module: event_pass
+#: model_terms:ir.ui.view,arch_db:event_pass.view_pass_search
+msgid "Expiration date"
+msgstr "Date d'expiration"
+
+#. module: event_pass
+#. odoo-python
+#: code:addons/event_pass/models/pass_line.py:0
+#, python-format
+msgid "Expiration date must be after validity date."
+msgstr "La date d'expiration doit être après la date de validité."
+
+#. module: event_pass
+#: model:ir.model.fields,help:event_pass.field_event_pass_type__expiration_date
+msgid "Expiration date of the pass if not set the expiration date is the validity date + validity period"
+msgstr "Date d'expiration du pass. Si indéfini, la date sera la date de validité + la période de validité en jours"
+
+#. module: event_pass
+#: model:ir.model.fields.selection,name:event_pass.selection__event_pass_line__state__expired
+#: model_terms:ir.ui.view,arch_db:event_pass.view_pass_search
+msgid "Expired"
+msgstr "Expiré"
+
+#. module: event_pass
+#: model:ir.model.fields,field_description:event_pass.field_event_pass_line__fixed_number_allowed_event
+#: model:ir.model.fields,field_description:event_pass.field_event_pass_type__fixed_number_allowed_event
+#: model:ir.model.fields,field_description:event_pass.field_wizard_pass_line__fixed_number_allowed_event
+msgid "Fixed Allowed attendance"
+msgstr "Nombre de passages autorisés"
+
+#. module: event_pass
+#: model:ir.model.fields.selection,name:event_pass.selection__event_pass_type__validity_option__fixed
+msgid "Fixed Date Range"
+msgstr "Période Fixe"
+
+#. module: event_pass
+#: model:ir.model.fields,field_description:event_pass.field_event_pass_type__fixed_expiration_date
+msgid "Fixed Expiration Date"
+msgstr "Date d'expiration fixe"
+
+#. module: event_pass
+#: model:ir.model.fields,help:event_pass.field_event_pass_type__fixed_expiration_date
+msgid "Fixed expiration date of the pass"
+msgstr "Date d'expiration"
+
+#. module: event_pass
+#: model:ir.model.fields,help:event_pass.field_event_pass_line__fixed_number_allowed_event
+#: model:ir.model.fields,help:event_pass.field_event_pass_type__fixed_number_allowed_event
+msgid "Fixed number of attendance allowed per pass/invitation"
+msgstr ""
+"Permet de définir le nombre d'évènements maximum sur lequel le pass peut être utilisé.\n"
+"ex: Si limité à 10, alors le pass pourra être utilisé sur 10 événements différents, peu importe le nombre de participants"
+
+#. module: event_pass
+#: model:ir.model.fields,help:event_pass.field_event_pass_line__fixed_number_visitors_allowed
+#: model:ir.model.fields,help:event_pass.field_event_pass_type__fixed_number_visitors_allowed
+msgid "Fixed number of visitors allowed per event(s)/session(s)"
+msgstr ""
+"Permet de définir le nombre maximum de participants par événement\n"
+"ex: Si limité à 4 personnes, alors on pourra accepter jusqu'à 4 personnes pour un événement."
+
+#. module: event_pass
+#: model:ir.model.fields,field_description:event_pass.field_event_pass_line__fixed_number_visitors_allowed
+#: model:ir.model.fields,field_description:event_pass.field_event_pass_type__fixed_number_visitors_allowed
+msgid "Fixed number visitors"
+msgstr "Limiter le nombre de participants"
+
+#. module: event_pass
+#: model_terms:ir.ui.view,arch_db:event_pass.invitation_template_content
+msgid ""
+"GIFTED BY\n"
+"                                    <br/>"
+msgstr ""
+"OFFERT PAR\n"
+"                                    <br/>"
+
+#. module: event_pass
+#: model_terms:ir.ui.view,arch_db:event_pass.view_event_pass_type_form
+msgid "General Customization"
+msgstr "Personnalisation"
+
+#. module: event_pass
+#: model_terms:ir.ui.view,arch_db:event_pass.view_pass_form
+msgid "Gifted By"
+msgstr ""
+
+#. module: event_pass
+#: model:ir.model.fields,field_description:event_pass.field_event_pass_line__gifted_by_id
+#: model:ir.model.fields,field_description:event_pass.field_wizard_pass_line__gifted_by_id
+#: model_terms:ir.ui.view,arch_db:event_pass.view_pass_search
+msgid "Gifted by"
+msgstr "Offert par"
+
+#. module: event_pass
+#: model_terms:ir.ui.view,arch_db:event_pass.view_pass_search
+msgid "Group by"
+msgstr "Regrouper par"
+
+#. module: event_pass
+#: model:mail.template,subject:event_pass.invitation_mail_template
+msgid "Hello, your invitation ticket(s)"
+msgstr "Bonjour, voici votre/vos ticket(s) d'invitation"
+
+#. module: event_pass
+#: model:mail.template,subject:event_pass.pass_mail_template
+msgid "Hello, your pass ticket(s)"
+msgstr "Bonjour, voici votre/vos ticket(s) d'invitation"
+
+#. module: event_pass
+#: model:ir.model.fields,field_description:event_pass.field_event_pass_line__id
+#: model:ir.model.fields,field_description:event_pass.field_event_pass_type__id
+#: model:ir.model.fields,field_description:event_pass.field_wizard_pass_line__id
+msgid "ID"
+msgstr ""
+
+#. module: event_pass
+#: model:mail.template,name:event_pass.invitation_mail_template
+msgid "Invitation Ticket"
+msgstr "Billet d'invitation"
+
+#. module: event_pass
+#: model:ir.model.fields,field_description:event_pass.field_event_pass_line____last_update
+#: model:ir.model.fields,field_description:event_pass.field_event_pass_type____last_update
+#: model:ir.model.fields,field_description:event_pass.field_wizard_pass_line____last_update
+msgid "Last Modified on"
+msgstr "Dernière modification le"
+
+#. module: event_pass
+#: model:ir.model.fields,field_description:event_pass.field_event_pass_line__write_uid
+#: model:ir.model.fields,field_description:event_pass.field_event_pass_type__write_uid
+#: model:ir.model.fields,field_description:event_pass.field_wizard_pass_line__write_uid
+msgid "Last Updated by"
+msgstr "Dernière mise à jour par"
+
+#. module: event_pass
+#: model:ir.model.fields,field_description:event_pass.field_event_pass_line__write_date
+#: model:ir.model.fields,field_description:event_pass.field_event_pass_type__write_date
+#: model:ir.model.fields,field_description:event_pass.field_wizard_pass_line__write_date
+msgid "Last Updated on"
+msgstr "Dernière modification le"
+
+#. module: event_pass
+#: model_terms:ir.ui.view,arch_db:event_pass.view_event_pass_type_form
+msgid "Leave empty for infinite period"
+msgstr "Laissez ce champ vide pour un pass à durée illimitée"
+
+#. module: event_pass
+#: model_terms:ir.ui.view,arch_db:event_pass.view_event_pass_type_form
+#: model_terms:ir.ui.view,arch_db:event_pass.view_pass_form
+msgid "Limit Number of Events"
+msgstr "Limiter le nombre d'événements"
+
+#. module: event_pass
+#: model_terms:ir.ui.view,arch_db:event_pass.view_event_pass_type_form
+#: model_terms:ir.ui.view,arch_db:event_pass.view_pass_form
+msgid "Limit Number of Visitors"
+msgstr "Limiter le nombre de participants"
+
+#. module: event_pass
+#: model_terms:ir.ui.view,arch_db:event_pass.pass_template_content
+msgid "Logo"
+msgstr ""
+
+#. module: event_pass
+#: model_terms:ir.ui.view,arch_db:event_pass.view_event_pass_type_form
+#: model_terms:ir.ui.view,arch_db:event_pass.view_pass_form
+msgid "Maximum Number of Events"
+msgstr "événement(s)"
+
+#. module: event_pass
+#: model_terms:ir.ui.view,arch_db:event_pass.view_event_pass_type_form
+#: model_terms:ir.ui.view,arch_db:event_pass.view_pass_form
+msgid "Maximum Number of Visitors"
+msgstr "Participant(s) par événement"
+
+#. module: event_pass
+#: model_terms:ir.ui.view,arch_db:event_pass.invitation_template_content
+msgid ""
+"NOT VALID FOR:\n"
+"                                            <br/>"
+msgstr ""
+"INVALIDE POUR:\n"
+"                                            <br/>"
+
+#. module: event_pass
+#: model_terms:ir.ui.view,arch_db:event_pass.view_pass_form model_terms:ir.ui.view,arch_db:event_pass.view_pass_search
+msgid "Name"
+msgstr "Nom"
+
+#. module: event_pass
+#: model:ir.model.fields,field_description:event_pass.field_event_pass_type__display_name
+#: model:ir.model.fields,field_description:event_pass.field_wizard_pass_line__display_name
+msgid "Name of the pass"
+msgstr "Nom"
+
+#. module: event_pass
+#: model_terms:ir.ui.view,arch_db:event_pass.view_pass_search
+msgid "Never used"
+msgstr "Jamais utilisé"
+
+#. module: event_pass
+#: model:ir.model.fields,help:event_pass.field_event_pass_line__number_allowed_event
+#: model:ir.model.fields,help:event_pass.field_event_pass_type__number_allowed_event
+msgid "Number of attendance allowed per pass/invitation"
+msgstr ""
+"Permet de définir le nombre d'évènements maximum sur lequel le pass peut être utilisé.\n"
+"ex: Si limité à 10, alors le pass pourra être utilisé sur 10 événements différents, peu importe le nombre de participants"
+
+#. module: event_pass
+#: model:ir.model.fields,help:event_pass.field_event_pass_line__number_visitors
+#: model:ir.model.fields,help:event_pass.field_event_pass_type__number_visitors
+msgid "Number of attendees allowed per event(s)/session(s)"
+msgstr ""
+"Permet de définir le nombre maximum de participants par événement\n"
+"ex: Si limité à 4 personnes, alors on pourra accepter jusqu'à 4 personnes pour un événement."
+
+#. module: event_pass
+#: model:ir.model.fields,help:event_pass.field_event_pass_line__event_count
+msgid "Number of events the pass_line is used."
+msgstr "Nombre d'évènement ou la ligne de pass est utilisée. "
+
+#. module: event_pass
+#: model:ir.model.fields,field_description:event_pass.field_wizard_pass_line__number_pass
+msgid "Number of pass"
+msgstr "Nombre de pass"
+
+#. module: event_pass
+#: model:ir.model.fields,help:event_pass.field_event_pass_line__counted_passage
+msgid "Number of passage counted"
+msgstr "Nombre de passages comptabilisé"
+
+#. module: event_pass
+#: model:ir.model.fields,help:event_pass.field_event_pass_line__remaining_passage
+msgid "Number of passage remaining"
+msgstr "Nombre de passages restants"
+
+#. module: event_pass
+#: model:ir.model.fields,help:event_pass.field_res_partner__pass_count
+#: model:ir.model.fields,help:event_pass.field_res_users__pass_count
+msgid "Number of passes the partner has."
+msgstr "Nombre de pass que le partenaire possède."
+
+#. module: event_pass
+#. odoo-python
+#: code:addons/event_pass/models/pass_line.py:0
+#, python-format
+msgid "Only cancelled pass can be draft."
+msgstr "Seul un pass annulé peut être mis en brouillon."
+
+#. module: event_pass
+#. odoo-python
+#: code:addons/event_pass/models/pass_line.py:0
+#, python-format
+msgid "Only draft pass can be confirmed."
+msgstr "Seul un pass en brouillon peut être validé."
+
+#. module: event_pass
+#. odoo-python
+#: code:addons/event_pass/models/pass_line.py:0
+#, python-format
+msgid "Only valid, draft or expired pass can be cancelled."
+msgstr "Seul un pass valide, en brouillon ou expiré peut être annulé."
+
+#. module: event_pass
+#: model:ir.model.fields,field_description:event_pass.field_event_pass_type__outline_color
+msgid "Outline Color"
+msgstr "Couleur de contour"
+
+#. module: event_pass
+#: model:ir.model.fields,field_description:event_pass.field_event_pass_type__pdf_file
+msgid "PDF View"
+msgstr "Vue PDF"
+
+#. module: event_pass
+#: model:ir.model.fields,help:event_pass.field_event_pass_type__pdf_file
+msgid "PDF view of the pass"
+msgstr "Vue PDF"
+
+#. module: event_pass
+#: model:ir.model.fields,field_description:event_pass.field_wizard_pass_line__partner_id
+#: model_terms:ir.ui.view,arch_db:event_pass.view_pass_search
+msgid "Partner"
+msgstr "Partenaire"
+
+#. module: event_pass
+#: model:ir.model.fields.selection,name:event_pass.selection__barcode_rule__type__pass
+#: model_terms:ir.ui.view,arch_db:event_pass.view_pass_tree
+msgid "Pass"
+msgstr ""
+
+#. module: event_pass
+#: model:ir.actions.act_window,name:event_pass.action_pass
+msgid "Pass & Invitation"
+msgstr ""
+
+#. module: event_pass
+#: model:ir.ui.menu,name:event_pass.menu_pass model_terms:ir.ui.view,arch_db:event_pass.res_partner_view_pass_tree
+msgid "Pass & Invitations"
+msgstr ""
+
+#. module: event_pass
+#: model:ir.model.fields,field_description:event_pass.field_event_registration__pass_line_id
+#: model:ir.model.fields,field_description:event_pass.field_res_partner__pass_line_ids
+#: model:ir.model.fields,field_description:event_pass.field_res_users__pass_line_ids
+msgid "Pass Line"
+msgstr "Ligne de pass"
+
+#. module: event_pass
+#: model:ir.model,name:event_pass.model_event_pass_type model_terms:ir.ui.view,arch_db:event_pass.view_event_pass_type_tree
+msgid "Pass Template"
+msgstr "Modèle de pass"
+
+#. module: event_pass
+#: model:ir.actions.act_window,name:event_pass.act_menu_pass_type model:ir.ui.menu,name:event_pass.menu_pass_type
+#: model_terms:ir.ui.view,arch_db:event_pass.event_pass_type_view_search
+msgid "Pass Templates"
+msgstr "Modèles de pass"
+
+#. module: event_pass
+#: model:mail.template,name:event_pass.pass_mail_template
+msgid "Pass Ticket"
+msgstr "Billet du pass"
+
+#. module: event_pass
+#: model:ir.model.fields,field_description:event_pass.field_event_pass_line__pass_type_id
+#: model:ir.model.fields,field_description:event_pass.field_wizard_pass_line__pass_type_id
+#: model_terms:ir.ui.view,arch_db:event_pass.view_wizard_event_pass_line_form
+msgid "Pass Type"
+msgstr "Modèle de pass"
+
+#. module: event_pass
+#: model:ir.actions.server,name:event_pass.cron_check_pass_validity_ir_actions_server
+#: model:ir.cron,cron_name:event_pass.cron_check_pass_validity
+msgid "Pass: check validity"
+msgstr "Pass: Vérifier validité"
+
+#. module: event_pass
+#: model_terms:ir.ui.view,arch_db:event_pass.view_event_pass_type_form
+#: model_terms:ir.ui.view,arch_db:event_pass.view_pass_form
+msgid "Passage Limitations"
+msgstr "Limitations des passages"
+
+#. module: event_pass
+#: model:ir.model.fields,help:event_pass.field_event_pass_type__base_logo
+msgid "Please insert image by using /image"
+msgstr "Veuillez insérer une image en utilisant le champ '/image'"
+
+#. module: event_pass
+#. odoo-python
+#: code:addons/event_pass/models/pass_line.py:0
+#, python-format
+msgid "Please set the same \"Gifted by\" for all records."
+msgstr "Veuillez mettre le même \"Offert par\" sur tout les enregistrements. "
+
+#. module: event_pass
+#: model:ir.actions.report,name:event_pass.invitation_report
+msgid "Print the invitation ticket"
+msgstr "Imprimer le billet d'invitation"
+
+#. module: event_pass
+#: model:ir.actions.report,name:event_pass.partner_pass_report
+msgid "Print the partner badge"
+msgstr "Imprimer le badge du partenaire"
+
+#. module: event_pass
+#: model:ir.actions.report,name:event_pass.pass_report
+msgid "Print the pass badge"
+msgstr "Imprimer le badge du partenaire"
+
+#. module: event_pass
+#: model_terms:ir.ui.view,arch_db:event_pass.view_pass_form
+msgid "QRCode"
+msgstr "QR Code"
+
+#. module: event_pass
+#: model:ir.model.fields,field_description:event_pass.field_event_pass_line__qr_code
+msgid "Qr Code"
+msgstr ""
+
+#. module: event_pass
+#: model_terms:ir.ui.view,arch_db:event_pass.view_wizard_event_pass_line_form
+msgid "Quantity"
+msgstr "Quantité"
+
+#. module: event_pass
+#: model:ir.model.fields,field_description:event_pass.field_event_pass_line__remaining_passage
+msgid "Remaining passage"
+msgstr "Passage(s) restant(s)"
+
+#. module: event_pass
+#: model:ir.actions.server,name:event_pass.action_send_invitation_by_mail
+msgid "Send invitation by email"
+msgstr "Envoyer par e-mail"
+
+#. module: event_pass
+#: model:ir.actions.server,name:event_pass.action_send_pass_by_mail
+msgid "Send pass by email"
+msgstr "Envoyer par e-mail"
+
+#. module: event_pass
+#: model:ir.model.fields,field_description:event_pass.field_event_pass_line__session_ids
+#: model:ir.model.fields,field_description:event_pass.field_event_pass_type__session_ids
+#: model:ir.model.fields,field_description:event_pass.field_wizard_pass_line__session_ids
+msgid "Session"
+msgstr ""
+
+#. module: event_pass
+#: model_terms:ir.ui.view,arch_db:event_pass.view_pass_form
+msgid "Set draft"
+msgstr "Mettre en brouillon"
+
+#. module: event_pass
+#: model:ir.model.fields,field_description:event_pass.field_event_pass_line__event_stage_ids
+#: model:ir.model.fields,field_description:event_pass.field_event_pass_type__event_stage_ids
+#: model:ir.model.fields,field_description:event_pass.field_wizard_pass_line__event_stage_ids
+msgid "Stage"
+msgstr "En cours"
+
+#. module: event_pass
+#: model:ir.model.fields,field_description:event_pass.field_event_pass_line__state
+#: model_terms:ir.ui.view,arch_db:event_pass.view_pass_search
+msgid "State"
+msgstr "Etat"
+
+#. module: event_pass
+#: model_terms:ir.ui.view,arch_db:event_pass.invitation_template_content
+msgid ""
+"TO BE USED BEFORE:\n"
+"                                    <br/>"
+msgstr ""
+"A UTILISER AVANT LE:\n"
+"                                    <br/>"
+
+#. module: event_pass
+#: model:ir.model.fields,help:event_pass.field_event_pass_type__bottom_left_text
+#: model:ir.model.fields,help:event_pass.field_event_pass_type__bottom_right_text
+#: model:ir.model.fields,help:event_pass.field_event_pass_type__upper_left_text
+msgid "Text zone"
+msgstr "Zone de texte"
+
+#. module: event_pass
+#: model:ir.model.fields,field_description:event_pass.field_event_pass_type__title_color
+msgid "Title Color"
+msgstr "Couleur du titre"
+
+#. module: event_pass
+#: model:ir.model.fields,field_description:event_pass.field_event_pass_type__title_text
+msgid "Title Text"
+msgstr "Titre"
+
+#. module: event_pass
+#: model:ir.model.fields,help:event_pass.field_event_pass_type__title_text
+msgid "Title text of the pass, leave empty to use the display name of the pass"
+msgstr "Titre du pass, veuillez laisser le champ vide pour faire apparaître le nom du pass directement"
+
+#. module: event_pass
+#: model:ir.model.fields,field_description:event_pass.field_barcode_rule__type
+msgid "Type"
+msgstr "Modèle"
+
+#. module: event_pass
+#: model:ir.model.fields,field_description:event_pass.field_event_pass_line__unauthorized_session_ids
+#: model:ir.model.fields,field_description:event_pass.field_event_pass_type__unauthorized_session_ids
+#: model:ir.model.fields,field_description:event_pass.field_wizard_pass_line__unauthorized_session_ids
+msgid "Unauthorized Session"
+msgstr "Session non autorisée(s)"
+
+#. module: event_pass
+#: model_terms:ir.ui.view,arch_db:event_pass.view_pass_form
+msgid "Unauthorized Sessions"
+msgstr "Session(s) non autorisées"
+
+#. module: event_pass
+#: model_terms:ir.ui.view,arch_db:event_pass.view_event_pass_type_form
+msgid "Upper Left Page"
+msgstr "Volet Haut/Gauche"
+
+#. module: event_pass
+#: model_terms:ir.ui.view,arch_db:event_pass.view_event_pass_type_form
+msgid "Upper Right Page"
+msgstr "Volet Haut/Droite"
+
+#. module: event_pass
+#: model:ir.model.fields,field_description:event_pass.field_event_pass_type__upper_left_text
+msgid "Upper left text"
+msgstr "Volet Haut/Gauche"
+
+#. module: event_pass
+#: model:ir.model.fields,field_description:event_pass.field_event_pass_line__use_validity_dates
+#: model:ir.model.fields,field_description:event_pass.field_event_pass_type__use_validity_dates
+#: model:ir.model.fields,field_description:event_pass.field_wizard_pass_line__use_validity_dates
+#: model:ir.model.fields,help:event_pass.field_event_pass_line__use_validity_dates
+#: model:ir.model.fields,help:event_pass.field_event_pass_type__use_validity_dates
+#: model:ir.model.fields,help:event_pass.field_wizard_pass_line__use_validity_dates
+msgid "Use Validity Dates"
+msgstr "Période de validité"
+
+#. module: event_pass
+#: model_terms:ir.ui.view,arch_db:event_pass.view_pass_search
+msgid "Used"
+msgstr "Déjà utilisé"
+
+#. module: event_pass
+#: model_terms:ir.ui.view,arch_db:event_pass.invitation_template_content
+msgid ""
+"VALID FOR:\n"
+"                                        <br/>"
+msgstr ""
+"VALIDE POUR:\n"
+"                                        <br/>"
+
+#. module: event_pass
+#: model_terms:ir.ui.view,arch_db:event_pass.invitation_template_content
+msgid ""
+"VALID FOR:\n"
+"                                    <br/>"
+msgstr ""
+"VALIDE POUR:\n"
+"                                    <br/>"
+
+#. module: event_pass
+#: model:ir.model.fields.selection,name:event_pass.selection__event_pass_line__state__valid
+#: model_terms:ir.ui.view,arch_db:event_pass.view_pass_search
+msgid "Valid"
+msgstr "Valide"
+
+#. module: event_pass
+#: model:ir.model.fields,field_description:event_pass.field_event_pass_line__validity_date
+#: model:ir.model.fields,field_description:event_pass.field_event_pass_type__validity_date
+#: model:ir.model.fields,field_description:event_pass.field_wizard_pass_line__validity_date
+msgid "Validity Date"
+msgstr "Date de validité"
+
+#. module: event_pass
+#: model_terms:ir.ui.view,arch_db:event_pass.view_event_pass_type_form
+#: model_terms:ir.ui.view,arch_db:event_pass.view_pass_form
+#: model_terms:ir.ui.view,arch_db:event_pass.view_wizard_event_pass_line_form
+msgid "Validity Dates"
+msgstr "Dates de validité"
+
+#. module: event_pass
+#: model:ir.model.fields,field_description:event_pass.field_event_pass_type__validity_option
+#: model_terms:ir.ui.view,arch_db:event_pass.view_event_pass_type_form
+msgid "Validity Option"
+msgstr "Option de validité"
+
+#. module: event_pass
+#: model:ir.model.fields,field_description:event_pass.field_event_pass_type__validity_period
+msgid "Validity Period"
+msgstr "Période de validité"
+
+#. module: event_pass
+#: model_terms:ir.ui.view,arch_db:event_pass.view_event_pass_type_form
+msgid "Validity Period in Days"
+msgstr "Variable en jours"
+
+#. module: event_pass
+#: model_terms:ir.ui.view,arch_db:event_pass.view_pass_search
+msgid "Validity date"
+msgstr "Date de validité"
+
+#. module: event_pass
+#: model:ir.model.fields,help:event_pass.field_event_pass_type__validity_date
+msgid "Validity date of the pass if not set the validity date is the date of sale"
+msgstr "Date qui détermine la validité du pass"
+
+#. module: event_pass
+#: model:ir.model.fields,help:event_pass.field_event_pass_type__validity_period
+msgid "Validity period of the pass in days, if not set the validity period is unlimited"
+msgstr "Période de validité. Si indéfini, la période de validité est infinie"
+
+#. module: event_pass
+#: model:ir.model.fields.selection,name:event_pass.selection__event_pass_type__validity_option__variable
+msgid "Variable in Days"
+msgstr "Variable en jours"
+
+#. module: event_pass
+#: model:ir.model,name:event_pass.model_wizard_pass_line
+msgid "Wizard for ease pass creation"
+msgstr "Outil pour créer des pass multiples"
+
+#. module: event_pass
+#. odoo-python
+#: code:addons/event_pass/models/pass_line.py:0
+#, python-format
+msgid "You cant set a lower number of allowed attendance when the pass is valid"
+msgstr "Vous ne pouvez pas définir un nombre de passage lorsque le pass est déjà validé. "
+
+#. module: event_pass
+#: model_terms:ir.ui.view,arch_db:event_pass.partner_pass_template_content
+msgid "partner Image"
+msgstr "Image du partenaire"
+
+#. module: event_pass
+#: model_terms:ir.ui.view,arch_db:event_pass.view_event_pass_type_form
+#: model_terms:ir.ui.view,arch_db:event_pass.view_pass_form
+msgid "to"
+msgstr "à"

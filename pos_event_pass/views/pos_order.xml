@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <record id="view_pos_pos_form" model="ir.ui.view">
+        <field name="model">pos.order</field>
+        <field name="inherit_id" ref="point_of_sale.view_pos_pos_form" />
+        <field name="arch" type="xml">
+            <xpath
+                expr="//field[@name='lines']/form//field[@name='full_product_name']"
+                position="after"
+            >
+                <field
+                    name="pass_type_id"
+                    attrs="{'invisible': [('pass_type_id', '=', False)]}"
+                />
+            </xpath>
+        </field>
+    </record>
+</odoo>
