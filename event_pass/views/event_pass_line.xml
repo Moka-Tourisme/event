@@ -91,7 +91,6 @@
                                 </group>
 
                         <group>
-                            <group>
                                 <group>
                                     <group name="validity_dates" string="Validity Dates" colspan="2">
                                         <label for="validity_date" string="Dates"/>
@@ -128,7 +127,6 @@
                                         <field name="counted_passage" widget="boolean" string="Counted Passage"/>
                                     </group>
                                 </group>
-                            </group>
                         <group>
                             <group name="authorisation_settings" string="Authorisation Settings" colspan="2">
                                 <field name="event_type_ids" widget="many2many_tags" string="Event Types"/>

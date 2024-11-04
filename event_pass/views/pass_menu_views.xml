@@ -32,7 +32,7 @@
                         <div class="oe_button_box" name="button_box"/>
                         <div class="oe_title">
                             <h1>
-                                <field name="display_name" id="field_display_name"/>
+                                <field name="display_name" id="field_display_name" placeholder="Name"/>
                             </h1>
                         </div>
                         <group>
@@ -46,16 +46,6 @@
                                 <field attrs="{'invisible': [('event_ids', '=', [])]}" name="unauthorized_session_ids"
                                     widget="many2many_tags" domain="[('event_id', 'in', event_ids)]" id="field_unauthorized_session_ids"/>
                             </group>
-
-                                <!-- <group>
-                                    <label for="use_validity_dates" string="Validity Options"/>
-                                    <div class="d-flex">
-                                        <field name="fixed_expiration_date" id="field_fixed_expiration_date" string="Use Fixed Expiration Date"/>
-                                        <field name="validity_period" id="field_validity_period" placeholder="Validity Period (Days)"
-                                            attrs="{'invisible': [('fixed_expiration_date', '=', True)]}"/>
-                                    </div>
-                                </group> -->
-                                <!-- ICI -->
                                 <group name="validity_dates" string="Validity Dates">
                                     <group>
                                         <field name="validity_option" widget="radio" string="Validity Option"
