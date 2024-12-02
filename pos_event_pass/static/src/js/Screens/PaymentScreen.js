@@ -24,6 +24,21 @@ odoo.define("pos_event_pass.PaymentScreen", function (require) {
                         kwargs: {context: session.user_context},
                     });
                 }
+                console.warn('order after', order);
+                if (order.event_pass) {
+                    for (const line of order.event_pass) {
+                    //     Update location_id to have all fields
+                        const location_id = await this.rpc({
+                            model: "res.partner",
+                            method: "search_read",
+                            domain: [
+                                ["id", "=", line.location_id[0]],
+                            ],
+                            kwargs: {context: session.user_context},
+                        });
+                        line.location_id = location_id[0];
+                    }
+                }
                 return super._postPushOrderResolve(order, server_ids);
             }
         };

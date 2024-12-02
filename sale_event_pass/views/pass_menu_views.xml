@@ -43,6 +43,7 @@
                     <group name="pass_type" string="Pass Template"
                            attrs="{'invisible': [('detailed_type','!=','pass')]}">
                         <field name="pass_type_id"/>
+                        <field name="location_id"/>
                     </group>
                 </xpath>
             </field>

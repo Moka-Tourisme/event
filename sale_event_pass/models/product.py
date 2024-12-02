@@ -14,6 +14,11 @@ class ProductTemplate(models.Model):
         string="Pass Type",
     )
 
+    location_id = fields.Many2one(
+        "res.partner",
+        store=True,
+    )
+
     def _detailed_type_mapping(self):
         type_mapping = super()._detailed_type_mapping()
         type_mapping['pass'] = 'service'

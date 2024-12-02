@@ -19,8 +19,6 @@ odoo.define("pos_event_pass.AbstractReceiptScreen", function (require) {
              */
             async _printEventPass() {
                 // Check if in pos.config the option to print the event pass is enabled
-                console.warn("this.env.pos.config.iface_print_pass ICI", this.env.pos.config.iface_print_pass);
-                if (this.env.pos.proxy.printer && this.env.pos.config.iface_print_pass) {
                     const $receipts = this.el.getElementsByClassName(
                         "event-pass-receipt"
                     );
@@ -35,9 +33,7 @@ odoo.define("pos_event_pass.AbstractReceiptScreen", function (require) {
                             return false;
                         }
                     }
-                    return true;
-                }
-                return false;
+                return true;
             }
         };
 

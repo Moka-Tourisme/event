@@ -32,7 +32,12 @@ class PassLine(models.Model):
         "event.pass.type",
         string="Pass Type",
     )
-    
+
+    product_id = fields.Many2one(
+        "product.product",
+        string="Product Template",
+        domain=[('detailed_type', '=', 'pass')],
+    )
 
     state = fields.Selection(
         [

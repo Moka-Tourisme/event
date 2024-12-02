@@ -8,4 +8,5 @@ class PosSession(models.Model):
     def _loader_params_product_product(self):
         params = super()._loader_params_product_product()
         params["search_params"]["fields"].append("detailed_type")
+        params["search_params"]["fields"].append("location_id")
         return params

@@ -29,6 +29,8 @@ class PosOrderLine(models.Model):
         val_validity_date = self.product_id.pass_type_id.validity_date or fields.Date.today()
         return {
             "display_name": self.product_id.pass_type_id.display_name,
+            "product_id":self.product_id.id,
+            "location_id": self.product_id.location_id.id,
             "partner_id": self.order_id.partner_id.id or None,
             "event_type_ids": self.product_id.pass_type_id.event_type_ids.ids,
             "category_ids": self.product_id.pass_type_id.category_ids.ids,

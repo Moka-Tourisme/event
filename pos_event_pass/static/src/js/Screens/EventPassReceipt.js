@@ -14,12 +14,15 @@ odoo.define("pos_event_pass.EventPassReceipt", function (require) {
             super(...arguments);
             this._receiptEnv = this.props.order.getOrderReceiptEnv();
         }
+
         willUpdateProps(nextProps) {
             this._receiptEnv = nextProps.order.getOrderReceiptEnv();
         }
+
         get receiptEnv() {
             return this._receiptEnv;
         }
+
         get receipt() {
             return this.receiptEnv.receipt;
         }
@@ -38,7 +41,21 @@ odoo.define("pos_event_pass.EventPassReceipt", function (require) {
         formatDate(date) {
             return moment(date).format("ll");
         }
+
+        // get location() {
+        //     data = this.rpc({
+        //         model: "res.partner",
+        //         method: "search",
+        //         domain: [
+        //             ["id", "in", this.props.location_id[0]],
+        //         ],
+        //         kwargs: {context: session.user_context},
+        //     });
+        //     console.log(data)
+        //     return data;
+        // }
     }
+
     EventPassReceipt.template = "EventPassReceipt";
 
     Registries.Component.add(EventPassReceipt);

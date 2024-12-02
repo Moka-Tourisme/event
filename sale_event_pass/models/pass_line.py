@@ -12,6 +12,8 @@ class PassLine(models.Model):
                                       string='The number of sales orders related to this pass',
                                       groups="base.group_user")
 
+    location_id = fields.Many2one("res.partner", store=True)
+
     def _compute_sale_order_count(self):
         for record in self:
             record.sale_order_count = self.env['sale.order'].search_count(
