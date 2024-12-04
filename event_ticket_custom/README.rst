@@ -1,5 +1,4 @@
 event_ticket_custom
-=========
 
 Allow to create custom ticket for event.
 Warning, there is one ticket per event.
