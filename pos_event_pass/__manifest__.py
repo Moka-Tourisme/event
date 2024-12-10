@@ -19,7 +19,6 @@
     },
     "data": [
         "views/event_pass_line.xml",
-        "views/pos_config_view.xml",
         "views/pos_order.xml",
     ],
 }
