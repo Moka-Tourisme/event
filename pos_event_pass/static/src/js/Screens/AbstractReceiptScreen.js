@@ -24,7 +24,7 @@ odoo.define("pos_event_pass.AbstractReceiptScreen", function (require) {
                     );
                     for (const $receipt of $receipts) {
                         const printResult =
-                            await this.env.pos.proxy.printer.print_receipt(
+                            await this.env.proxy.printer.print_receipt(
                                 $receipt.outerHTML
                             );
                         if (!printResult.successful) {
