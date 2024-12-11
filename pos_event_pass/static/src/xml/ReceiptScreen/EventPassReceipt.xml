@@ -94,6 +94,7 @@
                 <div class="event-pass-barcode">
                     <div t-if="pass.qr_code">
                         <img
+                            t-attf-style="min-height: 164px;"
                                 class="qr_code"
                                 t-attf-src="/report/barcode/?barcode_type=QR&amp;value={{pass.qr_code}}&amp;width=164&amp;height=164&amp;humanreadable=1"
                                 alt="QRCode"
