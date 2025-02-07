@@ -31,7 +31,7 @@ Copyright 2024 Moka Tourisme (https://www.mokatourisme.fr).
                                     </span>
                                 </t>
                                 <t t-else="">
-                                    <div t-field="event.ticket_upper_left"/>
+                                    <div t-field="event.ticket_upper_left" class="p-4"/>
                                 </t>
                             </t>
                         </div>
