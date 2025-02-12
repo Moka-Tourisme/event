@@ -57,7 +57,7 @@ Copyright 2024 Moka Tourisme (https://www.mokatourisme.fr).
                                 <t t-if="attendee">
                                     
                                     <div class="o_event_foldable_badge_barcode mt-2">
-                                        <div class="o_event_foldable_badge_barcode_container" t-attf-style="position: absolute;left: 400px;width: 96px; height: 96px;">
+                                        <div class="o_event_foldable_badge_barcode_container" t-attf-style="position: absolute;left: 400px; top: 5px; width: 96px; height: 96px;">
                                             <img class="img_qr_code"
                                             t-att-src="'/report/barcode/?barcode_type=%s&amp;value=%s&amp;width=%s&amp;height=%s&amp;humanreadable=0' % ('QR', attendee.qr_code, 96, 96)"/>
                                         </div>
