@@ -43,7 +43,7 @@ class WizardPassLine(models.TransientModel):
 
     def _generate_code_line_pass(self):
         # Generate a unique QR code for each pass line
-        return str(uuid4())
+        return '051' + str(uuid4().int)[:10]
 
     def _create_pass_lines(self):
         self.ensure_one()
