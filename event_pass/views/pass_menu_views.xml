@@ -53,9 +53,9 @@
                                                 ('fixed', 'Fixed Date Range'),
                                                 ('variable', 'Variable in Days')
                                             ]"/>
-                                            <div class="o_row" colspan="4">
+                                            <div colspan="4">
                                             <label for="validity_date" string="Dates" attrs="{'invisible': [('validity_option', '!=', 'fixed')]}"/>
-                                                <div class="o_row" attrs="{'invisible': [('validity_option', '!=', 'fixed')]}" >
+                                                <div class="o_row"  t-attf-style="min-width: 250px" attrs="{'invisible': [('validity_option', '!=', 'fixed')]}" >
                                                     <field name="validity_date" widget="daterange" nolabel="1" class="oe_inline"
                                                     options="{'related_end_date': 'expiration_date'}"/>
                                                 <i class="fa fa-long-arrow-right mx-2" aria-label="Arrow icon" title="Arrow"/>
