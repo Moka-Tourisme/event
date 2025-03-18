@@ -147,7 +147,7 @@
                     <field name="active" invisible="1" />
                     <widget
                         name="web_ribbon"
-                        text="Archived"
+                        title="Archived"
                         bg_color="bg-danger"
                         attrs="{'invisible': [('active', '=', True)]}"
                     />
@@ -248,10 +248,11 @@
         <field name="model">event.session</field>
         <field name="arch" type="xml">
             <tree>
-                <field name="event_id" />
+                <field name="event_id" optional="show" />
                 <field name="date_begin" />
                 <field name="date_end" />
-                <field name="date_tz" />
+                <field name="date_tz" optional="hide" />
+                <field name="seats_limited" optional="hide" />
                 <field
                     name="seats_expected"
                     string="Expected Attendees"
@@ -265,6 +266,12 @@
                     sum="Total"
                     readonly="1"
                     optional="hide"
+                />
+                <field
+                    name="seats_available_unexpected"
+                    string="Not allocated seats"
+                    sum="Available seats not expected"
+                    attrs="{'invisible': [('seats_limited','=',False)]}"
                 />
                 <field name="seats_reserved" sum="Total" readonly="1" optional="hide" />
                 <field
@@ -343,8 +350,10 @@
                                 <div
                                     class="col-3 text-bg-primary p-2 text-center d-flex flex-column justify-content-center"
                                 >
-                                    <div
-                                        t-esc="luxon.DateTime.fromISO(record.date_begin.raw_value).toFormat('d')"
+                                     <div class="o_event_weekday">
+                                            <t t-esc="luxon.DateTime.fromISO(record.date_begin.raw_value).toFormat('cccc')" />
+                                    </div>
+                                    <div t-esc="luxon.DateTime.fromISO(record.date_begin.raw_value).toFormat('d')"
                                         class="o_event_fontsize_20"
                                     />
                                     <div>
@@ -356,7 +365,7 @@
                                             t-esc="luxon.DateTime.fromISO(record.date_begin.raw_value).toFormat('t')"
                                         /></div>
                                     <div
-                                        t-if="record.date_begin.raw_value !== record.date_end.raw_value"
+                                        t-if="luxon.DateTime.fromISO(record.date_begin.raw_value).toISODate() !== luxon.DateTime.fromISO(record.date_end.raw_value).toISODate()"
                                     >
                                         <i
                                             class="fa fa-arrow-right o_event_fontsize_09"
