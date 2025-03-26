@@ -4,33 +4,57 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 15.0\n"
+"Project-Id-Version: Odoo Server 16.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-05-22 15:49+0000\n"
-"PO-Revision-Date: 2023-05-22 15:49+0000\n"
+"POT-Creation-Date: 2025-03-26 14:10+0000\n"
+"PO-Revision-Date: 2025-03-26 15:11+0100\n"
 "Last-Translator: \n"
 "Language-Team: \n"
+"Language: fr\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
-"Content-Transfer-Encoding: \n"
-"Plural-Forms: \n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+"X-Generator: Poedit 3.5\n"
 
 #. module: sale_event_pass
 #: model:mail.template,body_html:sale_event_pass.mail_template_pass
 msgid ""
 "<div>\n"
 "                Dear <t t-out=\"object.buy_line_id.order_id.partner_id.name or ''\">Oscar Morgan</t>,\n"
-"                <br/>\n"
+"                <br>\n"
 "                Thank you for your order.\n"
-"                <br/>\n"
+"                <br>\n"
 "                Here is your pass.\n"
-"                <br/>\n"
+"                <br>\n"
 "                If you have any questions, please let us know.\n"
-"                <br/>\n"
-"                <br/>\n"
+"                <br>\n"
+"                <br>\n"
 "                Thank you,\n"
 "            </div>\n"
 "        "
+msgstr ""
+
+#. module: sale_event_pass
+#: model:ir.model.fields,help:sale_event_pass.field_product_product__detailed_type
+#: model:ir.model.fields,help:sale_event_pass.field_product_template__detailed_type
+msgid ""
+"A storable product is a product for which you manage stock. The Inventory app has to be installed.\n"
+"A consumable product is a product for which stock is not managed.\n"
+"A service is a non-material product you provide."
+msgstr ""
+"Un produit stockable est un produit dont on gère le stock. L'application \"Inventaire\" doit être installée. \n"
+"Un produit consommable est un produit pour lequel le stock n'est pas géré.\n"
+"Un service est un produit immatériel que vous fournissez."
+
+#. module: sale_event_pass
+#: model:ir.model.fields,field_description:sale_event_pass.field_event_pass_type__number_allowed_event
+msgid "Allowed attendance"
+msgstr ""
+
+#. module: sale_event_pass
+#: model:ir.model.fields,field_description:sale_event_pass.field_event_pass_type__number_visitors
+msgid "Allowed attendees"
 msgstr ""
 
 #. module: sale_event_pass
@@ -44,12 +68,102 @@ msgid "Buy Line"
 msgstr ""
 
 #. module: sale_event_pass
-#: model:ir.model,name:sale_event_pass.model_event_pass_line
-msgid "Event Pass Line"
+#: model:ir.model.fields,field_description:sale_event_pass.field_event_pass_type__category_ids
+msgid "Category"
+msgstr "Catégorie"
+
+#. module: sale_event_pass
+#: model_terms:ir.actions.act_window,help:sale_event_pass.act_menu_pass_type
+msgid "Click to create a new pass template."
 msgstr ""
 
 #. module: sale_event_pass
+#: model:ir.model.fields,field_description:sale_event_pass.field_event_pass_type__company_id
+msgid "Company"
+msgstr "Société"
+
+#. module: sale_event_pass
+#: model:ir.model.fields,field_description:sale_event_pass.field_event_pass_type__currency_id
+msgid "Currency"
+msgstr ""
+
+#. module: sale_event_pass
+#: model:ir.model.fields,field_description:sale_event_pass.field_event_pass_type__event_ids
+msgid "Event"
+msgstr "Événement"
+
+#. module: sale_event_pass
+#: model:ir.model,name:sale_event_pass.model_event_pass_line
+msgid "Event Pass Line"
+msgstr "Ligne de pass"
+
+#. module: sale_event_pass
+#: model:ir.model.fields,field_description:sale_event_pass.field_event_pass_type__event_type_ids
+msgid "Event Type"
+msgstr "Type d'événement"
+
+#. module: sale_event_pass
+#: model:ir.model.fields,field_description:sale_event_pass.field_event_pass_type__expiration_date
+msgid "Expiration Date"
+msgstr "Date d'expiration"
+
+#. module: sale_event_pass
+#. odoo-python
+#: code:addons/sale_event_pass/models/pass_line.py:0
+#, python-format
+msgid "Expiration date must be after validity date."
+msgstr ""
+
+#. module: sale_event_pass
+#: model:ir.model.fields,help:sale_event_pass.field_event_pass_type__expiration_date
+msgid "Expiration date of the pass if not set the expiration date is the validity date + validity period"
+msgstr "Date d'expiration du pass. Si indéfini, la date sera la date de validité + la période de validité en jours"
+
+#. module: sale_event_pass
+#: model:ir.model.fields,field_description:sale_event_pass.field_event_pass_type__fixed_number_allowed_event
+msgid "Fixed Allowed attendance"
+msgstr "Nombre de passages autorisés"
+
+#. module: sale_event_pass
+#: model:ir.model.fields,field_description:sale_event_pass.field_event_pass_type__fixed_expiration_date
+msgid "Fixed Expiration Date"
+msgstr "Date d'expiration fixe"
+
+#. module: sale_event_pass
+#: model:ir.model.fields,help:sale_event_pass.field_event_pass_type__fixed_expiration_date
+msgid "Fixed expiration date of the pass"
+msgstr "Date d'expiration"
+
+#. module: sale_event_pass
+#: model:ir.model.fields,help:sale_event_pass.field_event_pass_type__fixed_number_allowed_event
+msgid "Fixed number of attendance allowed per pass/invitation"
+msgstr ""
+"Permet de définir le nombre d'évènements maximum sur lequel le pass peut être utilisé.\n"
+"ex: Si limité à 10, alors le pass pourra être utilisé sur 10 événements différents, peu importe le nombre de participants"
+
+#. module: sale_event_pass
+#: model:ir.model.fields,field_description:sale_event_pass.field_event_pass_type__display_name
+msgid "Name of the pass"
+msgstr "Nom"
+
+#. module: sale_event_pass
+#: model:ir.model.fields,help:sale_event_pass.field_event_pass_type__number_allowed_event
+msgid "Number of attendance allowed per pass/invitation"
+msgstr ""
+"Permet de définir le nombre d'évènements maximum sur lequel le pass peut être utilisé.\n"
+"ex: Si limité à 10, alors le pass pourra être utilisé sur 10 événements différents, peu importe le nombre de participants"
+
+#. module: sale_event_pass
+#: model:ir.model.fields,help:sale_event_pass.field_event_pass_type__number_visitors
+msgid "Number of attendees allowed per event(s)/session(s)"
+msgstr ""
+"Permet de définir le nombre maximum de participants par événement\n"
+"ex: Si limité à 4 personnes, alors on pourra accepter jusqu'à 4 personnes pour un événement."
+
+#. module: sale_event_pass
 #: model:ir.model.fields,field_description:sale_event_pass.field_sale_order_line__pass_id
+#: model:ir.model.fields.selection,name:sale_event_pass.selection__product_template__detailed_type__pass
+#: model_terms:ir.ui.view,arch_db:sale_event_pass.event_pass_sale_order_inherit
 msgid "Pass"
 msgstr ""
 
@@ -59,9 +173,35 @@ msgid "Pass Count"
 msgstr "Nombre de pass"
 
 #. module: sale_event_pass
+#: model:ir.model,name:sale_event_pass.model_event_pass_type
+#: model_terms:ir.ui.view,arch_db:sale_event_pass.product_event_pass_type_form_view
+#: model_terms:ir.ui.view,arch_db:sale_event_pass.view_event_pass_type_tree
+msgid "Pass Template"
+msgstr "Modèle de pass"
+
+#. module: sale_event_pass
+#: model:ir.actions.act_window,name:sale_event_pass.act_menu_pass_type
+#: model_terms:ir.ui.view,arch_db:sale_event_pass.event_pass_type_view_search
+msgid "Pass Templates"
+msgstr ""
+
+#. module: sale_event_pass
+#: model:ir.model.fields,field_description:sale_event_pass.field_product_product__pass_type_id
+#: model:ir.model.fields,field_description:sale_event_pass.field_product_template__pass_type_id
+msgid "Pass Type"
+msgstr "Type de pass"
+
+#. module: sale_event_pass
 #: model:ir.model.fields,help:sale_event_pass.field_sale_order_line__pass_id
 msgid "Pass created"
 msgstr "Pass créé(s)"
+
+#. module: sale_event_pass
+#. odoo-python
+#: code:addons/sale_event_pass/models/product.py:0
+#, python-format
+msgid "Pass type is required for pass products"
+msgstr "Un type de pass est requis pour les produits de type Pass"
 
 #. module: sale_event_pass
 #: model:mail.template,name:sale_event_pass.mail_template_pass
@@ -74,8 +214,45 @@ msgid "Pass_{{ (object.buy_line_id.order_id.partner_id.name).replace(\" \", \"_\
 msgstr ""
 
 #. module: sale_event_pass
+#: model:ir.model,name:sale_event_pass.model_product_template
+msgid "Product"
+msgstr "Produit"
+
+#. module: sale_event_pass
+#: model:ir.model.fields,field_description:sale_event_pass.field_event_pass_type__product_count
+msgid "Product Count"
+msgstr ""
+
+#. module: sale_event_pass
+#: model:ir.model.fields,field_description:sale_event_pass.field_product_product__detailed_type
+#: model:ir.model.fields,field_description:sale_event_pass.field_product_template__detailed_type
+msgid "Product Type"
+msgstr "Type de produit"
+
+#. module: sale_event_pass
+#: model_terms:ir.ui.view,arch_db:sale_event_pass.event_pass_type_inherit
+msgid "Products"
+msgstr ""
+
+#. module: sale_event_pass
+#: model:ir.model.fields,field_description:sale_event_pass.field_event_pass_type__sale_order_count
+msgid "Sale Order Count"
+msgstr ""
+
+#. module: sale_event_pass
 #: model:ir.model.fields,help:sale_event_pass.field_event_pass_line__buy_line_id
 msgid "Sale Order line where this gift card has been bought."
+msgstr ""
+
+#. module: sale_event_pass
+#: model:ir.model.fields,field_description:sale_event_pass.field_event_pass_type__sale_price_subtotal
+msgid "Sale Price Subtotal"
+msgstr ""
+
+#. module: sale_event_pass
+#: model_terms:ir.ui.view,arch_db:sale_event_pass.event_pass_line_sale_inherit
+#: model_terms:ir.ui.view,arch_db:sale_event_pass.event_pass_type_inherit
+msgid "Sales"
 msgstr ""
 
 #. module: sale_event_pass
@@ -86,7 +263,57 @@ msgstr "Bon de commande"
 #. module: sale_event_pass
 #: model:ir.model,name:sale_event_pass.model_sale_order_line
 msgid "Sales Order Line"
-msgstr "Ligne de bons de commande"
+msgstr "Ligne de commande"
+
+#. module: sale_event_pass
+#: model:ir.model.fields,field_description:sale_event_pass.field_event_pass_type__session_ids
+msgid "Session"
+msgstr ""
+
+#. module: sale_event_pass
+#: model:ir.model.fields,field_description:sale_event_pass.field_event_pass_type__event_stage_ids
+msgid "Stage"
+msgstr "En cours"
+
+#. module: sale_event_pass
+#: model:ir.model.fields,help:sale_event_pass.field_sale_order__pass_count
+msgid "The number of pass related to this order"
+msgstr ""
+
+#. module: sale_event_pass
+#: model:ir.model.fields,field_description:sale_event_pass.field_event_pass_line__sale_order_count
+msgid "The number of sales orders related to this pass"
+msgstr ""
+
+#. module: sale_event_pass
+#: model_terms:ir.ui.view,arch_db:sale_event_pass.event_pass_type_inherit
+msgid "Total Sales for this pass type"
+msgstr ""
+
+#. module: sale_event_pass
+#: model:ir.model.fields,field_description:sale_event_pass.field_event_pass_type__unauthorized_session_ids
+msgid "Unauthorized Session"
+msgstr "Session non autorisée(s)"
+
+#. module: sale_event_pass
+#: model:ir.model.fields,field_description:sale_event_pass.field_event_pass_type__validity_date
+msgid "Validity Date"
+msgstr "Date de validité"
+
+#. module: sale_event_pass
+#: model:ir.model.fields,field_description:sale_event_pass.field_event_pass_type__validity_period
+msgid "Validity Period"
+msgstr "Période de validité"
+
+#. module: sale_event_pass
+#: model:ir.model.fields,help:sale_event_pass.field_event_pass_type__validity_date
+msgid "Validity date of the pass if not set the validity date is the date of sale"
+msgstr "Date qui détermine la validité du pass"
+
+#. module: sale_event_pass
+#: model:ir.model.fields,help:sale_event_pass.field_event_pass_type__validity_period
+msgid "Validity period of the pass in days, if not set the validity period is unlimited"
+msgstr "Période de validité. Si indéfini, la période de validité est infinie"
 
 #. module: sale_event_pass
 #: model:mail.template,subject:sale_event_pass.mail_template_pass
