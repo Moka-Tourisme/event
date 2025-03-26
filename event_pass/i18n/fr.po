@@ -339,7 +339,7 @@ msgstr "Type d'événement"
 #. module: event_pass
 #: model_terms:ir.ui.view,arch_db:event_pass.view_pass_form
 msgid "Event Types"
-msgstr "Événements"
+msgstr "Type d'événements"
 
 #. module: event_pass
 #: model_terms:ir.ui.view,arch_db:event_pass.event_pass_line_inherit
