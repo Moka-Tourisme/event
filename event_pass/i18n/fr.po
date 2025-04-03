@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 16.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-10-22 08:40+0000\n"
-"PO-Revision-Date: 2024-10-22 10:45+0200\n"
+"POT-Creation-Date: 2025-04-02 12:35+0000\n"
+"PO-Revision-Date: 2025-04-02 14:35+0200\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: fr\n"
@@ -254,13 +254,6 @@ msgid "Create Pass and Send"
 msgstr "Créer un Pass et envoyer"
 
 #. module: event_pass
-#. odoo-javascript
-#: code:addons/event_pass/static/src/xml/create_pass_multi_view.xml:0
-#, python-format
-msgid "Create Passes"
-msgstr "Créer un Pass"
-
-#. module: event_pass
 #: model:ir.model.fields,field_description:event_pass.field_event_pass_line__create_uid
 #: model:ir.model.fields,field_description:event_pass.field_event_pass_type__create_uid
 #: model:ir.model.fields,field_description:event_pass.field_wizard_pass_line__create_uid
@@ -376,6 +369,15 @@ msgstr "Date d'expiration du pass. Si indéfini, la date sera la date de validit
 #: model_terms:ir.ui.view,arch_db:event_pass.view_pass_search
 msgid "Expired"
 msgstr "Expiré"
+
+#. module: event_pass
+#: model_terms:ir.ui.view,arch_db:event_pass.invitation_template_content
+msgid ""
+"FOR\n"
+"                                    <br/>"
+msgstr ""
+"POUR\n"
+"                                   <br/>"
 
 #. module: event_pass
 #: model:ir.model.fields,field_description:event_pass.field_event_pass_line__fixed_number_allowed_event
@@ -539,6 +541,7 @@ msgstr ""
 "                                            <br/>"
 
 #. module: event_pass
+#: model_terms:ir.ui.view,arch_db:event_pass.view_event_pass_type_form
 #: model_terms:ir.ui.view,arch_db:event_pass.view_pass_form model_terms:ir.ui.view,arch_db:event_pass.view_pass_search
 msgid "Name"
 msgstr "Nom"
@@ -812,7 +815,7 @@ msgstr "Titre du pass, veuillez laisser le champ vide pour faire apparaître le 
 #. module: event_pass
 #: model:ir.model.fields,field_description:event_pass.field_barcode_rule__type
 msgid "Type"
-msgstr "Modèle"
+msgstr ""
 
 #. module: event_pass
 #: model:ir.model.fields,field_description:event_pass.field_event_pass_line__unauthorized_session_ids
