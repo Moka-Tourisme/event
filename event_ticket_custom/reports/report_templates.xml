@@ -92,11 +92,11 @@ Copyright 2024 Moka Tourisme (https://www.mokatourisme.fr).
                                     DATE &amp; HORAIRE
                                     <br/>
                                     <t t-if="attendee">
-                                        <span t-if="attendee.session_id.date_begin" class="font-part-2">
+                                        <span t-if="attendee.session_id.date_begin_located" class="font-part-2">
                                             <span
                                                     class="font-weight-bold"
-                                                    t-if="attendee.session_id.date_begin"
-                                                    t-field="attendee.session_id.date_begin"
+                                                    t-if="attendee.session_id.date_begin_located"
+                                                    t-field="attendee.session_id.date_begin_located"
                                             />
                                         </span>
                                     </t>
@@ -104,7 +104,7 @@ Copyright 2024 Moka Tourisme (https://www.mokatourisme.fr).
                                         <span class="font-part-2">
                                             <span
                                                     class="font-weight-bold"
-                                                    t-field="event.date_begin"
+                                                    t-field="event.date_begin_located"
                                             />
                                         </span>
                                     </t>
