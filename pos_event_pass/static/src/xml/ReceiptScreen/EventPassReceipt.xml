@@ -3,9 +3,7 @@
 
     <t t-name="EventPassReceipt" owl="1">
         <div class="pos-receipt event-pass-receipt">
-
             <!-- Header -->
-
             <t t-if="receipt.company.logo">
                 <img
                         class="pos-receipt-logo"
@@ -25,7 +23,7 @@
 
             <div class="pos-receipt-event-pass">
                 <div class="event-title">
-                    <strong class="event-name" t-esc="pass.product_id[1]"/>
+                    <strong class="event-name" t-esc="pass.display_name"/>
                 </div>
                 <div>
                     <t t-if="pass.location_id">

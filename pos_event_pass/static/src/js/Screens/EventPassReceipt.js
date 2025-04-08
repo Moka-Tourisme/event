@@ -12,6 +12,7 @@ odoo.define("pos_event_pass.EventPassReceipt", function (require) {
     class EventPassReceipt extends PosComponent {
         constructor() {
             super(...arguments);
+            console.log("ICI LE RECEIPT");
             this._receiptEnv = this.props.order.getOrderReceiptEnv();
         }
 
@@ -20,14 +21,17 @@ odoo.define("pos_event_pass.EventPassReceipt", function (require) {
         }
 
         get receiptEnv() {
+            console.log("this._receiptEnv", this._receiptEnv);
             return this._receiptEnv;
         }
 
         get receipt() {
+            console.log("this.receiptEnv", this.receiptEnv);
             return this.receiptEnv.receipt;
         }
 
         get pass() {
+            console.log("this.props.pass", this.props.pass);
             return this.props.pass;
         }
 

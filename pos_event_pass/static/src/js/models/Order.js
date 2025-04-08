@@ -50,6 +50,7 @@ odoo.define("pos_event_pass.Order", function (require) {
              */
             export_for_printing() {
                 const res = super.export_for_printing.apply(this, arguments);
+                console.log("this.event_pass", this.event_pass);
                 res.event_pass = this.event_pass;
                 return res;
             }
