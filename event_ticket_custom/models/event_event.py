@@ -79,7 +79,7 @@ class EventEvent(models.Model):
     logo_position = fields.Integer(
         string="Logo Position",
         default=70,
-        help="-10 to 100. Corresponds to the top property in css",
+        help="-40 to 100. Corresponds to the top property in css",
     )
 
     logo_width = fields.Integer(

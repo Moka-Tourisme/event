@@ -11,7 +11,7 @@ Copyright 2024 Moka Tourisme (https://www.mokatourisme.fr).
             inherit_id="event.event_report_template_foldable_badge"
     >
         <xpath expr="//div[hasclass('o_event_foldable_badge_container')]" position="replace">
-        <link rel="stylesheet" type="text/css" href="/event_ticket_custom/static/src/css/ticket.css"/>
+            <link rel="stylesheet" type="text/css" href="/event_ticket_custom/static/src/css/ticket.css"/>
             <div>
                 <div class="row" t-attf-style="min-height: 50%; width: 100dvw; margin : 0; max-height: 50%">
                     <!-- Front -->
@@ -42,30 +42,31 @@ Copyright 2024 Moka Tourisme (https://www.mokatourisme.fr).
                         <div class="oe_structure"/>
                         <div class="new_class" t-attf-style="background-color: #{event.background_color} !important; margin: 30px;
     height: 490px;">
-                            <div class="row">
-                                <t t-if="event.base_logo" class="img_logo">
-                                    <t t-set="base_logo" t-value="event.base_logo"/>
-                                    <t t-raw="0"/>
-                                    <img t-att-src="image_data_uri(event.base_logo)"
-                                         t-attf-style="position: absolute;left: 450px;top: #{event.logo_position}px; width: #{event.logo_width}px; height: #{event.logo_height}px; max-height:170px; max-width:130px"/>
-                                </t>
-                                <t t-else="">
-                                    <img src="/event_pass/static/src/img/logo_back.svg" class="img_logo"
-                                         object-fit="contain"
-                                         t-attf-style="position: absolute;left: 450px;top: 70px;max-width: 130px"/>
-                                </t>
-                                <t t-if="attendee">
-                                    
-                                    <div class="o_event_foldable_badge_barcode mt-2">
-                                        <div class="o_event_foldable_badge_barcode_container" t-attf-style="position: absolute;left: 400px; top: 5px; width: 96px; height: 96px;">
-                                            <img class="img_qr_code"
-                                            t-att-src="'/report/barcode/?barcode_type=%s&amp;value=%s&amp;width=%s&amp;height=%s&amp;humanreadable=0' % ('QR', attendee.qr_code, 96, 96)"/>
-                                        </div>
-                                    </div>
-                                </t>
-
+                            <div class="row container-qr-code">
+                                <div class="col">
+                                    <t t-if="event.base_logo">
+                                        <t t-set="base_logo" t-value="event.base_logo"/>
+                                        <t t-raw="0"/>
+                                        <img t-att-src="image_data_uri(event.base_logo)" class="img_logo"
+                                             t-attf-style="top: #{event.logo_position}px; width: #{event.logo_width}px; height: #{event.logo_height}px; max-height:170px; max-width:130px"/>
+                                    </t>
+                                    <t t-else="">
+                                        <img src="/event_pass/static/src/img/logo_back.svg" class="img_logo"
+                                             object-fit="contain"/>
+                                    </t>
+                                </div>
+                                <div class="col">
+                                    <t t-if="attendee">
+                                        <!--                                    <div class="o_event_foldable_badge_barcode mt-2">-->
+                                        <!--                                        <div class="o_event_foldable_badge_barcode_container" t-attf-style="position: absolute;left: 400px; top: 5px; width: 96px; height: 96px;">-->
+                                        <img class="img_qr_code"
+                                             t-att-src="'/report/barcode/?barcode_type=%s&amp;value=%s&amp;width=%s&amp;height=%s&amp;humanreadable=0' % ('QR', attendee.qr_code, 96, 96)"/>
+                                        <!--                                        </div>-->
+                                        <!--                                    </div>-->
+                                    </t>
+                                </div>
                             </div>
-                            <div class="head_top_right body_part_2 overflow-hidden"
+                            <div class="body_part_2 overflow-hidden"
                                  t-attf-style="color: #{event.content_color} !important;">
                                 <h6
                                         t-attf-style="color: #{event.title_color} !important;"

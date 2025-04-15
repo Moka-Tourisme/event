@@ -28,7 +28,7 @@
                         <group class="col-6">
                             <separator string="Upper Right Settings"/>
                             <field name="base_logo" widget="image" class="oe_avatar"/>
-                            <field name="logo_position" widget="numeric_step" options="{'step': 1, 'min': -10, 'max': 100}"/>
+                            <field name="logo_position" widget="numeric_step" options="{'step': 1, 'min': -40, 'max': 100}"/>
                             <field name="logo_width" widget="numeric_step" options="{'step': 1, 'min': 0, 'max': 160}"/>
                             <field name="logo_height" widget="numeric_step" options="{'step': 1, 'min': 0, 'max': 170}"/>
                             <field name="title_color" widget="color"/>
