@@ -12,7 +12,7 @@ Copyright 2024 Moka Tourisme (https://www.mokatourisme.fr).
     >
         <xpath expr="//div[hasclass('o_event_foldable_badge_container')]" position="replace">
             <link rel="stylesheet" type="text/css" href="/event_ticket_custom/static/src/css/ticket.css"/>
-            <div>
+            <div style="page-break-after: always;>
                 <div class="row" t-attf-style="min-height: 50%; width: 100dvw; margin : 0; max-height: 50%">
                     <!-- Front -->
                     <div class="page p-1 col-6 o_event_foldable_badge_top"
