@@ -5,15 +5,14 @@ Copyright 2024 Moka Tourisme (https://www.mokatourisme.fr).
     License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl).
 -->
 <odoo>
-
     <template
-            id="event_report_template_foldable_badge"
-            inherit_id="event.event_report_template_foldable_badge"
+        id="event_report_template_foldable_badge"
+        inherit_id="event.event_report_template_foldable_badge"
     >
         <xpath expr="//div[hasclass('o_event_foldable_badge_container')]" position="replace">
             <link rel="stylesheet" type="text/css" href="/event_ticket_custom/static/src/css/ticket.css"/>
-            <div style="page-break-after: always;>
-                <div class="row" t-attf-style="min-height: 50%; width: 100dvw; margin : 0; max-height: 50%">
+            <div style="page-break-after: always;">
+                <div class=" row" t-attf-style="min-height: 50%; width: 100dvw; margin : 0; max-height: 50%">
                     <!-- Front -->
                     <div class="page p-1 col-6 o_event_foldable_badge_top"
                          t-attf-style="background-color: #{event.outline_color} !important;">
@@ -69,43 +68,65 @@ Copyright 2024 Moka Tourisme (https://www.mokatourisme.fr).
                             <div class="body_part_2 overflow-hidden"
                                  t-attf-style="color: #{event.content_color} !important;">
                                 <h6
-                                        t-attf-style="color: #{event.title_color} !important;"
-                                        class="font-weight-bold custom-title"
-                                        t-field="event.name"
+                                    t-attf-style="color: #{event.title_color} !important;"
+                                    class="font-weight-bold custom-title"
+                                    t-field="event.name"
                                 />
                                 <div>
                                     PARTICIPANT
                                     <br/>
                                     <span class="font-part-2">
                                         <span
-                                                t-if="attendee"
-                                                class="font-weight-bold"
-                                                t-field="attendee.name"
+                                            t-if="attendee"
+                                            class="font-weight-bold"
+                                            t-field="attendee.name"
                                         />
                                         <br/>
                                         <span
-                                                t-if="attendee and attendee.event_ticket_id"
-                                                class="font-weight-bold"
-                                                t-field="attendee.event_ticket_id"
+                                            t-if="attendee and attendee.event_ticket_id"
+                                            class="font-weight-bold"
+                                            t-field="attendee.event_ticket_id"
                                         />
                                     </span>
                                     <hr t-attf-style="color: #{event.content_color} !important; background-color: #{event.content_color} !important; height: 1px;"/>
                                     DATE &amp; HORAIRE
                                     <br/>
                                     <t t-if="attendee">
-                                        <span t-if="attendee.session_id.date_begin_located" class="font-part-2">
-                                            <span
+                                        <t t-if="attendee.session_id">
+                                            <span t-if="attendee.session_id.date_begin_located" class="font-part-2">
+                                                <span
                                                     class="font-weight-bold"
                                                     t-if="attendee.session_id.date_begin_located"
                                                     t-field="attendee.session_id.date_begin_located"
-                                            />
-                                        </span>
+                                                />
+                                                <span>
+                                                    <i class="fa-solid fa-arrow-right"/>
+                                                </span>
+                                                <span
+                                                    class="font-weight-bold"
+                                                    t-field="attendee.session_id.date_end_located"/>
+                                            </span>
+                                        </t>
+                                        <t t-else="">
+                                            <span t-if="event.date_begin_located" class="font-part-2">
+                                                <span
+                                                    class="font-weight-bold"
+                                                    t-field="event.date_begin_located"
+                                                />
+                                                <span>
+                                                    <i class="fa-solid fa-arrow-right"/>
+                                                </span>
+                                                <span
+                                                    class="font-weight-bold"
+                                                    t-field="event.date_end_located"/>
+                                            </span>
+                                        </t>
                                     </t>
                                     <t t-else="">
                                         <span class="font-part-2">
                                             <span
-                                                    class="font-weight-bold"
-                                                    t-field="event.date_begin_located"
+                                                class="font-weight-bold"
+                                                t-field="event.date_begin_located"
                                             />
                                         </span>
                                     </t>
@@ -116,18 +137,18 @@ Copyright 2024 Moka Tourisme (https://www.mokatourisme.fr).
                                     <t t-if="address">
                                         <span class="font-part-2">
                                             <span
-                                                    class="font-weight-bold"
-                                                    t-field="address.name"
+                                                class="font-weight-bold"
+                                                t-field="address.name"
                                             />
                                             <br/>
                                             <span
-                                                    class="font-weight-bold"
-                                                    t-field="address.street"
+                                                class="font-weight-bold"
+                                                t-field="address.street"
                                             />
                                             <br/>
                                             <span
-                                                    class="font-weight-bold"
-                                                    t-field="address.street2"/>
+                                                class="font-weight-bold"
+                                                t-field="address.street2"/>
                                             <br/>
                                             <span class="font-weight-bold">
                                                 <span t-field="address.zip"/>
@@ -142,8 +163,9 @@ Copyright 2024 Moka Tourisme (https://www.mokatourisme.fr).
                 </div>
                 <div class="row" t-attf-style="min-height: 50%; max-height: 50%">
                     <!-- Inner left -->
-                    <div class="page o_event_foldable_badge_left o_event_foldable_badge_container p-1 px-2 col-6 overflow-hidden no-border body_part_3 o_event_foldable_badge_bottom_left"
-                         t-attf-style="background-color: #{event.outline_color} !important;">
+                    <div
+                        class="page o_event_foldable_badge_left o_event_foldable_badge_container p-1 px-2 col-6 overflow-hidden no-border body_part_3 o_event_foldable_badge_bottom_left"
+                        t-attf-style="background-color: #{event.outline_color} !important;">
                         <div class="oe_structure"/>
                         <div class="new_class"
                              t-attf-style="background-color: #{event.background_color} !important; margin: 30px;
@@ -165,8 +187,9 @@ Copyright 2024 Moka Tourisme (https://www.mokatourisme.fr).
                         </div>
                     </div>
                     <!-- Inner right -->
-                    <div class="page o_event_foldable_badge_right o_event_foldable_badge_container px-2 col-6 overflow-hidden border_left_dashed body_part_3 o_event_foldable_badge_bottom_left"
-                         t-attf-style="background-color: #{event.outline_color} !important">
+                    <div
+                        class="page o_event_foldable_badge_right o_event_foldable_badge_container px-2 col-6 overflow-hidden border_left_dashed body_part_3 o_event_foldable_badge_bottom_left"
+                        t-attf-style="background-color: #{event.outline_color} !important">
                         <div class="oe_structure"/>
                         <div class="new_class"
                              t-attf-style="background-color: #{event.background_color} !important;margin: 30px;
@@ -193,13 +216,13 @@ Copyright 2024 Moka Tourisme (https://www.mokatourisme.fr).
     </template>
 
     <template
-            id="event_report_template_full_page_ticket"
-            inherit_id="event.event_report_template_full_page_ticket"
+        id="event_report_template_full_page_ticket"
+        inherit_id="event.event_report_template_full_page_ticket"
     >
         <div t-field="event.ticket_instructions" position="after">
             <div
-                    t-field="event.ticket_upper_left"
-                    class="o_event_full_page_upper_left px-2 pt-3"
+                t-field="event.ticket_upper_left"
+                class="o_event_full_page_upper_left px-2 pt-3"
             />
         </div>
     </template>
