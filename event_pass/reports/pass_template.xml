@@ -16,6 +16,22 @@
         <field name="dpi">96</field>
     </record>
 
+    <record id="paperformat_pass_zebra" model="report.paperformat">
+        <field name="name">Custom Paperformat for pass line zebra</field>
+        <field name="default" eval="True"/>
+        <field name="format">custom</field>
+        <field name="orientation">Landscape</field>
+        <field name="page_height">70</field>
+        <field name="page_width">32</field>
+        <field name="margin_top">0</field>
+        <field name="margin_bottom">0</field>
+        <field name="margin_left">0</field>
+        <field name="margin_right">0</field>
+        <field name="header_spacing">0</field>
+        <field name="disable_shrinking" eval="True"/>
+        <field name="dpi">96</field>
+    </record>
+
     <record id="partner_pass_report" model="ir.actions.report">
         <field name="name">Print the partner badge</field>
         <field name="model">res.partner</field>
@@ -34,6 +50,17 @@
         <field name="report_name">event_pass.pass_template</field>
         <field name="report_file">event_pass.pass_template</field>
         <field name="paperformat_id" ref="paperformat_pass"/>
+        <field name="binding_model_id" ref="model_event_pass_line"/>
+        <field name="binding_type">report</field>
+    </record>
+
+    <record id="pass_report_zebra" model="ir.actions.report">
+        <field name="name">Print the zebra pass badge</field>
+        <field name="model">event.pass.line</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">event_pass.pass_template_zebra</field>
+        <field name="report_file">event_pass.pass_template_zebra</field>
+        <field name="paperformat_id" ref="paperformat_pass_zebra"/>
         <field name="binding_model_id" ref="model_event_pass_line"/>
         <field name="binding_type">report</field>
     </record>
@@ -124,6 +151,15 @@
         </t>
     </template>
 
+    <template id="pass_template_zebra">
+        <t t-call="web.basic_layout">
+            <link rel="stylesheet" type="text/css" href="/event_pass/static/src/css/invitation.css"/>
+            <t t-foreach="docs" t-as="pass">
+                <t t-call="event_pass.pass_template_zebra_content"/>
+            </t>
+        </t>
+    </template>
+
     <template id="pass_template_content">
         <div style="page-break-after: always" width="595,2765pt" min-height="841,88965pt" max-height="841,88965pt">
             <table style="width:244pt; table-layout: fixed; height:152pt; margin-left:-15px">
@@ -160,6 +196,40 @@
                     <td style="background-color:#FFF; vertical-align: bottom; text-align: left; padding: 0 0 15px 15px">
                         <t t-if="pass.partner_id">
                             <strong>
+                                <t t-esc="pass.partner_id.name"/>
+                            </strong>
+                        </t>
+                        <br/>
+                        <t t-if="pass.partner_id.function">
+                            <span style="font-size:0.8em;">
+                                <t t-esc="pass.partner_id.function"/>
+                            </span>
+                        </t>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </template>
+
+    <template id="pass_template_zebra_content">
+        <div style="page-break-after: always; min-width=265px; max-width:265px; min-height=120px; max-height=120px">
+            <p style="font-size:0.8em; padding-right: 5px; padding-left: 10px; max-height: 30px; text-align: center">
+                <t t-esc="pass.display_name"/>
+            </p>
+            <table style="max-width:264.56692913px; table-layout: fixed; max-height:120px; min-height:120px; border-style:hidden !important">
+                <tr style="height:50%; border: 0;">
+                    <!-- Display QR Code -->
+                    <td style="vertical-align:middle; text-align: center;border: 0; padding-left: 10px; padding-right:10px">
+                        <img t-att-src="'/report/barcode/?barcode_type=%s&amp;value=%s&amp;width=%s&amp;height=%s&amp;humanreadable=0' % ('QR', pass.qr_code, 60, 60)"/>
+                    </td>
+                    <!-- Display Partner name & function -->
+                    <td style="background-color:#FFF; vertical-align: bottom; text-align: left; padding: 10px 0 5px 15px; border: 0">
+                        <span style="font-size:0.8em;">
+                            <t t-out="pass.qr_code"/>
+                        </span>
+                        <br/>
+                        <t t-if="pass.partner_id">
+                            <strong style="font-size:0.8em;">
                                 <t t-esc="pass.partner_id.name"/>
                             </strong>
                         </t>
