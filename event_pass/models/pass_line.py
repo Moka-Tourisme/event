@@ -156,11 +156,23 @@ class PassLine(models.Model):
         "res.partner",
         string="Customer",
         default=lambda self: self.env.context.get("active_id", False),
+        help="Customer of the pass, that can set a beneficiary if needed",
+    )
+
+    beneficiary = fields.Char(
+        string="Beneficiary",
+        help="Beneficiary of the pass if not set the beneficiary is the customer",
+    )
+
+    beneficiary_mail = fields.Char(
+        string="Beneficiary Mail",
+        help="Beneficiary mail of the pass",
     )
 
     gifted_by_id = fields.Many2one(
         "res.partner",
         "Gifted by",
+        help="Gifted by",
     )
 
     event_count = fields.Integer(

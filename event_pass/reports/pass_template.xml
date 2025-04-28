@@ -196,7 +196,10 @@
                     <td style="background-color:#FFF; vertical-align: bottom; text-align: left; padding: 0 0 15px 15px">
                         <t t-if="pass.partner_id">
                             <strong>
-                                <t t-esc="pass.partner_id.name"/>
+                                <t t-if="pass.beneficiary">
+                                    <t t-esc="pass.beneficiary"/>
+                                </t>
+                                <t t-else = "" t-esc="pass.partner_id.name"/>
                             </strong>
                         </t>
                         <br/>
@@ -230,7 +233,10 @@
                         <br/>
                         <t t-if="pass.partner_id">
                             <strong style="font-size:0.8em;">
-                                <t t-esc="pass.partner_id.name"/>
+                                <t t-if="pass.beneficiary">
+                                    <t t-esc="pass.beneficiary"/>
+                                </t>
+                                <t t-else="" t-esc="pass.partner_id.name"/>
                             </strong>
                         </t>
                         <br/>
@@ -342,10 +348,13 @@
                                     <br/>
                                     <span class="font-part-2">
                                         <span
-                                                t-if="pass.partner_id"
+                                                t-if="pass.beneficiary"
                                                 class="font-weight-bold"
-                                                t-field="pass.partner_id.name"
+                                                t-field="pass.beneficiary"
                                         />
+                                        <span t-else="" class="font-weight-bold">
+                                            <t t-esc="pass.partner_id.name"/>
+                                        </span>
                                         <br/>
                                     </span>
                                 </t>

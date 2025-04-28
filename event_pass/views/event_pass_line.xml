@@ -90,8 +90,10 @@
 
                         <group>
                             <field name="pass_type_id"/>
-                            <field name="partner_id" placeholder="Client"/>
                             <field name="gifted_by_id" placeholder="Gifted By"/>
+                            <field name="partner_id" placeholder="Client"/>
+                            <field name="beneficiary" placeholder="Beneficiary"/>
+                            <field name="beneficiary_email" placeholder="Beneficiary Email" widget="email"/>
                         </group>
 
                         <group>
