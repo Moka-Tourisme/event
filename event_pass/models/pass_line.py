@@ -8,7 +8,6 @@ import logging
 import psycopg2
 import imghdr
 
-
 from odoo import api, fields, models, registry, SUPERUSER_ID, _
 from datetime import datetime, timedelta, date
 from uuid import uuid4, UUID
@@ -23,16 +22,23 @@ _logger = logging.getLogger(__name__)
 class PassLine(models.Model):
     _name = "event.pass.line"
     _description = "Event Pass Line"
-    _rec_name = "display_name"
+    _rec_name = "name"
+    _inherit = ["mail.thread", "mail.activity.mixin"]
+
+    name = fields.Char(
+        compute='_compute_name',
+    )
+
     display_name = fields.Char(
         required=True,
+        string="Pass Name",
+        help="Pass name",
     )
-    
+
     pass_type_id = fields.Many2one(
         "event.pass.type",
         string="Pass Type",
     )
-    
 
     state = fields.Selection(
         [
@@ -60,7 +66,7 @@ class PassLine(models.Model):
         string="Expiration Date",
         required=False,
     )
-    
+
     use_validity_dates = fields.Boolean(
         string="Use Validity Dates", help="Use Validity Dates",
     )
@@ -70,7 +76,7 @@ class PassLine(models.Model):
         help="Fixed number of attendance allowed per pass/invitation",
         default=False,
     )
-    
+
     fixed_number_visitors_allowed = fields.Boolean(
         string="Fixed number visitors",
         help="Fixed number of visitors allowed per event(s)/session(s)",
@@ -85,6 +91,11 @@ class PassLine(models.Model):
     number_visitors = fields.Integer(
         string="Allowed attendees",
         help="Number of attendees allowed per event(s)/session(s)",
+    )
+
+    internal_notes = fields.Text(
+        string="Note",
+        help="Note of the pass",
     )
 
     counted_passage = fields.Integer(
@@ -171,7 +182,7 @@ class PassLine(models.Model):
     def default_get(self, fields):
         res = super(PassLine, self).default_get(fields)
         if 'validity_date' in fields:
-            res['validity_date'] = date.today() 
+            res['validity_date'] = date.today()
         return res
 
     @api.model
@@ -193,7 +204,7 @@ class PassLine(models.Model):
                 else:
                     rec.state = 'valid'
             else:
-                rec.state = 'valid' 
+                rec.state = 'valid'
 
             if rec.fixed_number_allowed_event:
                 if not rec.number_allowed_event:
@@ -223,7 +234,7 @@ class PassLine(models.Model):
             else:
                 vals['state'] = 'valid'
         else:
-            vals['state'] = 'valid' 
+            vals['state'] = 'valid'
 
         if vals.get('fixed_number_allowed_event'):
             vals['remaining_passage'] = vals.get('number_allowed_event') - self.counted_passage
@@ -293,7 +304,6 @@ class PassLine(models.Model):
             'mark_so_as_sent': True,
         }
         if record.partner_id:
-
             context.update({
                 'default_partner_ids': [record.partner_id.id],
             })
@@ -360,6 +370,10 @@ class PassLine(models.Model):
         ])
         pass_lines.write({'state': 'expired'})
 
+    @api.depends('display_name', 'qr_code')
+    def _compute_name(self):
+        for record in self:
+            record.name = record.display_name + ' - ' + record.qr_code
 
 
 class PassType(models.Model):
@@ -368,7 +382,11 @@ class PassType(models.Model):
     _rec_name = 'display_name'
 
     display_name = fields.Char(
-        string="Name of the pass",
+        store=True,
+    )
+
+    name = fields.Char(
+        string="Pass Name",
         required=True,
     )
 
@@ -376,7 +394,7 @@ class PassType(models.Model):
         ('fixed', 'Fixed Date Range'),
         ('variable', 'Variable in Days')
     ], string="Validity Option", default='fixed')
-    
+
     validity_date = fields.Date(
         string="Validity Date", help="Validity date of the pass if not set the validity date is the date of sale",
     )
@@ -384,7 +402,7 @@ class PassType(models.Model):
     use_validity_dates = fields.Boolean(
         string="Use Validity Dates", help="Use Validity Dates",
     )
-    
+
     validity_period = fields.Integer(
         string="Validity Period",
         help="Validity period of the pass in days, if not set the validity period is unlimited",
@@ -455,7 +473,6 @@ class PassType(models.Model):
         default=lambda self: self.env.company,
         required=False)
 
-
     base_logo = fields.Html(
         string="Base Logo",
         help="Please insert image by using /image",
@@ -516,7 +533,7 @@ class PassType(models.Model):
         strip_style=False,
         strip_classes=False
     )
-    
+
     fixed_number_visitors_allowed = fields.Boolean(
         string="Fixed number visitors",
         help="Fixed number of visitors allowed per event(s)/session(s)",
@@ -527,7 +544,7 @@ class PassType(models.Model):
     def default_get(self, fields_list):
         res = super(PassType, self).default_get(fields_list)
         res['display_name'] = self.env.context.get('default_name', '')
-        res['validity_date'] = date.today() 
+        res['validity_date'] = date.today()
         return res
 
     @api.constrains('expiration_date')
@@ -535,5 +552,3 @@ class PassType(models.Model):
         for record in self:
             if record.expiration_date and record.validity_date and record.expiration_date < record.validity_date:
                 raise ValidationError(_("Expiration date must be after validity date."))
-
-

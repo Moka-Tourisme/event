@@ -32,7 +32,7 @@
                         <div class="oe_button_box" name="button_box"/>
                         <div class="oe_title">
                             <h1>
-                                <field name="display_name" id="field_display_name" placeholder="Name"/>
+                                <field name="name" placeholder="Name"/>
                             </h1>
                         </div>
                         <group>
@@ -69,7 +69,7 @@
 
                                         <div attrs="{'invisible': [('validity_option', '!=', 'variable')]}" colspan="4" class="oe_inline o_row">
                                             <label for="validity_period" string="Validity Period in Days"/>
-                                                <field name="validity_period" placeholder="Leave empty for infinite period"/>   
+                                                <field name="validity_period" placeholder="Leave empty for infinite period"/>
                                         </div>
                                     </group>
                                 </group>
@@ -141,7 +141,7 @@
             <field name="model">event.pass.type</field>
             <field name="arch" type="xml">
                 <tree string="Pass Template">
-                    <field name="display_name"/>
+                    <field name="name"/>
                 </tree>
             </field>
         </record>
@@ -151,7 +151,7 @@
             <field name="model">event.pass.type</field>
             <field name="arch" type="xml">
                 <search string="Pass Templates">
-                    <field name="display_name"/>
+                    <field name="name"/>
                 </search>
             </field>
         </record>
