@@ -425,6 +425,19 @@ class PassType(models.Model):
         default=False,
     )
 
+    pass_ids = fields.One2many(
+        "event.pass.line",
+        "pass_type_id",
+        string="Pass",
+        help="Pass line",
+    )
+
+    pass_ids_count = fields.Integer(
+        string="Pass Count",
+        compute='_compute_pass_ids_count',
+        help="Number of pass line",
+    )
+
     number_allowed_event = fields.Integer(
         string="Allowed attendance",
         help="Number of attendance allowed per pass/invitation",
@@ -552,3 +565,8 @@ class PassType(models.Model):
         for record in self:
             if record.expiration_date and record.validity_date and record.expiration_date < record.validity_date:
                 raise ValidationError(_("Expiration date must be after validity date."))
+
+    @api.depends('pass_ids')
+    def _compute_pass_ids_count(self):
+        for record in self:
+            record.pass_ids_count = len(record.pass_ids)
