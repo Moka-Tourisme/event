@@ -206,6 +206,12 @@ class PassLine(models.Model):
             self._check_barcode_exist(rec)
         return records
 
+    def _check_barcode_exist(self, rec):
+        if not rec.partner_id.barcode:
+            rec.partner_id.update({
+                'barcode': self._generate_code(),
+            })
+
     @api.depends('state', 'validity_date', 'expiration_date')
     def _compute_state(self):
         for record in self:
