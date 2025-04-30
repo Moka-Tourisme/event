@@ -15,6 +15,12 @@ class PosOrder(models.Model):
         groups="point_of_sale.group_pos_user",
     )
 
+    def action_pos_order_paid(self):
+        res = super().action_pos_order_paid()
+        self.lines._cancel_negated_event_pass()
+        self.lines._cancel_refunded_event_pass()
+        return res
+
     def _compute_pass_count(self):
         for record in self:
             record.pass_count = self.env['event.pass.line'].search_count([('id', 'in', record.lines.generated_pass_ids.ids)])
