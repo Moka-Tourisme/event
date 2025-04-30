@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 16.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-04-02 12:35+0000\n"
-"PO-Revision-Date: 2025-04-02 14:35+0200\n"
+"POT-Creation-Date: 2025-04-30 08:25+0000\n"
+"PO-Revision-Date: 2025-04-30 10:26+0200\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: fr\n"
@@ -15,7 +15,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
-"X-Generator: Poedit 3.5\n"
+"X-Generator: Poedit 3.4.4\n"
 
 #. module: event_pass
 #: model:ir.model.fields,field_description:event_pass.field_event_pass_line__event_count
@@ -82,9 +82,34 @@ msgstr ""
 "[('use_validity_dates', '=', False)]}\"/>"
 
 #. module: event_pass
+#: model:ir.model.fields,field_description:event_pass.field_event_pass_line__message_needaction
+msgid "Action Needed"
+msgstr ""
+
+#. module: event_pass
 #: model:ir.model.fields,field_description:event_pass.field_event_pass_line__active
 msgid "Active"
 msgstr "Actif"
+
+#. module: event_pass
+#: model:ir.model.fields,field_description:event_pass.field_event_pass_line__activity_ids
+msgid "Activities"
+msgstr "Activités"
+
+#. module: event_pass
+#: model:ir.model.fields,field_description:event_pass.field_event_pass_line__activity_exception_decoration
+msgid "Activity Exception Decoration"
+msgstr ""
+
+#. module: event_pass
+#: model:ir.model.fields,field_description:event_pass.field_event_pass_line__activity_state
+msgid "Activity State"
+msgstr ""
+
+#. module: event_pass
+#: model:ir.model.fields,field_description:event_pass.field_event_pass_line__activity_type_icon
+msgid "Activity Type Icon"
+msgstr ""
 
 #. module: event_pass
 #: model_terms:ir.ui.view,arch_db:event_pass.view_event_pass_type_form
@@ -110,6 +135,11 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:event_pass.view_pass_search
 msgid "Archived"
 msgstr "Archivé"
+
+#. module: event_pass
+#: model:ir.model.fields,field_description:event_pass.field_event_pass_line__message_attachment_count
+msgid "Attachment Count"
+msgstr ""
 
 #. module: event_pass
 #: model_terms:ir.ui.view,arch_db:event_pass.view_pass_form
@@ -140,6 +170,32 @@ msgstr "Logo"
 #: model:ir.model.fields,field_description:event_pass.field_event_pass_type__base_logo_filename
 msgid "Base Logo Filename"
 msgstr "Logo"
+
+#. module: event_pass
+#: model:ir.model.fields,field_description:event_pass.field_event_pass_line__beneficiary
+#: model_terms:ir.ui.view,arch_db:event_pass.view_pass_form
+msgid "Beneficiary"
+msgstr "Bénéficiaire"
+
+#. module: event_pass
+#: model_terms:ir.ui.view,arch_db:event_pass.view_pass_form
+msgid "Beneficiary Email"
+msgstr "Mail du bénéficiaire"
+
+#. module: event_pass
+#: model:ir.model.fields,field_description:event_pass.field_event_pass_line__beneficiary_mail
+msgid "Beneficiary Mail"
+msgstr "Mail du bénéficiaire"
+
+#. module: event_pass
+#: model:ir.model.fields,help:event_pass.field_event_pass_line__beneficiary_mail
+msgid "Beneficiary mail of the pass"
+msgstr "Mail du bénéficiaire"
+
+#. module: event_pass
+#: model:ir.model.fields,help:event_pass.field_event_pass_line__beneficiary
+msgid "Beneficiary of the pass if not set the beneficiary is the customer"
+msgstr "Bénéficiaire du pass, si le bénéficiaire n'est pas défini le bénéficiaire est le client"
 
 #. module: event_pass
 #: model_terms:ir.ui.view,arch_db:event_pass.view_event_pass_type_form
@@ -189,6 +245,11 @@ msgstr "Catégorie"
 #: model_terms:ir.actions.act_window,help:event_pass.act_menu_pass_type
 msgid "Click to create a new pass template."
 msgstr "Cliquer pour créer un nouveau modèle de pass."
+
+#. module: event_pass
+#: model_terms:ir.actions.act_window,help:event_pass.action_event_pass
+msgid "Click to create a new pass."
+msgstr ""
 
 #. module: event_pass
 #: model_terms:ir.ui.view,arch_db:event_pass.view_pass_form
@@ -278,6 +339,11 @@ msgid "Customer"
 msgstr "Client"
 
 #. module: event_pass
+#: model:ir.model.fields,help:event_pass.field_event_pass_line__partner_id
+msgid "Customer of the pass, that can set a beneficiary if needed"
+msgstr ""
+
+#. module: event_pass
 #: model_terms:ir.ui.view,arch_db:event_pass.view_event_pass_type_form
 msgid "Customization"
 msgstr "Personnalisation"
@@ -288,11 +354,6 @@ msgstr "Personnalisation"
 #: model_terms:ir.ui.view,arch_db:event_pass.view_wizard_event_pass_line_form
 msgid "Dates"
 msgstr ""
-
-#. module: event_pass
-#: model:ir.model.fields,field_description:event_pass.field_event_pass_line__display_name
-msgid "Display Name"
-msgstr "Nom d'affichage"
 
 #. module: event_pass
 #: model:ir.model.fields.selection,name:event_pass.selection__event_pass_line__state__draft
@@ -332,7 +393,7 @@ msgstr "Type d'événement"
 #. module: event_pass
 #: model_terms:ir.ui.view,arch_db:event_pass.view_pass_form
 msgid "Event Types"
-msgstr "Type d'événements"
+msgstr "Événements"
 
 #. module: event_pass
 #: model_terms:ir.ui.view,arch_db:event_pass.event_pass_line_inherit
@@ -424,6 +485,21 @@ msgid "Fixed number visitors"
 msgstr "Limiter le nombre de participants"
 
 #. module: event_pass
+#: model:ir.model.fields,field_description:event_pass.field_event_pass_line__message_follower_ids
+msgid "Followers"
+msgstr ""
+
+#. module: event_pass
+#: model:ir.model.fields,field_description:event_pass.field_event_pass_line__message_partner_ids
+msgid "Followers (Partners)"
+msgstr ""
+
+#. module: event_pass
+#: model:ir.model.fields,help:event_pass.field_event_pass_line__activity_type_icon
+msgid "Font awesome icon e.g. fa-tasks"
+msgstr ""
+
+#. module: event_pass
 #: model_terms:ir.ui.view,arch_db:event_pass.invitation_template_content
 msgid ""
 "GIFTED BY\n"
@@ -445,6 +521,7 @@ msgstr ""
 #. module: event_pass
 #: model:ir.model.fields,field_description:event_pass.field_event_pass_line__gifted_by_id
 #: model:ir.model.fields,field_description:event_pass.field_wizard_pass_line__gifted_by_id
+#: model:ir.model.fields,help:event_pass.field_event_pass_line__gifted_by_id
 #: model_terms:ir.ui.view,arch_db:event_pass.view_pass_search
 msgid "Gifted by"
 msgstr "Offert par"
@@ -453,6 +530,11 @@ msgstr "Offert par"
 #: model_terms:ir.ui.view,arch_db:event_pass.view_pass_search
 msgid "Group by"
 msgstr "Regrouper par"
+
+#. module: event_pass
+#: model:ir.model.fields,field_description:event_pass.field_event_pass_line__has_message
+msgid "Has Message"
+msgstr ""
 
 #. module: event_pass
 #: model:mail.template,subject:event_pass.invitation_mail_template
@@ -472,9 +554,40 @@ msgid "ID"
 msgstr ""
 
 #. module: event_pass
+#: model:ir.model.fields,field_description:event_pass.field_event_pass_line__activity_exception_icon
+msgid "Icon"
+msgstr ""
+
+#. module: event_pass
+#: model:ir.model.fields,help:event_pass.field_event_pass_line__activity_exception_icon
+msgid "Icon to indicate an exception activity."
+msgstr ""
+
+#. module: event_pass
+#: model:ir.model.fields,help:event_pass.field_event_pass_line__message_needaction
+msgid "If checked, new messages require your attention."
+msgstr ""
+
+#. module: event_pass
+#: model:ir.model.fields,help:event_pass.field_event_pass_line__message_has_error
+#: model:ir.model.fields,help:event_pass.field_event_pass_line__message_has_sms_error
+msgid "If checked, some messages have a delivery error."
+msgstr ""
+
+#. module: event_pass
+#: model_terms:ir.ui.view,arch_db:event_pass.view_pass_form
+msgid "Internal Notes"
+msgstr ""
+
+#. module: event_pass
 #: model:mail.template,name:event_pass.invitation_mail_template
 msgid "Invitation Ticket"
 msgstr "Billet d'invitation"
+
+#. module: event_pass
+#: model:ir.model.fields,field_description:event_pass.field_event_pass_line__message_is_follower
+msgid "Is Follower"
+msgstr ""
 
 #. module: event_pass
 #: model:ir.model.fields,field_description:event_pass.field_event_pass_line____last_update
@@ -520,6 +633,11 @@ msgid "Logo"
 msgstr ""
 
 #. module: event_pass
+#: model:ir.model.fields,field_description:event_pass.field_event_pass_line__message_main_attachment_id
+msgid "Main Attachment"
+msgstr ""
+
+#. module: event_pass
 #: model_terms:ir.ui.view,arch_db:event_pass.view_event_pass_type_form
 #: model_terms:ir.ui.view,arch_db:event_pass.view_pass_form
 msgid "Maximum Number of Events"
@@ -532,6 +650,21 @@ msgid "Maximum Number of Visitors"
 msgstr "Participant(s) par événement"
 
 #. module: event_pass
+#: model:ir.model.fields,field_description:event_pass.field_event_pass_line__message_has_error
+msgid "Message Delivery error"
+msgstr ""
+
+#. module: event_pass
+#: model:ir.model.fields,field_description:event_pass.field_event_pass_line__message_ids
+msgid "Messages"
+msgstr ""
+
+#. module: event_pass
+#: model:ir.model.fields,field_description:event_pass.field_event_pass_line__my_activity_date_deadline
+msgid "My Activity Deadline"
+msgstr ""
+
+#. module: event_pass
 #: model_terms:ir.ui.view,arch_db:event_pass.invitation_template_content
 msgid ""
 "NOT VALID FOR:\n"
@@ -541,6 +674,7 @@ msgstr ""
 "                                            <br/>"
 
 #. module: event_pass
+#: model:ir.model.fields,field_description:event_pass.field_event_pass_line__name
 #: model_terms:ir.ui.view,arch_db:event_pass.view_event_pass_type_form
 #: model_terms:ir.ui.view,arch_db:event_pass.view_pass_form model_terms:ir.ui.view,arch_db:event_pass.view_pass_search
 msgid "Name"
@@ -556,6 +690,41 @@ msgstr "Nom"
 #: model_terms:ir.ui.view,arch_db:event_pass.view_pass_search
 msgid "Never used"
 msgstr "Jamais utilisé"
+
+#. module: event_pass
+#: model:ir.model.fields,field_description:event_pass.field_event_pass_line__activity_calendar_event_id
+msgid "Next Activity Calendar Event"
+msgstr ""
+
+#. module: event_pass
+#: model:ir.model.fields,field_description:event_pass.field_event_pass_line__activity_date_deadline
+msgid "Next Activity Deadline"
+msgstr ""
+
+#. module: event_pass
+#: model:ir.model.fields,field_description:event_pass.field_event_pass_line__activity_summary
+msgid "Next Activity Summary"
+msgstr ""
+
+#. module: event_pass
+#: model:ir.model.fields,field_description:event_pass.field_event_pass_line__activity_type_id
+msgid "Next Activity Type"
+msgstr ""
+
+#. module: event_pass
+#: model:ir.model.fields,field_description:event_pass.field_event_pass_line__internal_notes
+msgid "Note"
+msgstr ""
+
+#. module: event_pass
+#: model:ir.model.fields,help:event_pass.field_event_pass_line__internal_notes
+msgid "Note of the pass"
+msgstr ""
+
+#. module: event_pass
+#: model:ir.model.fields,field_description:event_pass.field_event_pass_line__message_needaction_counter
+msgid "Number of Actions"
+msgstr ""
 
 #. module: event_pass
 #: model:ir.model.fields,help:event_pass.field_event_pass_line__number_allowed_event
@@ -574,14 +743,34 @@ msgstr ""
 "ex: Si limité à 4 personnes, alors on pourra accepter jusqu'à 4 personnes pour un événement."
 
 #. module: event_pass
+#: model:ir.model.fields,field_description:event_pass.field_event_pass_line__message_has_error_counter
+msgid "Number of errors"
+msgstr ""
+
+#. module: event_pass
 #: model:ir.model.fields,help:event_pass.field_event_pass_line__event_count
 msgid "Number of events the pass_line is used."
 msgstr "Nombre d'évènement ou la ligne de pass est utilisée. "
 
 #. module: event_pass
+#: model:ir.model.fields,help:event_pass.field_event_pass_line__message_needaction_counter
+msgid "Number of messages requiring action"
+msgstr ""
+
+#. module: event_pass
+#: model:ir.model.fields,help:event_pass.field_event_pass_line__message_has_error_counter
+msgid "Number of messages with delivery error"
+msgstr ""
+
+#. module: event_pass
 #: model:ir.model.fields,field_description:event_pass.field_wizard_pass_line__number_pass
 msgid "Number of pass"
 msgstr "Nombre de pass"
+
+#. module: event_pass
+#: model:ir.model.fields,help:event_pass.field_event_pass_type__pass_ids_count
+msgid "Number of pass line"
+msgstr ""
 
 #. module: event_pass
 #: model:ir.model.fields,help:event_pass.field_event_pass_line__counted_passage
@@ -642,6 +831,7 @@ msgid "Partner"
 msgstr "Partenaire"
 
 #. module: event_pass
+#: model:ir.model.fields,field_description:event_pass.field_event_pass_type__pass_ids
 #: model:ir.model.fields.selection,name:event_pass.selection__barcode_rule__type__pass
 #: model_terms:ir.ui.view,arch_db:event_pass.view_pass_tree
 msgid "Pass"
@@ -658,11 +848,23 @@ msgid "Pass & Invitations"
 msgstr ""
 
 #. module: event_pass
+#: model:ir.model.fields,field_description:event_pass.field_event_pass_type__pass_ids_count
+msgid "Pass Count"
+msgstr ""
+
+#. module: event_pass
 #: model:ir.model.fields,field_description:event_pass.field_event_registration__pass_line_id
 #: model:ir.model.fields,field_description:event_pass.field_res_partner__pass_line_ids
 #: model:ir.model.fields,field_description:event_pass.field_res_users__pass_line_ids
 msgid "Pass Line"
 msgstr "Ligne de pass"
+
+#. module: event_pass
+#: model:ir.model.fields,field_description:event_pass.field_event_pass_line__display_name
+#: model:ir.model.fields,field_description:event_pass.field_event_pass_type__name
+#: model_terms:ir.ui.view,arch_db:event_pass.view_pass_form
+msgid "Pass Name"
+msgstr "Nom d'affichage"
 
 #. module: event_pass
 #: model:ir.model,name:event_pass.model_event_pass_type model_terms:ir.ui.view,arch_db:event_pass.view_event_pass_type_tree
@@ -688,6 +890,16 @@ msgid "Pass Type"
 msgstr "Modèle de pass"
 
 #. module: event_pass
+#: model:ir.model.fields,help:event_pass.field_event_pass_type__pass_ids
+msgid "Pass line"
+msgstr ""
+
+#. module: event_pass
+#: model:ir.model.fields,help:event_pass.field_event_pass_line__display_name
+msgid "Pass name"
+msgstr ""
+
+#. module: event_pass
 #: model:ir.actions.server,name:event_pass.cron_check_pass_validity_ir_actions_server
 #: model:ir.cron,cron_name:event_pass.cron_check_pass_validity
 msgid "Pass: check validity"
@@ -698,6 +910,11 @@ msgstr "Pass: Vérifier validité"
 #: model_terms:ir.ui.view,arch_db:event_pass.view_pass_form
 msgid "Passage Limitations"
 msgstr "Limitations des passages"
+
+#. module: event_pass
+#: model:ir.actions.act_window,name:event_pass.action_event_pass
+msgid "Passes"
+msgstr ""
 
 #. module: event_pass
 #: model:ir.model.fields,help:event_pass.field_event_pass_type__base_logo
@@ -727,6 +944,11 @@ msgid "Print the pass badge"
 msgstr "Imprimer le badge du partenaire"
 
 #. module: event_pass
+#: model:ir.actions.report,name:event_pass.pass_report_zebra
+msgid "Print the zebra pass badge"
+msgstr ""
+
+#. module: event_pass
 #: model_terms:ir.ui.view,arch_db:event_pass.view_pass_form
 msgid "QRCode"
 msgstr "QR Code"
@@ -745,6 +967,16 @@ msgstr "Quantité"
 #: model:ir.model.fields,field_description:event_pass.field_event_pass_line__remaining_passage
 msgid "Remaining passage"
 msgstr "Passage(s) restant(s)"
+
+#. module: event_pass
+#: model:ir.model.fields,field_description:event_pass.field_event_pass_line__activity_user_id
+msgid "Responsible User"
+msgstr ""
+
+#. module: event_pass
+#: model:ir.model.fields,field_description:event_pass.field_event_pass_line__message_has_sms_error
+msgid "SMS Delivery error"
+msgstr ""
 
 #. module: event_pass
 #: model:ir.actions.server,name:event_pass.action_send_invitation_by_mail
@@ -782,6 +1014,15 @@ msgid "State"
 msgstr "Etat"
 
 #. module: event_pass
+#: model:ir.model.fields,help:event_pass.field_event_pass_line__activity_state
+msgid ""
+"Status based on activities\n"
+"Overdue: Due date is already passed\n"
+"Today: Activity date is today\n"
+"Planned: Future activities."
+msgstr ""
+
+#. module: event_pass
 #: model_terms:ir.ui.view,arch_db:event_pass.invitation_template_content
 msgid ""
 "TO BE USED BEFORE:\n"
@@ -815,6 +1056,11 @@ msgstr "Titre du pass, veuillez laisser le champ vide pour faire apparaître le 
 #. module: event_pass
 #: model:ir.model.fields,field_description:event_pass.field_barcode_rule__type
 msgid "Type"
+msgstr "Modèle"
+
+#. module: event_pass
+#: model:ir.model.fields,help:event_pass.field_event_pass_line__activity_exception_decoration
+msgid "Type of the exception activity on record."
 msgstr ""
 
 #. module: event_pass
@@ -932,6 +1178,16 @@ msgstr "Période de validité. Si indéfini, la période de validité est infini
 #: model:ir.model.fields.selection,name:event_pass.selection__event_pass_type__validity_option__variable
 msgid "Variable in Days"
 msgstr "Variable en jours"
+
+#. module: event_pass
+#: model:ir.model.fields,field_description:event_pass.field_event_pass_line__website_message_ids
+msgid "Website Messages"
+msgstr ""
+
+#. module: event_pass
+#: model:ir.model.fields,help:event_pass.field_event_pass_line__website_message_ids
+msgid "Website communication history"
+msgstr ""
 
 #. module: event_pass
 #: model:ir.model,name:event_pass.model_wizard_pass_line
