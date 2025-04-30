@@ -29,12 +29,19 @@ class EventRegistration(models.Model):
         }
 
     def _update_attendee_partner_id(self, vals):
-        if not vals.get("attendee_partner_id") and vals.get("email"):
+        # Don't update if doing a partner merging
+        if (
+            not vals.get("attendee_partner_id")
+            and vals.get("email")
+            and not self.env.context.get("partner_event_merging")
+        ):
             Partner = self.env["res.partner"]
             Event = self.env["event.event"]
             # Look for a partner with that email
             email = vals.get("email").replace("%", "").replace("_", "\\_")
-            attendee_partner = Partner.search([("email", "=ilike", email)], limit=1)
+            attendee_partner = Partner.search(
+                [("email", "=ilike", email)], limit=1, order="id"
+            )
             event = Event.browse()
             if vals.get("event_id"):
                 event = Event.browse(vals["event_id"])

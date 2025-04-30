@@ -562,6 +562,7 @@ msgid "Applies to the following fields:"
 msgstr ""
 
 #. module: event_session
+#: model_terms:ir.ui.view,arch_db:event_session.view_event_session_form
 #: model_terms:ir.ui.view,arch_db:event_session.view_event_session_search
 msgid "Archived"
 msgstr ""
@@ -598,6 +599,11 @@ msgstr ""
 #. module: event_session
 #: model:ir.model.fields,field_description:event_session.field_event_session__seats_available
 msgid "Available Seats"
+msgstr ""
+
+#. module: event_session
+#: model_terms:ir.ui.view,arch_db:event_session.view_event_session_tree
+msgid "Available seats not expected"
 msgstr ""
 
 #. module: event_session
@@ -638,6 +644,11 @@ msgstr ""
 #. module: event_session
 #: model_terms:ir.ui.view,arch_db:event_session.view_event_session_kanban
 msgid "Confirmed"
+msgstr ""
+
+#. module: event_session
+#: model:ir.model.fields,field_description:event_session.field_event_session__contact_ids
+msgid "Contacts"
 msgstr ""
 
 #. module: event_session
@@ -715,6 +726,12 @@ msgstr ""
 #: model:ir.model.fields,field_description:event_session.field_event_session_timeslot__display_name
 #: model:ir.model.fields,field_description:event_session.field_wizard_event_session__display_name
 msgid "Display Name"
+msgstr ""
+
+#. module: event_session
+#: model:ir.model.fields,field_description:event_session.field_event_session__date_tz
+#: model:ir.model.fields,field_description:event_session.field_wizard_event_session__date_tz
+msgid "Display Timezone"
 msgstr ""
 
 #. module: event_session
@@ -991,7 +1008,6 @@ msgstr ""
 
 #. module: event_session
 #: model:ir.model.fields,help:event_session.field_event_session__message_has_error
-#: model:ir.model.fields,help:event_session.field_event_session__message_has_sms_error
 msgid "If checked, some messages have a delivery error."
 msgstr ""
 
@@ -999,6 +1015,13 @@ msgstr ""
 #: model:ir.model.fields,help:event_session.field_event_session__start_sale_datetime
 msgid ""
 "If ticketing is used, contains the earliest starting sale date of tickets."
+msgstr ""
+
+#. module: event_session
+#: model:ir.model.fields,help:event_session.field_event_session__date_tz
+msgid ""
+"Indicates the timezone in which the event dates/times will be displayed on "
+"the website."
 msgstr ""
 
 #. module: event_session
@@ -1250,6 +1273,11 @@ msgid "No more seats available for this session."
 msgstr ""
 
 #. module: event_session
+#: model_terms:ir.ui.view,arch_db:event_session.view_event_session_tree
+msgid "Not allocated seats"
+msgstr ""
+
+#. module: event_session
 #: model:ir.model.fields,field_description:event_session.field_event_session__note
 msgid "Note"
 msgstr ""
@@ -1285,6 +1313,11 @@ msgid "Number of messages with delivery error"
 msgstr ""
 
 #. module: event_session
+#: model:ir.model.fields,field_description:event_session.field_event_session__seats_available_unexpected
+msgid "Number of seats non allocated by an attendee of any kind"
+msgstr ""
+
+#. module: event_session
 #: model:ir.model.fields,field_description:event_session.field_event_session__organizer_id
 msgid "Organizer"
 msgstr ""
@@ -1313,6 +1346,11 @@ msgstr ""
 #. module: event_session
 #: model:ir.model.fields,field_description:event_session.field_event_session__event_id
 msgid "Parent Event"
+msgstr ""
+
+#. module: event_session
+#: model:ir.model.fields,help:event_session.field_event_session__contact_ids
+msgid "Partners available to attend attendees requests for this event."
 msgstr ""
 
 #. module: event_session
@@ -1389,11 +1427,6 @@ msgstr ""
 #. module: event_session
 #: model:ir.model.fields,field_description:event_session.field_event_session__is_seo_optimized
 msgid "SEO optimized"
-msgstr ""
-
-#. module: event_session
-#: model:ir.model.fields,field_description:event_session.field_event_session__message_has_sms_error
-msgid "SMS Delivery error"
 msgstr ""
 
 #. module: event_session
@@ -1695,12 +1728,6 @@ msgid "Time slots"
 msgstr ""
 
 #. module: event_session
-#: model:ir.model.fields,field_description:event_session.field_event_session__date_tz
-#: model:ir.model.fields,field_description:event_session.field_wizard_event_session__date_tz
-msgid "Timezone"
-msgstr ""
-
-#. module: event_session
 #: model_terms:ir.ui.view,arch_db:event_session.view_event_session_search
 msgid "Today Activities"
 msgstr ""
@@ -1868,6 +1895,13 @@ msgstr ""
 #. module: event_session
 #: model:ir.model.fields.selection,name:event_session.selection__wizard_event_session__rrule_type__weekly
 msgid "Weeks"
+msgstr ""
+
+#. module: event_session
+#: model:ir.model.fields,help:event_session.field_event_event__date_begin
+msgid ""
+"When the event is scheduled to take place (expressed in your local timezone "
+"on the form view)."
 msgstr ""
 
 #. module: event_session
