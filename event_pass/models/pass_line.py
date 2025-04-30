@@ -49,6 +49,8 @@ class PassLine(models.Model):
         ],
         string="State",
         default="draft",
+        compute="_compute_state",
+        store=True,
         required=True,
         readonly=True,
         copy=False,
@@ -201,61 +203,25 @@ class PassLine(models.Model):
     def create(self, vals):
         records = super(PassLine, self).create(vals)
         for rec in records:
-            if rec.validity_date:
-                if rec.validity_date <= fields.Date.today():
-                    rec.state = 'valid'
-                else:
-                    rec.state = 'draft'
-            else:
-                rec.validity_date = fields.Date.today()
-                rec.state = 'valid'
-
-            if rec.expiration_date:
-                if rec.expiration_date <= fields.Date.today():
-                    rec.state = 'expired'
-                else:
-                    rec.state = 'valid'
-            else:
-                rec.state = 'valid'
-
-            if rec.fixed_number_allowed_event:
-                if not rec.number_allowed_event:
-                    rec.number_allowed_event = 1
-                rec.remaining_passage = rec.number_allowed_event
             self._check_barcode_exist(rec)
         return records
 
-    def _check_barcode_exist(self, rec):
-        if not rec.partner_id.barcode:
-            rec.partner_id.update({
-                'barcode': self._generate_code(),
-            })
-
-    def write(self, vals):
-        if vals.get('validity_date'):
-            vals['validity_date'] = fields.Date.from_string(vals.get('validity_date'))
-            if vals['validity_date'] <= fields.Date.today():
-                vals['state'] = 'valid'
-            else:
-                vals['state'] = 'draft'
-
-        if vals.get('expiration_date'):
-            vals['expiration_date'] = fields.Date.from_string(vals.get('expiration_date'))
-            if vals['expiration_date'] <= fields.Date.today():
-                vals['state'] = 'expired'
-            else:
-                vals['state'] = 'valid'
-        else:
-            vals['state'] = 'valid'
-
-        if vals.get('fixed_number_allowed_event'):
-            vals['remaining_passage'] = vals.get('number_allowed_event') - self.counted_passage
-        if vals.get('number_allowed_event'):
-            if vals.get('number_allowed_event') < self.number_allowed_event and self.state == 'valid':
-                raise ValueError(_('You cant set a lower number of allowed attendance when the pass is valid'))
-            vals['remaining_passage'] = vals.get('number_allowed_event') - self.counted_passage
-
-        return super(PassLine, self).write(vals)
+    @api.depends('state', 'validity_date', 'expiration_date')
+    def _compute_state(self):
+        for record in self:
+            if record.state == 'draft':
+                if record.validity_date and record.validity_date <= fields.Date.today():
+                    record.state = 'valid'
+                elif record.expiration_date and record.expiration_date <= fields.Date.today():
+                    record.state = 'expired'
+                else:
+                    record.state = 'draft'
+            elif record.state == 'valid':
+                if record.expiration_date and record.expiration_date <= fields.Date.today():
+                    record.state = 'expired'
+            elif record.state == 'expired':
+                if not (record.validity_date and record.validity_date <= fields.Date.today()):
+                    record.state = 'draft'
 
     @api.model
     def _generate_code(self):
