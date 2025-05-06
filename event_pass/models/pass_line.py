@@ -376,7 +376,6 @@ class PassType(models.Model):
 
     name = fields.Char(
         string="Pass Name",
-        required=True,
     )
 
     validity_option = fields.Selection([

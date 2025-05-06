@@ -159,7 +159,7 @@
             <field name="model">event.pass.type</field>
             <field name="arch" type="xml">
                 <tree string="Pass Template">
-                    <field name="name"/>
+                    <field name="display_name"/>
                 </tree>
             </field>
         </record>
