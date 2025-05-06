@@ -237,6 +237,11 @@ class PassLine(models.Model):
     def _generate_code_line_pass(self):
         return '051' + str(uuid4().int)[:10]
 
+    def _update_previous_pass_code(self):
+        pass_lines = self.env['event.pass.line'].search([('qr_code', 'not ilike', '051%')])
+        for pass_line in pass_lines:
+            pass_line.qr_code = self._generate_code_line_pass()
+
     def action_send_multiple_by_mail(self, type):
         records = self
         if any(record.gifted_by_id for record in records):
