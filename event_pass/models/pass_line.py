@@ -23,11 +23,19 @@ class PassLine(models.Model):
     _name = "event.pass.line"
     _description = "Event Pass Line"
     _rec_name = "name"
-    _inherit = ["mail.thread", "mail.activity.mixin"]
+    _inherit = ["mail.thread", "mail.activity.mixin", "portal.mixin"]
 
     name = fields.Char(
         compute='_compute_name',
     )
+
+    def _compute_access_url(self):
+        super()._compute_access_url()
+        for pass_line in self:
+            pass_line.access_url = '/my/pass/%s' % (pass_line.id)
+
+    def _get_report_base_filename(self):
+        return 'Pass_' + str(self.qr_code)
 
     display_name = fields.Char(
         required=True,
