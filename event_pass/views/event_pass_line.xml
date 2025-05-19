@@ -130,7 +130,7 @@
                                         </span>
                                     </div>
 
-                                    <field name="counted_passage" widget="boolean" string="Counted Passage"/>
+                                    <field name="counted_passage" string="Counted Passage"/>
                                 </group>
                             </group>
                             <group>
