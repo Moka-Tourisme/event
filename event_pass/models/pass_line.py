@@ -19,6 +19,201 @@ from odoo.exceptions import UserError, ValidationError
 _logger = logging.getLogger(__name__)
 
 
+class PassType(models.Model):
+    _name = 'event.pass.type'
+    _description = 'Pass Template'
+    _rec_name = 'display_name'
+
+    display_name = fields.Char(
+        store=True,
+    )
+
+    name = fields.Char(
+        string="Pass Name",
+    )
+
+    validity_option = fields.Selection([
+        ('fixed', 'Fixed Date Range'),
+        ('variable', 'Variable in Days')
+    ], string="Validity Option", default='fixed')
+
+    validity_date = fields.Date(
+        string="Validity Date", help="Validity date of the pass if not set the validity date is the date of sale",
+    )
+
+    use_validity_dates = fields.Boolean(
+        string="Use Validity Dates", help="Use Validity Dates",
+    )
+
+    validity_period = fields.Integer(
+        string="Validity Period",
+        help="Validity period of the pass in days, if not set the validity period is unlimited",
+    )
+
+    fixed_expiration_date = fields.Boolean(
+        string="Fixed Expiration Date",
+        help="Fixed expiration date of the pass",
+        default=False,
+    )
+
+    expiration_date = fields.Date(
+        string="Expiration Date",
+        help="Expiration date of the pass if not set the expiration date is the validity date + validity period",
+    )
+
+    fixed_number_allowed_event = fields.Boolean(
+        string="Fixed Allowed attendance",
+        help="Fixed number of attendance allowed per pass/invitation",
+        default=False,
+    )
+
+    pass_ids = fields.One2many(
+        "event.pass.line",
+        "pass_type_id",
+        string="Pass",
+        help="Pass line",
+    )
+
+    pass_ids_count = fields.Integer(
+        string="Pass Count",
+        compute='_compute_pass_ids_count',
+        help="Number of pass line",
+    )
+
+    number_allowed_event = fields.Integer(
+        string="Allowed attendance",
+        help="Number of attendance allowed per pass/invitation",
+        default=1,
+    )
+
+    number_visitors = fields.Integer(
+        string="Allowed attendees",
+        help="Number of attendees allowed per event(s)/session(s)",
+        default=1,
+    )
+
+    event_stage_ids = fields.Many2many(
+        "event.stage",
+        string="Stage",
+    )
+
+    event_ids = fields.Many2many(
+        "event.event",
+        string="Event",
+    )
+
+    event_type_ids = fields.Many2many(
+        "event.type",
+        string="Event Type",
+    )
+
+    session_ids = fields.Many2many(
+        "event.session",
+        string="Session",
+    )
+
+    unauthorized_session_ids = fields.Many2many(
+        "event.session",
+        "event_pass_type_unauthorized_session_rel",
+        string="Unauthorized Session",
+    )
+
+    category_ids = fields.Many2many(
+        "event.tag",
+        string="Category",
+    )
+
+    company_id = fields.Many2one(
+        'res.company', string='Company', change_default=True,
+        default=lambda self: self.env.company,
+        required=False)
+
+    base_logo = fields.Html(
+        string="Base Logo",
+        help="Please insert image by using /image",
+    )
+
+    base_logo_filename = fields.Char(
+        string="Base Logo Filename",
+    )
+
+    title_color = fields.Char(
+        string="Title Color",
+        default="#E1B35B",
+    )
+
+    title_text = fields.Char(
+        string="Title Text",
+        help="Title text of the pass, leave empty to use the display name of the pass",
+    )
+
+    content_color = fields.Char(
+        string="Content Color",
+        default="#FFFFFF",
+    )
+
+    outline_color = fields.Char(
+        string="Outline Color",
+        default="#E1B35B",
+    )
+
+    background_color = fields.Char(
+        string="Background Color",
+        default="#2B2726",
+    )
+
+    bottom_right_text = fields.Html(
+        string="Bottom right text",
+        help="Text zone",
+    )
+
+    upper_left_text = fields.Html(
+        string="Upper left text",
+        help="Text zone",
+    )
+
+    bottom_left_text = fields.Html(
+        string="Bottom left text",
+        help="Text zone",
+    )
+
+    pdf_file = fields.Html(
+        string="PDF View",
+        help="PDF view of the pass",
+        sanitize=False,
+        sanitize_tags=False,
+        sanitize_attributes=False,
+        sanitize_style=False,
+        sanitize_form=False,
+        strip_style=False,
+        strip_classes=False
+    )
+
+    fixed_number_visitors_allowed = fields.Boolean(
+        string="Fixed number visitors",
+        help="Fixed number of visitors allowed per event(s)/session(s)",
+        default=False,
+    )
+
+    @api.model
+    def default_get(self, fields_list):
+        res = super(PassType, self).default_get(fields_list)
+        res['display_name'] = self.env.context.get('default_name', '')
+        res['validity_date'] = date.today()
+        return res
+
+    @api.constrains('expiration_date')
+    def _check_expiration_date(self):
+        for record in self:
+            if record.expiration_date and record.validity_date and record.expiration_date < record.validity_date:
+                raise ValidationError(_("Expiration date must be after validity date."))
+
+    @api.depends('pass_ids')
+    def _compute_pass_ids_count(self):
+        for record in self:
+            record.pass_ids_count = len(record.pass_ids)
+
+
 class PassLine(models.Model):
     _name = "event.pass.line"
     _description = "Event Pass Line"
@@ -70,11 +265,14 @@ class PassLine(models.Model):
     )
 
     validity_date = fields.Date(
-        string="Validity Date", required=True
+        string="Validity Date", required=True,
+        compute='_compute_validity_date', store=True, readonly=False, copy=True
     )
+
     expiration_date = fields.Date(
         string="Expiration Date",
         required=False,
+        compute='_compute_expiration_date', store=True, readonly=False, copy=True
     )
 
     use_validity_dates = fields.Boolean(
@@ -85,22 +283,26 @@ class PassLine(models.Model):
         string="Fixed Allowed attendance",
         help="Fixed number of attendance allowed per pass/invitation",
         default=False,
+        compute='_compute_fixed_number_allowed_event', store=True, readonly=False, copy=True
     )
 
     fixed_number_visitors_allowed = fields.Boolean(
         string="Fixed number visitors",
         help="Fixed number of visitors allowed per event(s)/session(s)",
         default=False,
+        compute='_compute_fixed_number_visitors_allowed', store=True, readonly=False, copy=True
     )
 
     number_allowed_event = fields.Integer(
         string="Allowed attendance",
         help="Number of attendance allowed per pass/invitation",
+        compute='_compute_number_allowed_event', store=True, readonly=False, copy=True
     )
 
     number_visitors = fields.Integer(
         string="Allowed attendees",
         help="Number of attendees allowed per event(s)/session(s)",
+        compute='_compute_number_allowed_visitors', store=True, readonly=False, copy=True
     )
 
     internal_notes = fields.Text(
@@ -123,32 +325,38 @@ class PassLine(models.Model):
     event_stage_ids = fields.Many2many(
         "event.stage",
         string="Stage",
+        compute="_compute_event_stage_ids", readonly=False, store=True, copy=True
     )
 
     event_ids = fields.Many2many(
         "event.event",
         string="Event",
+        compute='_compute_event_ids', readonly=False, store=True, copy=True
     )
 
     event_type_ids = fields.Many2many(
         "event.type",
         string="Event Type",
+        compute="_compute_event_type_ids", readonly=False, store=True, copy=True
     )
 
     session_ids = fields.Many2many(
         "event.session",
         string="Session",
+        compute='_compute_session_ids', readonly=False, store=True, copy=True
     )
 
     unauthorized_session_ids = fields.Many2many(
         "event.session",
         "event_pass_line_unauthorized_session_rel",
         string="Unauthorized Session",
+        compute='_compute_unauthorized_session_ids', readonly=False, store=True, copy=True
     )
 
     category_ids = fields.Many2many(
         "event.tag",
         string="Category",
+        compute='_compute_category_ids', readonly=False, store=True, copy=True
     )
 
     company_id = fields.Many2one(
@@ -372,197 +580,69 @@ class PassLine(models.Model):
         for record in self:
             record.name = record.display_name + ' - ' + record.qr_code
 
-
-class PassType(models.Model):
-    _name = 'event.pass.type'
-    _description = 'Pass Template'
-    _rec_name = 'display_name'
-
-    display_name = fields.Char(
-        store=True,
-    )
-
-    name = fields.Char(
-        string="Pass Name",
-    )
-
-    validity_option = fields.Selection([
-        ('fixed', 'Fixed Date Range'),
-        ('variable', 'Variable in Days')
-    ], string="Validity Option", default='fixed')
-
-    validity_date = fields.Date(
-        string="Validity Date", help="Validity date of the pass if not set the validity date is the date of sale",
-    )
-
-    use_validity_dates = fields.Boolean(
-        string="Use Validity Dates", help="Use Validity Dates",
-    )
-
-    validity_period = fields.Integer(
-        string="Validity Period",
-        help="Validity period of the pass in days, if not set the validity period is unlimited",
-    )
-
-    fixed_expiration_date = fields.Boolean(
-        string="Fixed Expiration Date",
-        help="Fixed expiration date of the pass",
-        default=False,
-    )
-
-    expiration_date = fields.Date(
-        string="Expiration Date",
-        help="Expiration date of the pass if not set the expiration date is the validity date + validity period",
-    )
-
-    fixed_number_allowed_event = fields.Boolean(
-        string="Fixed Allowed attendance",
-        help="Fixed number of attendance allowed per pass/invitation",
-        default=False,
-    )
-
-    pass_ids = fields.One2many(
-        "event.pass.line",
-        "pass_type_id",
-        string="Pass",
-        help="Pass line",
-    )
-
-    pass_ids_count = fields.Integer(
-        string="Pass Count",
-        compute='_compute_pass_ids_count',
-        help="Number of pass line",
-    )
-
-    number_allowed_event = fields.Integer(
-        string="Allowed attendance",
-        help="Number of attendance allowed per pass/invitation",
-        default=1,
-    )
-
-    number_visitors = fields.Integer(
-        string="Allowed attendees",
-        help="Number of attendees allowed per event(s)/session(s)",
-        default=1,
-    )
-
-    event_stage_ids = fields.Many2many(
-        "event.stage",
-        string="Stage",
-    )
-
-    event_ids = fields.Many2many(
-        "event.event",
-        string="Event",
-    )
-
-    event_type_ids = fields.Many2many(
-        "event.type",
-        string="Event Type",
-    )
-
-    session_ids = fields.Many2many(
-        "event.session",
-        string="Session",
-    )
-
-    unauthorized_session_ids = fields.Many2many(
-        "event.session",
-        "event_pass_type_unauthorized_session_rel",
-        string="Unauthorized Session",
-    )
-
-    category_ids = fields.Many2many(
-        "event.tag",
-        string="Category",
-    )
-
-    company_id = fields.Many2one(
-        'res.company', string='Company', change_default=True,
-        default=lambda self: self.env.company,
-        required=False)
-
-    base_logo = fields.Html(
-        string="Base Logo",
-        help="Please insert image by using /image",
-    )
-
-    base_logo_filename = fields.Char(
-        string="Base Logo Filename",
-    )
-
-    title_color = fields.Char(
-        string="Title Color",
-        default="#E1B35B",
-    )
-
-    title_text = fields.Char(
-        string="Title Text",
-        help="Title text of the pass, leave empty to use the display name of the pass",
-    )
-
-    content_color = fields.Char(
-        string="Content Color",
-        default="#FFFFFF",
-    )
-
-    outline_color = fields.Char(
-        string="Outline Color",
-        default="#E1B35B",
-    )
-
-    background_color = fields.Char(
-        string="Background Color",
-        default="#2B2726",
-    )
-
-    bottom_right_text = fields.Html(
-        string="Bottom right text",
-        help="Text zone",
-    )
-
-    upper_left_text = fields.Html(
-        string="Upper left text",
-        help="Text zone",
-    )
-
-    bottom_left_text = fields.Html(
-        string="Bottom left text",
-        help="Text zone",
-    )
-
-    pdf_file = fields.Html(
-        string="PDF View",
-        help="PDF view of the pass",
-        sanitize=False,
-        sanitize_tags=False,
-        sanitize_attributes=False,
-        sanitize_style=False,
-        sanitize_form=False,
-        strip_style=False,
-        strip_classes=False
-    )
-
-    fixed_number_visitors_allowed = fields.Boolean(
-        string="Fixed number visitors",
-        help="Fixed number of visitors allowed per event(s)/session(s)",
-        default=False,
-    )
-
-    @api.model
-    def default_get(self, fields_list):
-        res = super(PassType, self).default_get(fields_list)
-        res['display_name'] = self.env.context.get('default_name', '')
-        res['validity_date'] = date.today()
-        return res
-
-    @api.constrains('expiration_date')
-    def _check_expiration_date(self):
+    @api.depends('pass_type_id')
+    def _compute_event_stage_ids(self):
         for record in self:
-            if record.expiration_date and record.validity_date and record.expiration_date < record.validity_date:
-                raise ValidationError(_("Expiration date must be after validity date."))
+            record.event_stage_ids = record.pass_type_id.event_stage_ids
 
-    @api.depends('pass_ids')
-    def _compute_pass_ids_count(self):
+    @api.depends('pass_type_id')
+    def _compute_event_type_ids(self):
         for record in self:
-            record.pass_ids_count = len(record.pass_ids)
+            record.event_type_ids = record.pass_type_id.event_type_ids
+
+    @api.depends('pass_type_id')
+    def _compute_session_ids(self):
+        for record in self:
+            record.session_ids = record.pass_type_id.session_ids
+
+    @api.depends('pass_type_id')
+    def _compute_unauthorized_session_ids(self):
+        for record in self:
+            record.unauthorized_session_ids = record.pass_type_id.unauthorized_session_ids
+
+    @api.depends('pass_type_id')
+    def _compute_category_ids(self):
+        for record in self:
+            record.category_ids = record.pass_type_id.category_ids
+
+    @api.depends('pass_type_id')
+    def _compute_event_ids(self):
+        for record in self:
+            record.event_ids = record.pass_type_id.event_ids
+
+    @api.depends('pass_type_id')
+    def _compute_fixed_number_allowed_event(self):
+        for record in self:
+            record.fixed_number_allowed_event = record.pass_type_id.fixed_number_allowed_event
+
+    @api.depends('pass_type_id')
+    def _compute_fixed_number_visitors_allowed(self):
+        for record in self:
+            record.fixed_number_visitors_allowed = record.pass_type_id.fixed_number_visitors_allowed
+
+    @api.depends('pass_type_id')
+    def _compute_number_allowed_event(self):
+        for record in self:
+            record.number_allowed_event = record.pass_type_id.number_allowed_event
+
+    @api.depends('pass_type_id')
+    def _compute_number_allowed_visitors(self):
+        for record in self:
+            record.number_visitors = record.pass_type_id.number_visitors
+
+    @api.depends('pass_type_id')
+    def _compute_validity_date(self):
+        for record in self:
+            if record.pass_type_id.validity_option == 'fixed':
+                record.validity_date = record.pass_type_id.validity_date
+            else:
+                record.validity_date = date.today()
+
+    @api.depends('pass_type_id')
+    def _compute_expiration_date(self):
+        for record in self:
+            if record.pass_type_id.validity_option == 'fixed':
+                if record.pass_type_id.fixed_expiration_date:
+                    record.expiration_date = record.pass_type_id.expiration_date
+                else:
+                    record.expiration_date = record.validity_date + timedelta(days=record.pass_type_id.validity_period)
