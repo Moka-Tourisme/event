@@ -642,7 +642,6 @@ class PassLine(models.Model):
     def _compute_expiration_date(self):
         for record in self:
             if record.pass_type_id.validity_option == 'fixed':
-                if record.pass_type_id.fixed_expiration_date:
-                    record.expiration_date = record.pass_type_id.expiration_date
-                else:
-                    record.expiration_date = record.validity_date + timedelta(days=record.pass_type_id.validity_period)
+                record.expiration_date = record.pass_type_id.expiration_date
+            else:
+                record.expiration_date = record.validity_date + timedelta(days=record.pass_type_id.validity_period)
