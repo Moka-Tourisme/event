@@ -133,29 +133,7 @@ Copyright 2024 Moka Tourisme (https://www.mokatourisme.fr).
                                     <hr t-attf-style="color: #{event.content_color} !important; background-color: #{event.content_color} !important; height: 1px;"/>
                                     LIEU DE RENDEZ VOUS
                                     <br/>
-                                    <t t-set="address" t-value="event.address_id"/>
-                                    <t t-if="address">
-                                        <span class="font-part-2">
-                                            <span
-                                                class="font-weight-bold"
-                                                t-field="address.name"
-                                            />
-                                            <br/>
-                                            <span
-                                                class="font-weight-bold"
-                                                t-field="address.street"
-                                            />
-                                            <br/>
-                                            <span
-                                                class="font-weight-bold"
-                                                t-field="address.street2"/>
-                                            <br/>
-                                            <span class="font-weight-bold">
-                                                <span t-field="address.zip"/>
-                                                <span t-field="address.city"/>
-                                            </span>
-                                        </span>
-                                    </t>
+                                    <t t-call="event.event_report_template_formatted_event_address"/>
                                 </div>
                             </div>
                         </div>
