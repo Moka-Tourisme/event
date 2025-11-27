@@ -131,7 +131,7 @@ Copyright 2024 Moka Tourisme (https://www.mokatourisme.fr).
                                         </span>
                                     </t>
                                     <hr t-attf-style="color: #{event.content_color} !important; background-color: #{event.content_color} !important; height: 1px;"/>
-                                    LIEU DE RENDEZ VOUS
+                                    <span>LIEU DE RENDEZ VOUS </span> <span t-if="event.end_address_id">- LIEU DE DEBARQUEMENT</span>
                                     <br/>
                                     <t t-call="event.event_report_template_formatted_event_address"/>
                                 </div>
