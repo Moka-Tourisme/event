@@ -34,7 +34,7 @@ msgid ""
 msgstr ""
 "<strong>\n"
 "                    <span class=\"fa fa-map-marker\"/>\n"
-"                    DEPART\n"
+"                    LIEU DE RENDEZ-VOUS\n"
 "                    <br/>\n"
 "                </strong>"
 
