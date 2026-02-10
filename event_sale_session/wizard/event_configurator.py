@@ -10,6 +10,11 @@ class EventConfigurator(models.TransientModel):
     _inherit = "event.event.configurator"
 
     event_use_sessions = fields.Boolean(related="event_id.use_sessions")
+    filter_date = fields.Date(
+        string="Filter Date",
+        default=fields.Date.context_today,
+        help="Filter sessions by date. Only sessions ending on or after this date will be shown.",
+    )
     event_session_id = fields.Many2one(
         string="Session",
         comodel_name="event.session",
@@ -25,3 +30,10 @@ class EventConfigurator(models.TransientModel):
             self.event_session_id = event.session_ids[0]
         elif not event.use_sessions or event != self.event_session_id.event_id:
             self.event_session_id = False
+
+    @api.onchange("filter_date")
+    def _onchange_filter_date(self):
+        # Clear event_session_id if it's no longer in the filtered sessions
+        if self.event_session_id and self.filter_date:
+            if self.event_session_id.date_end < self.filter_date:
+                self.event_session_id = False
