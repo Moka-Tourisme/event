@@ -12,10 +12,16 @@
             <field name="event_id" position="after">
                 <field name="event_use_sessions" invisible="1" />
                 <field
+                    name="filter_date"
+                    attrs="{
+                       'invisible': [('event_use_sessions', '=', False)],
+                    }"
+                />
+                <field
                     name="event_session_id"
                     domain="[
                         ('event_id', '=', event_id),
-                        ('date_end', '&gt;=', time.strftime('%Y-%m-%d 00:00:00')),
+                        ('date_end', '&gt;=', filter_date or time.strftime('%Y-%m-%d 00:00:00')),
                     ]"
                     attrs="{
                        'invisible': [('event_use_sessions', '=', False)],
