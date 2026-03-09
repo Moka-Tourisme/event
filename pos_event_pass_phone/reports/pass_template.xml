@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+
+    <!-- Pass standard (petite carte) : ajout du téléphone après la fonction -->
+    <template id="pass_template_content_phone" inherit_id="event_pass.pass_template_content">
+        <xpath expr="//t[@t-if='pass.partner_id.function']" position="after">
+            <t t-if="pass.partner_id.phone">
+                <span style="font-size:0.8em;">
+                    <t t-esc="pass.partner_id.phone"/>
+                </span>
+            </t>
+        </xpath>
+    </template>
+
+    <!-- Pass Zebra : ajout du téléphone après la fonction -->
+    <template id="pass_template_zebra_content_phone" inherit_id="event_pass.pass_template_zebra_content">
+        <xpath expr="//t[@t-if='pass.partner_id.function']" position="after">
+            <t t-if="pass.partner_id.phone">
+                <br/>
+                <span style="font-size:0.8em;">
+                    <t t-esc="pass.partner_id.phone"/>
+                </span>
+            </t>
+        </xpath>
+    </template>
+
+    <!-- Invitation (badge plié) : ajout du téléphone avant le séparateur horizontal -->
+    <template id="invitation_template_content_phone" inherit_id="event_pass.invitation_template_content">
+        <xpath expr="//hr" position="before">
+            <t t-if="pass.partner_id.phone">
+                <span style="font-size:0.8em;">
+                    <t t-esc="pass.partner_id.phone"/>
+                </span>
+                <br/>
+            </t>
+        </xpath>
+    </template>
+
+</odoo>
