@@ -48,24 +48,30 @@ class SaleOrderLine(models.Model):
             )
 
     def _build_pass(self):
-        val_validity_date = self.product_id.pass_type_id.validity_date or fields.Date.today()
+        pass_type = self.product_id._get_pass_type()
+        if pass_type.validity_option == 'fixed':
+            validity_date = pass_type.validity_date or fields.Date.today()
+            expiration_date = pass_type.expiration_date
+        else:
+            validity_date = fields.Date.today()
+            expiration_date = validity_date + datetime.timedelta(days=pass_type.validity_period) if pass_type.validity_period else False
         return {
-            "display_name": self.product_id.pass_type_id.display_name,
+            "display_name": pass_type.display_name,
             # "product_id": self.product_id.id,
             "location_id": self.product_id.location_id.id,
             "partner_id": self.order_id.partner_id.id or None,
-            "event_type_ids": self.product_id.pass_type_id.event_type_ids.ids,
-            "category_ids": self.product_id.pass_type_id.category_ids.ids,
-            "event_stage_ids": self.product_id.pass_type_id.event_stage_ids.ids,
-            "event_ids": self.product_id.pass_type_id.event_ids.ids,
-            "session_ids": self.product_id.pass_type_id.session_ids.ids,
-            "unauthorized_session_ids": self.product_id.pass_type_id.unauthorized_session_ids.ids,
-            "validity_date": self.product_id.pass_type_id.validity_date or fields.Date.today(),
-            "expiration_date": val_validity_date + datetime.timedelta(
-                days=self.product_id.pass_type_id.validity_period) if not self.product_id.pass_type_id.fixed_expiration_date and self.product_id.pass_type_id.validity_period else self.product_id.pass_type_id.expiration_date,
-            "fixed_number_allowed_event": self.product_id.pass_type_id.fixed_number_allowed_event or False,
-            "number_allowed_event": self.product_id.pass_type_id.number_allowed_event or 0,
-            "number_visitors": self.product_id.pass_type_id.number_visitors or 0,
+            "event_type_ids": pass_type.event_type_ids.ids,
+            "category_ids": pass_type.category_ids.ids,
+            "event_stage_ids": pass_type.event_stage_ids.ids,
+            "event_ids": pass_type.event_ids.ids,
+            "session_ids": pass_type.session_ids.ids,
+            "unauthorized_session_ids": pass_type.unauthorized_session_ids.ids,
+            "validity_date": validity_date,
+            "expiration_date": expiration_date,
+            "fixed_number_allowed_event": pass_type.fixed_number_allowed_event,
+            "number_allowed_event": pass_type.number_allowed_event,
+            "fixed_number_visitors_allowed": pass_type.fixed_number_visitors_allowed,
+            "number_visitors": pass_type.number_visitors,
             "buy_line_id": self.id,
-            "pass_type_id": self.product_id.pass_type_id.id,
+            "pass_type_id": pass_type.id,
         }

@@ -2,6 +2,21 @@ from odoo import _, api, fields, models
 from odoo.exceptions import UserError
 
 
+class ProductProduct(models.Model):
+    _inherit = "product.product"
+
+    pass_type_id = fields.Many2one(
+        "event.pass.type",
+        string="Modèle de Pass (variante)",
+        help="Surcharge le modèle de pass défini sur le gabarit produit pour cette variante uniquement.",
+    )
+
+    def _get_pass_type(self):
+        """Retourne le modèle de pass effectif : variante en priorité, sinon le gabarit."""
+        self.ensure_one()
+        return self.pass_type_id or self.product_tmpl_id.pass_type_id
+
+
 class ProductTemplate(models.Model):
     _inherit = "product.template"
 

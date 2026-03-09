@@ -49,6 +49,25 @@
             </field>
         </record>
 
+        <!-- Ajout de pass_type_id dans le formulaire variante (édition via bouton Variantes) -->
+        <record id="product_product_event_pass_type_form_view" model="ir.ui.view">
+            <field name="name">product.product.event.pass.type.form</field>
+            <field name="model">product.product</field>
+            <field name="inherit_id" ref="product.product_variant_easy_edit_view"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='type']" position="after">
+                    <field name="detailed_type" invisible="1"/>
+                </xpath>
+                <xpath expr="//group[@name='codes']" position="after">
+                    <group name="pass_type_variant" string="Modèle de Pass"
+                           attrs="{'invisible': [('detailed_type', '!=', 'pass')]}">
+                        <field name="pass_type_id"
+                               placeholder="Par défaut : modèle du gabarit produit"/>
+                    </group>
+                </xpath>
+            </field>
+        </record>
+
         <record id="event_pass_type_inherit" model="ir.ui.view">
             <field name="name">view.event.pass.type.form.inherited</field>
             <field name="model">event.pass.type</field>
