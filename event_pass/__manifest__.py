@@ -4,7 +4,7 @@
     "author": "Moka",
     "website": "https://www.moka.cloud",
     "category": "Event",
-    "version": "16.0.0.0.2",
+    "version": "16.0.0.0.3",
     "license": "AGPL-3",
     "depends": [
         "contacts",

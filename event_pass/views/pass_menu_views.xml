@@ -117,6 +117,12 @@
                                 </group>
                             </group>
 
+                            <group>
+                                <group name="print_settings" string="Print Settings" colspan="4">
+                                    <field name="show_phone"/>
+                                </group>
+                            </group>
+
                             <notebook>
                                 <page string="Customization">
                                     <group name="general_customization" string="General Customization">

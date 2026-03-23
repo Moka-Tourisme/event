@@ -241,12 +241,12 @@
                                     <t t-esc="pass.partner_id.function"/>
                                 </div>
                             </t>
-                            <t t-if="pass.partner_id.phone">
+                            <t t-if="pass.pass_type_id.show_phone and pass.partner_id.phone">
                                 <div style="font-size:0.62em; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; margin-bottom:1px">
                                     <t t-esc="pass.partner_id.phone"/>
                                 </div>
                             </t>
-                            <t t-if="pass.partner_id.mobile">
+                            <t t-if="pass.pass_type_id.show_phone and pass.partner_id.mobile">
                                 <div style="font-size:0.62em; white-space:nowrap; overflow:hidden; text-overflow:ellipsis">
                                     <t t-esc="pass.partner_id.mobile"/>
                                 </div>

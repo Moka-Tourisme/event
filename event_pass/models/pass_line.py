@@ -195,6 +195,12 @@ class PassType(models.Model):
         default=False,
     )
 
+    show_phone = fields.Boolean(
+        string="Afficher le téléphone sur le pass",
+        help="Affiche le téléphone et le mobile du partenaire sur le pass Zebra imprimé",
+        default=False,
+    )
+
     @api.model
     def default_get(self, fields_list):
         res = super(PassType, self).default_get(fields_list)
