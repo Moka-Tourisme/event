@@ -20,9 +20,9 @@
         <field name="name">Custom Paperformat for pass line zebra</field>
         <field name="default" eval="True"/>
         <field name="format">custom</field>
-        <field name="orientation">Landscape</field>
-        <field name="page_height">70</field>
-        <field name="page_width">32</field>
+        <field name="orientation">Portrait</field>
+        <field name="page_height">32</field>
+        <field name="page_width">70</field>
         <field name="margin_top">0</field>
         <field name="margin_bottom">0</field>
         <field name="margin_left">0</field>
