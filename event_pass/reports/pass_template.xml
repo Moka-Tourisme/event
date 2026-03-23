@@ -215,35 +215,42 @@
     </template>
 
     <template id="pass_template_zebra_content">
-        <div style="page-break-after: always; min-width=265px; max-width:265px; min-height=120px; max-height=120px">
-            <p style="font-size:0.8em; padding-right: 5px; padding-left: 10px; max-height: 30px; text-align: center">
-                <t t-esc="pass.display_name"/>
-            </p>
-            <table style="max-width:264.56692913px; table-layout: fixed; max-height:120px; min-height:120px; border-style:hidden !important">
-                <tr style="height:50%; border: 0;">
-                    <!-- Display QR Code -->
-                    <td style="vertical-align:middle; text-align: center;border: 0; padding-left: 10px; padding-right:10px">
-                        <img t-att-src="'/report/barcode/?barcode_type=%s&amp;value=%s&amp;width=%s&amp;height=%s&amp;humanreadable=0' % ('QR', pass.qr_code, 60, 60)"/>
+        <div style="page-break-after: always; width:265px; height:121px; overflow:hidden">
+            <table style="width:265px; height:121px; table-layout:fixed; border-collapse:collapse; border-style:hidden !important">
+                <tr>
+                    <!-- QR Code -->
+                    <td style="width:75px; vertical-align:middle; text-align:center; border:0; padding:3px 2px 3px 5px">
+                        <t t-if="pass.qr_code">
+                            <img t-att-src="'/report/barcode/?barcode_type=%s&amp;value=%s&amp;width=%s&amp;height=%s&amp;humanreadable=0' % ('QR', pass.qr_code, 65, 65)"/>
+                        </t>
                     </td>
-                    <!-- Display Partner name & function -->
-                    <td style="background-color:#FFF; vertical-align: bottom; text-align: left; padding: 10px 0 5px 15px; border: 0">
-                        <span style="font-size:0.8em;">
-                            <t t-out="pass.qr_code"/>
-                        </span>
-                        <br/>
+                    <!-- Infos partenaire -->
+                    <td style="vertical-align:middle; text-align:left; border:0; padding:3px 5px 3px 8px; overflow:hidden">
+                        <div style="font-size:0.65em; font-weight:bold; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; margin-bottom:1px">
+                            <t t-esc="pass.display_name"/>
+                        </div>
                         <t t-if="pass.partner_id">
-                            <strong style="font-size:0.8em;">
+                            <div style="font-size:0.7em; font-weight:bold; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; margin-bottom:1px">
                                 <t t-if="pass.beneficiary">
                                     <t t-esc="pass.beneficiary"/>
                                 </t>
                                 <t t-else="" t-esc="pass.partner_id.name"/>
-                            </strong>
-                        </t>
-                        <br/>
-                        <t t-if="pass.partner_id.function">
-                            <span style="font-size:0.8em;">
-                                <t t-esc="pass.partner_id.function"/>
-                            </span>
+                            </div>
+                            <t t-if="pass.partner_id.function">
+                                <div style="font-size:0.62em; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; margin-bottom:1px">
+                                    <t t-esc="pass.partner_id.function"/>
+                                </div>
+                            </t>
+                            <t t-if="pass.partner_id.phone">
+                                <div style="font-size:0.62em; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; margin-bottom:1px">
+                                    <t t-esc="pass.partner_id.phone"/>
+                                </div>
+                            </t>
+                            <t t-if="pass.partner_id.mobile">
+                                <div style="font-size:0.62em; white-space:nowrap; overflow:hidden; text-overflow:ellipsis">
+                                    <t t-esc="pass.partner_id.mobile"/>
+                                </div>
+                            </t>
                         </t>
                     </td>
                 </tr>

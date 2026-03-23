@@ -946,7 +946,7 @@ msgstr "Imprimer le badge du partenaire"
 #. module: event_pass
 #: model:ir.actions.report,name:event_pass.pass_report_zebra
 msgid "Print the zebra pass badge"
-msgstr ""
+msgstr "Imprimer le pass"
 
 #. module: event_pass
 #: model_terms:ir.ui.view,arch_db:event_pass.view_pass_form
