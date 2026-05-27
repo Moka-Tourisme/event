@@ -1,0 +1,9 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(grep -n t-options=.*barcode F:/Moka/docker-moka/addons/stock/report/report_lot_barcode.xml F:/Moka/docker-moka/addons/stock/report/report_location_barcode.xml F:/Moka/docker-moka/addons/stock/report/report_package_barcode.xml F:/Moka/docker-moka/addons/hr/report/hr_employee_badge.xml)",
+      "Bash(xargs grep:*)",
+      "Bash(find F:/Moka/docker-moka -path */src/addons/base* -name *.py)"
+    ]
+  }
+}

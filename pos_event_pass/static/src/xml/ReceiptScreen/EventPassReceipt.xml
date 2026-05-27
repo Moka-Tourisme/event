@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates id="template" xml:space="preserve">
+
+    <t t-name="EventPassReceipt" owl="1">
+        <div class="pos-receipt event-pass-receipt">
+            <!-- Header -->
+            <t t-if="receipt.company.logo">
+                <img
+                        class="pos-receipt-logo"
+                        t-att-src="receipt.company.logo"
+                        alt="Logo"
+                />
+                <br/>
+            </t>
+            <t t-if="!receipt.company.logo">
+                <h2 class="pos-receipt-center-align">
+                    <t t-esc="receipt.company.name"/>
+                </h2>
+                <br/>
+            </t>
+
+            <!-- Pass -->
+
+            <div class="pos-receipt-event-pass">
+                <div class="event-title">
+                    <strong class="event-name" t-esc="pass.display_name"/>
+                </div>
+                <div>
+                    <t t-if="pass.location_id">
+                        <h5>Lieu :</h5>
+                        <div t-if="pass.location_id.name"     t-esc="pass.location_id.name"     indent="1"/>
+                        <div t-if="pass.location_id.street"   t-esc="pass.location_id.street"   indent="1"/>
+                        <div t-if="pass.location_id.street2"  t-esc="pass.location_id.street2"  indent="1"/>
+                        <div t-if="pass.location_id.city"     indent="1">
+                            <t t-if="pass.location_id.zip">
+                                <t t-esc="pass.location_id.zip"/>,
+                            </t>
+                            <t t-esc="pass.location_id.city"/>
+                        </div>
+                        <h5>Contact :</h5>
+                        <div t-if="pass.location_id.phone"    t-esc="pass.location_id.phone"    indent="1"/>
+                        <div t-if="pass.location_id.mobile"   t-esc="pass.location_id.mobile"   indent="1"/>
+                        <div t-if="pass.location_id.email"    t-esc="pass.location_id.email"    indent="1"/>
+                        <div t-if="pass.location_id.website"  t-esc="pass.location_id.website"  indent="1"/>
+                    </t>
+                </div>
+                <div class="event-pass-info">
+                    <b>A utiliser
+                    <span t-if="pass.validity_date">
+                        du
+                        <t t-esc="formatDate(pass.validity_date)"/>
+                    </span>
+                    <span t-if="pass.expiration_date">
+                        au
+                        <t t-esc="formatDate(pass.expiration_date)"/>
+                    </span>
+                    <span t-if="pass.fixed_number_allowed_event">
+                        pour
+                        <t t-if="pass.number_allowed_event == 1">
+                            <t t-esc="pass.number_allowed_event"/>
+                            <span>
+                                 evenements
+                            </span>
+                        </t>
+                        <t t-else="">
+                            <t t-esc="pass.number_allowed_event"/>
+                            <span>
+                                 evenements
+                            </span>
+                        </t>
+                    </span>
+                    <span>
+                        pour
+                        <t t-esc="pass.number_visitors"/>
+                        <t t-if="pass.number_visitors == 1" >
+                            <span>
+                                 visiteur
+                            </span>
+                        </t>
+                        <t t-else="">
+                            <span>
+                                 visiteurs
+                            </span>
+                        </t>
+                    </span>
+                    </b>
+                </div>
+                <br/>
+                <div class="pass-ticket">
+                    <t t-if="pass.partner_id[1]" t-esc="pass.partner_id[1]"/>
+                </div>
+                <div class="event-pass-barcode">
+                    <div t-if="pass.qr_code">
+                        <img
+                            t-attf-style="min-height: 164px;"
+                                class="qr_code"
+                                t-attf-src="/report/barcode/?barcode_type=QR&amp;value={{pass.qr_code}}&amp;width=164&amp;height=164&amp;humanreadable=1"
+                                alt="QRCode"
+                        />
+                    </div>
+                </div>
+            </div>
+
+            <!-- Footer -->
+
+            <br/>
+            <div class="pos-receipt-order-data">
+                <div><t t-esc="receipt.name" /></div>
+                <t t-if="receipt.date.localestring">
+                    <div><t t-esc="receipt.date.localestring" /></div>
+                </t>
+                <t t-else="">
+                    <div><t t-esc="receipt.date.validation_date" /></div>
+                </t>
+            </div>
+        </div>
+    </t>
+
+</templates>

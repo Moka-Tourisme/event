@@ -350,8 +350,10 @@
                                 <div
                                     class="col-3 text-bg-primary p-2 text-center d-flex flex-column justify-content-center"
                                 >
-                                    <div
-                                        t-esc="luxon.DateTime.fromISO(record.date_begin.raw_value).toFormat('d')"
+                                     <div class="o_event_weekday">
+                                            <t t-esc="luxon.DateTime.fromISO(record.date_begin.raw_value).toFormat('cccc')" />
+                                    </div>
+                                    <div t-esc="luxon.DateTime.fromISO(record.date_begin.raw_value).toFormat('d')"
                                         class="o_event_fontsize_20"
                                     />
                                     <div>
@@ -363,7 +365,7 @@
                                             t-esc="luxon.DateTime.fromISO(record.date_begin.raw_value).toFormat('t')"
                                         /></div>
                                     <div
-                                        t-if="record.date_begin.raw_value !== record.date_end.raw_value"
+                                        t-if="luxon.DateTime.fromISO(record.date_begin.raw_value).toISODate() !== luxon.DateTime.fromISO(record.date_end.raw_value).toISODate()"
                                     >
                                         <i
                                             class="fa fa-arrow-right o_event_fontsize_09"

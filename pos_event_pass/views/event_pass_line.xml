@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="event_pass_line_pos_inherit" model="ir.ui.view">
+        <field name="name">view.event.pass.line.pos.inherited</field>
+        <field name="model">event.pass.line</field>
+        <field name="inherit_id" ref="event_pass.view_pass_form"/>
+        <field name="groups_id" eval="[(5,)]"/>
+        <field name="priority" eval="6"/>
+        <field name="arch" type="xml">
+            <div name="button_box" position="inside">
+                <button class="oe_stat_button" type="object" name="action_view_pos_order"
+                        attrs="{'invisible': [('pos_order_count', '=', 0)]}"
+                        icon="fa-shopping-bag">
+                    <field string="PoS Orders" name="pos_order_count" widget="statinfo"/>
+                </button>
+            </div>
+        </field>
+    </record>
+
+    <record id="event_pass_type_pos_inherit" model="ir.ui.view">
+        <field name="name">view.event.pass.type.pos.inherited</field>
+        <field name="model">event.pass.type</field>
+        <field name="inherit_id" ref="sale_event_pass.event_pass_type_inherit"/>
+        <field name="groups_id" eval="[(5,)]"/>
+        <field name="priority" eval="2"/>
+        <field name="arch" type="xml">
+            <div name="button_box" position="inside">
+                <field name="currency_id" invisible="1"/>
+                <button
+                        name="action_view_pos_orders"
+                        type="object"
+                        class="oe_stat_button"
+                        icon="fa-dollar"
+                        groups="point_of_sale.group_pos_user"
+                        help="Total POS Sales for this pass type"
+                        attrs="{'invisible': [('pos_price_subtotal', '=', 0)]}"
+                >
+                    <field
+                            string="POS Sales"
+                            name="pos_price_subtotal"
+                            widget="statinfo"
+                            options="{'currency_field': 'currency_id'}"
+                    />
+                </button>
+                <button class="oe_stat_button" type="object" name="action_view_pos_order"
+                        attrs="{'invisible': [('pos_order_count', '=', 0)]}"
+                        icon="fa-shopping-bag">
+                    <field string="PoS Orders" name="pos_order_count" widget="statinfo"/>
+                </button>
+            </div>
+        </field>
+    </record>
+
+    <record id="event_pass_pos_order_inherit" model="ir.ui.view">
+        <field name="name">view.event.pass.pos.order.inherited</field>
+        <field name="model">pos.order</field>
+        <field name="inherit_id" ref="point_of_sale.view_pos_pos_form"/>
+        <field name="groups_id" eval="[(5,)]"/>
+        <field name="priority" eval="2"/>
+        <field name="arch" type="xml">
+            <div name="button_box" position="inside">
+                <button class="oe_stat_button" type="object" name="action_view_pass"
+                        attrs="{'invisible': [('pass_count', '=', 0)]}"
+                        icon="fa-ticket">
+                    <field string="Pass" name="pass_count" widget="statinfo"/>
+                </button>
+            </div>
+        </field>
+    </record>
+
+
+</odoo>

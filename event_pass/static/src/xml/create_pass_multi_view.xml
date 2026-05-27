@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates>
+    <t t-name="event_pass.EventPassListView.buttons" t-inherit="web.ListView.Buttons" owl="1" t-inherit-mode="primary">
+        <xpath expr="//*[@class='btn btn-primary o_list_button_add']" position="after">
+            <button type="button" class="btn btn-primary o_wizard_create_pass_multi"
+                    style="margin-left: 0.4vw; margin-right: 0.4vw;"
+                    t-on-click.stop.prevent="() => this.actionService.doAction('event_pass.act_wizard_event_pass_line', { additionalContext: this.props.context, onClose: () => {this.model.load()} })">
+                Create Pass Multi
+            </button>
+        </xpath>
+    </t>
+</templates>

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates id="template" xml:space="preserve">
+
+    <t t-inherit="pos_event_pass.EventPassReceipt" t-inherit-mode="extension" owl="1">
+        <xpath expr="//div[@class='pass-ticket']" position="after">
+            <div t-if="pass.partner_phone" class="partner-phone">
+                <t t-esc="pass.partner_phone"/>
+            </div>
+        </xpath>
+    </t>
+
+</templates>

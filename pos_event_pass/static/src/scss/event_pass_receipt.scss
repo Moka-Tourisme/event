@@ -1,0 +1,41 @@
+
+
+@media print {
+    .pos .pos-receipt-container > div {
+        display: block !important;
+        page-break-before: always !important;
+    }
+}
+
+.pos-receipt {
+    &.event-pass-receipt {
+        .pos-receipt-event-pass {
+            text-align: center;
+
+            .event-pass-info {
+                margin: 1rem 1.5rem;
+                text-align: left;
+
+                & > div {
+                    margin-bottom: 0.5rem;
+                }
+
+                i.fa {
+                    margin-right: 0.25rem;
+                    min-width: 1em;
+                    text-align: center;
+
+                    & + span {
+                        margin-right: 0.5rem;
+                    }
+                }
+            }
+
+            .event-pass-barcode > div {
+                margin-top: 3rem;
+                margin-bottom: 1rem;
+                text-align: center;
+            }
+        }
+    }
+}

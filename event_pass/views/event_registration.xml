@@ -1,0 +1,21 @@
+<?xml version="1.0" ?>
+<odoo>
+    <record id="view_event_registration_form" model="ir.ui.view">
+        <field name="model">event.registration</field>
+        <field name="inherit_id" ref="event.view_event_registration_form"/>
+        <field name="arch" type="xml">
+            <field name="mobile" position="after">
+                <field name="pass_line_id"/>
+            </field>
+        </field>
+    </record>
+    <record id="view_event_registration_tree" model="ir.ui.view">
+        <field name="model">event.registration</field>
+        <field name="inherit_id" ref="event.view_event_registration_tree"/>
+        <field name="arch" type="xml">
+            <field name="mobile" position="after">
+                <field name="pass_line_id" optional="show"/>
+            </field>
+        </field>
+    </record>
+</odoo>

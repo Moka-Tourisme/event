@@ -1,0 +1,3 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_pass_type_user,event.pass.type.user,sale_event_pass.model_event_pass_type,event.group_event_user,1,1,1,1
+access_pass_type_manager,event.pass.type.manager,sale_event_pass.model_event_pass_type,event.group_event_manager,1,1,1,1

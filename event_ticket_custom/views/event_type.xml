@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!--
+    Copyright 2024 Moka Tourisme (https://www.mokatourisme.fr).
+    @author Horvat Damien <ultrarushgame@gmail.com>
+    License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl).
+-->
+<odoo>
+
+    <record id="view_event_type_form" model="ir.ui.view">
+        <field name="model">event.type</field>
+        <field name="inherit_id" ref="event.view_event_type_form" />
+        <field name="arch" type="xml">
+            <field name="ticket_instructions" position="after">
+                <label for="ticket_upper_left" /><br />
+                <field name="ticket_upper_left" nolabel="1" class="pt-2" />
+                <label for="ticket_bottom_right" /><br />
+                <field name="ticket_bottom_right" nolabel="1" class="pt-2" />
+            </field>
+        </field>
+    </record>
+
+</odoo>
