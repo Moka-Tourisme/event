@@ -83,7 +83,7 @@ Copyright 2024 Moka Tourisme (https://www.mokatourisme.fr).
                                         <span
                                             t-if="attendee and attendee.event_ticket_id"
                                             class="font-weight-bold"
-                                            t-field="attendee.event_ticket_id"
+                                            t-field="attendee.event_ticket_id.name"
                                         />
                                     </span>
                                     <hr t-attf-style="color: #{event.content_color} !important; background-color: #{event.content_color} !important; height: 1px;"/>

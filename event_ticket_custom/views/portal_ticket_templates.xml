@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!--
+    Copyright 2024 Moka Tourisme (https://www.mokatourisme.fr).
+    License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl).
+-->
+<odoo>
+
+    <!-- Affiche le nom brut du billet sans [societe] sur le portail event -->
+    <template id="event_portal_ticket_content_no_company"
+              inherit_id="event_portal_ticket.content">
+        <xpath expr="//h6[@t-field='registration.event_ticket_id']" position="replace">
+            <h6 t-field="registration.event_ticket_id.name"/>
+        </xpath>
+    </template>
+
+    <!-- Affiche le nom brut du billet sans [societe] sur le portail event session -->
+    <template id="event_session_portal_ticket_content_no_company"
+              inherit_id="event_session_portal_ticket.content">
+        <xpath expr="//h6[@t-field='registration.event_ticket_id']" position="replace">
+            <h6 t-field="registration.event_ticket_id.name"/>
+        </xpath>
+    </template>
+
+</odoo>
