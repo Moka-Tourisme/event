@@ -61,9 +61,9 @@ Copyright 2024 Moka Tourisme (https://www.mokatourisme.fr).
                                         <img class="img_qr_code"
                                              t-att-src="'/report/barcode/?barcode_type=%s&amp;value=%s&amp;width=%s&amp;height=%s&amp;humanreadable=0' % ('QR', attendee.qr_code, 96, 96)"/>
                                         <div t-if="attendee.env['ir.config_parameter'].sudo().get_param('event_registration_qr_code.show_qr_code_text') in ('True', 'true', '1')"
-                                             class="o_qr_code_text text-center mt-2"
+                                             class="o_qr_code_text text-center"
                                              style="font-size:10px; letter-spacing:1px; word-break:break-all;"
-                                             t-out="attendee.id"/>
+                                             t-out="attendee.qr_code"/>
                                         <!--                                        </div>-->
                                         <!--                                    </div>-->
                                     </t>
