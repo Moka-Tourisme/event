@@ -5,7 +5,7 @@
 {
     "name": "Event Registration QR Code",
     "summary": "Automatically generate unique QR Codes for each registration",
-    "version": "16.0.1.1.0",
+    "version": "16.0.1.0.0",
     "author": "Moka Tourisme, Odoo Community Association (OCA)",
     "maintainers": ["ivantodorovich"],
     "website": "https://github.com/OCA/event",
@@ -14,7 +14,6 @@
     "depends": ["event"],
     "data": [
         "views/event_registration.xml",
-        "views/res_config_settings.xml",
         "reports/report_templates.xml",
     ],
 }
