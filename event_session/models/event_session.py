@@ -226,12 +226,21 @@ class EventSession(models.Model):
                 }
             )
 
-    @api.depends("seats_unconfirmed", "seats_reserved", "seats_used", "seats_max")
+    @api.depends(
+        "seats_unconfirmed",
+        "seats_reserved",
+        "seats_used",
+        "seats_max",
+        "seats_limited",
+    )
     def _compute_seats_available(self):
+        # NOTE: ``seats_limited`` is the only flag that tells if the session has
+        # a capacity or not. ``seats_max = 0`` on a limited session means "no
+        # seat at all" (closed session), it does NOT mean "unlimited".
         for rec in self:
             rec.seats_available = (
                 rec.seats_max - (rec.seats_reserved + rec.seats_used)
-                if rec.seats_max > 0
+                if rec.seats_limited
                 else 0
             )
 
@@ -342,7 +351,7 @@ class EventSession(models.Model):
             rec.event_registrations_open = (
                 rec.event_registrations_started
                 and (not rec.date_end or rec.date_end >= now)
-                and (not rec.seats_limited or not rec.seats_max or rec.seats_available)
+                and (not rec.seats_limited or rec.seats_available > 0)
                 and (
                     not rec.event_ticket_ids
                     or any(ticket.sale_available for ticket in rec.event_ticket_ids)
@@ -358,7 +367,7 @@ class EventSession(models.Model):
         """Similar to core's :meth:`event_event._compute_event_registrations_sold_out`"""
         for rec in self:
             rec.event_registrations_sold_out = (
-                rec.seats_limited and rec.seats_max and not rec.seats_available
+                rec.seats_limited and rec.seats_available <= 0
             ) or (
                 rec.event_ticket_ids
                 and all(ticket.is_sold_out for ticket in rec.event_ticket_ids)
@@ -405,6 +414,11 @@ class EventSession(models.Model):
     def _check_seats_availability(self, minimal_availability=0):
         sold_out_events = []
         for session in self:
+            # NOTE: ``seats_max`` is deliberately kept in the condition here.
+            # Setting the gauge to 0 is how a session is closed, and it must
+            # stay possible even when it already holds registrations (and to
+            # cancel them afterwards). Booking on a closed session is blocked
+            # upstream by ``event.registration._check_seats_limit``.
             if (
                 session.seats_limited
                 and session.seats_max

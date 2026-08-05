@@ -193,6 +193,44 @@ class TestEventSession(CommonEventSessionCase):
             registration.action_confirm()
             registration.flush_recordset()
 
+    def test_session_seats_zero_max(self):
+        """A limited session with seats_max = 0 accepts no registration at all.
+
+        Regression: ``seats_max = 0`` used to be interpreted as "unlimited",
+        which let the backend create registrations (quotations) on a session
+        whose gauge had been set to 0 on purpose to close it.
+        """
+        self.session.seats_max = 0
+        self.assertEqual(self.session.seats_available, 0)
+        self.assertTrue(self.session.event_registrations_sold_out)
+        vals = {
+            "name": "Test Attendee",
+            "event_id": self.event.id,
+            "session_id": self.session.id,
+        }
+        with self.assertRaisesRegex(
+            ValidationError, "No more seats available for this session."
+        ), self.cr.savepoint():
+            self.env["event.registration"].create(dict(vals, state="draft"))
+        with self.assertRaisesRegex(
+            ValidationError, "No more seats available for this session."
+        ), self.cr.savepoint():
+            self.env["event.registration"].create(dict(vals, state="open"))
+
+    def test_session_seats_unlimited(self):
+        """An unlimited session (seats_limited = False) still accepts anything"""
+        self.session.seats_limited = False
+        self.session.seats_max = 0
+        vals = {
+            "name": "Test Attendee",
+            "event_id": self.event.id,
+            "session_id": self.session.id,
+            "state": "open",
+        }
+        self.env["event.registration"].create([vals] * 10)
+        self.assertEqual(self.session.seats_available, 0)
+        self.assertFalse(self.session.event_registrations_sold_out)
+
     def test_event_seats(self):
         """Test that event.event seats constraints do not apply to sessions"""
         # Case: Event has a limit of 5 seats, but it should apply per-session

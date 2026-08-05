@@ -47,9 +47,11 @@ class EventRegistration(models.Model):
         session_records = self.filtered("session_id")
         for rec in session_records:
             session = rec.session_id
+            # NOTE: ``seats_max = 0`` on a session flagged ``seats_limited``
+            # means "no seat at all", not "unlimited". Only ``seats_limited``
+            # tells whether a capacity applies.
             if (
                 session.seats_limited
-                and session.seats_max
                 and session.seats_available < (1 if rec.state == "draft" else 0)
             ):
                 raise ValidationError(_("No more seats available for this session."))
